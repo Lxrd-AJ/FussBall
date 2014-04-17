@@ -66,17 +66,21 @@ function onFinish()
         setTimeout( moveBall, 1000 );
     };
     moveBall();
-    alert.showAlert( function(that){
-        stage.add( that.alertLayer );
-    } );
+    setTimeout( function(){
+        alert.showAlert( function(that){
+            stage.add( that.alertLayer );
+        } );
+    },11500 );
     //End Test::::::::::::
 }
 
 //Add the Ball to the pitch
 function addBall() {
-    gameModel.ball.instantiate(function (that) {
-        stage.add(that.layer);
-        that.layer.setZIndex(10);
-    });
+    if( !gameModel.ball.exist ) {
+        gameModel.ball.instantiate(function (that) {
+            stage.add(that.layer);
+            that.layer.setZIndex(10);
+        });
+    }
 }
 

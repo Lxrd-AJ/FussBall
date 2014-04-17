@@ -6,13 +6,14 @@ var Ball = function(){
     this.circle = new Kinetic.Circle();
     this.radius = 15;
     this.layer = new Kinetic.Layer();
-    this.playerRef = null;
+    this.exist = false;
 };
 
 Ball.prototype = {
     constructor: Ball,
     instantiate: function( onfinish ){
         var that = this;
+        this.exist = true;
         this.circle = new Kinetic.Circle({
             x: 290,
             y: 150,

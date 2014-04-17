@@ -11,11 +11,13 @@ var AlertView = function(){
     this.alertGroup = new Kinetic.Group();
     this.questionDB = new QuestionDB();
     this.alertShouldShow = true;
+    this.exist = false;
 };
 
 AlertView.prototype = {
     constructor: AlertView,
     instantiate : function( callBack ){
+        this.exist = true;
         this.alertGroup = new Kinetic.Group({
             x: 0,
             y: 0
@@ -39,7 +41,7 @@ AlertView.prototype = {
             height: 60,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 10
+            strokeWidth: 5
         });
         this.cancelRect.cornerRadius(10);
         this.cancelRect.listening( true );
@@ -63,7 +65,7 @@ AlertView.prototype = {
             height: 60,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 10
+            strokeWidth: 5
         });
         this.okRect.cornerRadius(10);
         this.okRect.listening( true );
@@ -84,8 +86,10 @@ AlertView.prototype = {
         callBack( this );
     },
     alertWillShow: function( callBack ){
-        this.instantiate( callBack );
-        return true;
+        if( !this.exist ) {
+            this.instantiate(callBack);
+            return true;
+        }
     },
     showAlert : function( callBack ){
         if( this.alertShouldShow ){
@@ -101,10 +105,12 @@ AlertView.prototype = {
     },
     didClickButtonAtRect: function( Rect){
         if( Rect === this.cancelRect ){
-            this.removeAlert();
+            //this.removeAlert();
         }else if( Rect === this.okRect ){
             //window.alert("ok");
         }
+        this.alertWillDisappear();
+        this.removeAlert();
     },
     onClick : function( object, func ){
         object.on( 'click tap', function(){
