@@ -89,8 +89,9 @@ AlertView.prototype = {
         } );
 
         this.questionText = new Kinetic.Text({
-            x: this.alertRect.x() + ( this.alertRect.width * 0.5 ),
-            fontStyle: 35,
+            x: (window.innerWidth * 0.4) + this.cancelRect.x(),
+            y: (window.innerHeight * 0.15),
+            fontSize: 40,
             fill: 'black'
         });
 
@@ -102,11 +103,19 @@ AlertView.prototype = {
     alertWillShow: function( callBack ){
         if( !this.exist ) {
             this.instantiate(callBack);
-            return true;
-        }else{
-            //TODO->get Question files and add to alert view pane
-            this.questionDB.prepareQuestionObject();
-            var questionObjects = this.questionDB.getQuestionObject();
+            this.exist = true;
+
+            this.questionDB.prepareQuestionObjects();
+            var questionObjects = this.questionDB.getQuestionObjects();
+            var that = this;
+
+            //Add the image and text
+            this.questionImage.onload = function(){
+                that.alertRect.fillPatternImage( that.questionImage );
+            };
+            this.questionImage.src = questionObjects.first.imageURL;
+            this.questionText.text(questionObjects.second.text);
+            //this.alertGroup.add( this.questionText );
         }
     },
     showAlert : function( callBack ){
@@ -136,6 +145,7 @@ AlertView.prototype = {
         });
     },
     alertWillDisappear : function(){
+        this.exist = false;
         //TODO: Determine if the answer is correct or not and set the answerCorrect boolean
     },
     removeAlert: function(){

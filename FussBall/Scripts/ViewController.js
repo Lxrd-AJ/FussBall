@@ -71,11 +71,11 @@ function onFinish()
         setTimeout( moveBall, 2000 );
     };
     moveBall();
-    /*setTimeout( function(){
-        alert.showAlert( function(that){
+    setTimeout( function(){
+        questionAlert.showAlert( function(that){
             stage.add( that.alertLayer );
         } );
-    },11500 );*/
+    },3000 );
 
     //End Test::::::::::::
 }
