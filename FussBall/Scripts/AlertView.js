@@ -3,8 +3,11 @@
  */
 var AlertView = function(){
     this.alertLayer = new Kinetic.Layer();
+    this.questionImage = new Image();
+    this.questionText = null;
+    this.font = "Calibri";
     this.cancelButtonTitle = "No";
-    this.okButtonTitle = "Ok";
+    this.okButtonTitle = "Yes";
     this.alertRect = new Kinetic.Rect();
     this.cancelRect = new Kinetic.Rect();
     this.okRect = new Kinetic.Rect();
@@ -12,6 +15,8 @@ var AlertView = function(){
     this.questionDB = new QuestionDB();
     this.alertShouldShow = true;
     this.exist = false;
+    this.answer = null;
+    this.answerCorrect = null;
 };
 
 AlertView.prototype = {
@@ -29,7 +34,9 @@ AlertView.prototype = {
             height: window.innerHeight * 0.5,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 5
+            strokeWidth: 5,
+            fillPatternImage: this.questionImage,
+            fillPatternOffset : [ this.alertRect.width*0.5, this.alertRect.height*0.2 ]
         });
         this.alertRect.cornerRadius(10);
         this.alertRect.listening( false );
@@ -81,7 +88,14 @@ AlertView.prototype = {
             that.didClickButtonAtRect(obj);
         } );
 
-        this.alertGroup.add( this.alertRect,this.cancelRect,this.cancelText,this.okRect,this.okText );
+        this.questionText = new Kinetic.Text({
+            x: this.alertRect.x() + ( this.alertRect.width * 0.5 ),
+            fontStyle: 35,
+            fill: 'black'
+        });
+
+        this.alertGroup.add( this.alertRect,this.cancelRect,this.cancelText,this.okRect,this.okText,
+                             this.questionText );
         this.alertLayer.add( this.alertGroup );
         callBack( this );
     },
@@ -89,6 +103,10 @@ AlertView.prototype = {
         if( !this.exist ) {
             this.instantiate(callBack);
             return true;
+        }else{
+            //TODO->get Question files and add to alert view pane
+            this.questionDB.prepareQuestionObject();
+            var questionObjects = this.questionDB.getQuestionObject();
         }
     },
     showAlert : function( callBack ){
@@ -105,9 +123,9 @@ AlertView.prototype = {
     },
     didClickButtonAtRect: function( Rect){
         if( Rect === this.cancelRect ){
-            //this.removeAlert();
+            this.answer = false;
         }else if( Rect === this.okRect ){
-            //window.alert("ok");
+            this.answer = true;
         }
         this.alertWillDisappear();
         this.removeAlert();
@@ -118,7 +136,7 @@ AlertView.prototype = {
         });
     },
     alertWillDisappear : function(){
-
+        //TODO: Determine if the answer is correct or not and set the answerCorrect boolean
     },
     removeAlert: function(){
         this.alertWillDisappear();
@@ -129,5 +147,8 @@ AlertView.prototype = {
             y: -500
         });
         dismissAnimation.play();
+    },
+    getAnswer: function(){
+        //TODO:return true or false based on answerCorrectVAriable
     }
 };

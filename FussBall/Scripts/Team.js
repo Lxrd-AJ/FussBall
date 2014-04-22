@@ -4,7 +4,8 @@
 var Team = function(url){
     this.players = [];
     this.score = 0;
-    //this.formation = [4,4,2];
+    this.positions = null;
+    this.currentPlayer = null;
     this.length = 11;
     this.country = url;
 };
@@ -24,6 +25,7 @@ Team.prototype = {
         }
     },
     arrangePlayers : function( positions ){
+        //this.positions = positions;
         for( var i = 0; i < positions.length; i++ ){
             var xPos = positions[i].x * (window.innerWidth/100);
             var yPos = positions[i].y * (window.innerHeight/100);
@@ -34,32 +36,12 @@ Team.prototype = {
         for( var i in this.players ){
             this.players[i].changeColor( color );
         }
+    },
+    goalKeeperLongShot: function( ball ){
+        //Move ball to keeper position if not there already
+        ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );
+        //generate a random number between 1 and 11
+        var playerNumber = Math.floor(  Math.random() * (11 - 1 ) ) + 1;
+        this.players[0].passToPlayer( this.players[playerNumber], ball , 0.9 );
     }
 };
-
-
-/*
-Junk codes::::::::::
-
- //Arrange the players on the pitch based on the formation
- var scaleWidth = (window.screen.availWidth/2)/this.formation.length;
- var scaleHeight = window.screen.availHeight;
- var currWidth = 0;
- var currHeight = 0;
- var tempPlayers = [];
- for( var k = 0; k < this.formation.length; k++ ){
- currWidth += scaleWidth;
- scaleHeight = window.screen.availHeight / this.formation[k];
- for( var j = 0; j < this.formation[k]; j++ ){
- currHeight += scaleHeight - (scaleHeight/3);
- var temp = this.players.pop();
- temp.setPosition( currWidth, currHeight );
- tempPlayers.push( temp );
- }
- currHeight = 0;
- }
- //Add back to array
- for( var i in tempPlayers )
- this.players.push( tempPlayers[i] );
-
- */

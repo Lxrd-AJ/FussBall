@@ -15,8 +15,8 @@ Ball.prototype = {
         var that = this;
         this.exist = true;
         this.circle = new Kinetic.Circle({
-            x: 290,
-            y: 150,
+            x: 0,
+            y: 0,
             radius: that.radius,
             stroke: 'black',
             fill: 'white',
