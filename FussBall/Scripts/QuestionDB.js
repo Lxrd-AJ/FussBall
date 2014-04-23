@@ -29,12 +29,11 @@ QuestionDB.prototype = {
         };
 
         var obj = this.nameToImageDictionary[ Math.floor( Math.random() * (this.nameToImageDictionary.length
-        - 0 )) + 1 ];
+        - 0 )) ];
         for( var k in obj ){
             randObj.country = k;
             randObj.imageURL = obj[k];
         }
-        //console.log(this.nameToArabicDictionary[5]['Hindi']);
         randObj.text = this.nameToArabicDictionary[ randObj.country ];
 
         return randObj;
@@ -48,5 +47,12 @@ QuestionDB.prototype = {
             'first': this.firstQuestionObject,
             'second': this.secondQuestionObject
         }
+    },
+    areQuestionsSame: function( obj1, obj2 ){
+        if( obj1.country == obj2.country ){
+            if( obj1.text == obj2.text )
+                return true;
+        }else
+            return false;
     }
 };

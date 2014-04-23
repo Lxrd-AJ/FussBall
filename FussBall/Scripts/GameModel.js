@@ -11,7 +11,12 @@ var GameModel = function(){
 };
 
 GameModel.prototype = {
-    constructor: GameModel
+    constructor: GameModel,
+    getScores: function(){
+        return {
+            'TeamA' : this.teamA.score,
+            'TeamB' : this.teamB.score
+        }
+    }
 
 };
-

@@ -1,6 +1,7 @@
 /**
  * Created by AJ on 16/04/2014.
  */
+
 var AlertView = function(){
     this.alertLayer = new Kinetic.Layer();
     this.questionImage = new Image();
@@ -17,6 +18,7 @@ var AlertView = function(){
     this.exist = false;
     this.answer = null;
     this.answerCorrect = null;
+    this.tempCallBack = null;
 };
 
 AlertView.prototype = {
@@ -115,12 +117,12 @@ AlertView.prototype = {
             };
             this.questionImage.src = questionObjects.first.imageURL;
             this.questionText.text(questionObjects.second.text);
-            //this.alertGroup.add( this.questionText );
         }
     },
-    showAlert : function( callBack ){
+    showAlert : function( callBack , getCallBack ){
         if( this.alertShouldShow ){
             this.alertWillShow( callBack );
+            this.tempCallBack = getCallBack;
             var showAnimation = new Kinetic.Tween({
                 node: this.alertGroup,
                 duration: 0.5,
@@ -136,8 +138,9 @@ AlertView.prototype = {
         }else if( Rect === this.okRect ){
             this.answer = true;
         }
-        this.alertWillDisappear();
+        //this.alertWillDisappear();
         this.removeAlert();
+        this.tempCallBack( this );
     },
     onClick : function( object, func ){
         object.on( 'click tap', function(){
@@ -146,19 +149,39 @@ AlertView.prototype = {
     },
     alertWillDisappear : function(){
         this.exist = false;
-        //TODO: Determine if the answer is correct or not and set the answerCorrect boolean
+        //Case 1: Both question objects are the same
+        var questionObjects = this.questionDB.getQuestionObjects();
+        if( this.questionDB.areQuestionsSame( questionObjects.first,    questionObjects.second) )
+        {
+            if( this.answer == true )
+                this.answerCorrect = true;
+            else
+                this.answerCorrect = false;
+        }else{
+            //CAse 2: Both questions are not the same
+            if( this.answer == false )
+                this.answerCorrect = true;
+            else
+                this.answerCorrect = false;
+        }
+        //alert( questionObjects.first.country);
+        //alert( questionObjects.second.country );
+        //alert( this.answerCorrect );
     },
     removeAlert: function(){
         this.alertWillDisappear();
         var dismissAnimation = new Kinetic.Tween({
             node: this.alertGroup,
-            duration: 0.7,
+            duration: 0.5,
             easing: Kinetic.Easings.EaseOut,
-            y: -500
+            y: -window.innerHeight
         });
         dismissAnimation.play();
     },
     getAnswer: function(){
-        //TODO:return true or false based on answerCorrectVAriable
+        if( this.answerCorrect )
+            return true;
+        else
+            return false;
     }
 };

@@ -11,6 +11,9 @@ var stage = new Kinetic.Stage({
 });
 var gameModel = new GameModel();
 var questionAlert = new AlertView();
+var scoreView = new ScoreView();
+var gameOver = false;
+var beginningOfMatch = null;
 
 //create the pitch
 gameModel.pitch.instantiate( function(){
@@ -61,6 +64,80 @@ gameModel.teamB.arrangePlayers( positionB );
 function onFinish()
 {
     addBall();
+    setTimeout( function() { playGame(); } , 3000 );
+}
+
+function playGame(){
+    beginningOfMatch = true;
+    askQuestion();
+}
+
+function determineNextPlayer( bool ){
+    if( bool )
+        playPlayerTurn();
+    else
+        playCPUTurn();
+}
+
+function playPlayerTurn(){
+    //alert("player playing"); 
+    if( beginningOfMatch ){
+        this.beginningOfMatch = false;
+        //Display the scores 
+        scoreView.showScores( function(that){
+            stage.add( that.layer );
+        }, gameModel.getScores() );
+        
+        //GoalKeeper long shot
+        gameModel.teamA.goalKeeperLongShot( gameModel.ball );
+        
+        // Ask Question
+        setTimeout(function(){askQuestion();},3000);
+    }else{
+        //Play to a random player or score
+        var scoreProbaility = [5,5,10,10,10];
+        var i = Math.floor(  Math.random() * 5  ) ;
+        if( scoreProbaility[i]%2 == 1 ){
+            //then score
+            gameModel.currentPlayer.score( teamAGoalPosition, gameModel.ball, 2 );
+        }else{
+            //Play to a random player
+            //TODO: Ask Question
+        }//end inner else       
+    }//end else
+}
+
+function playCPUTurn(){
+    //alert("CPU Playing");
+    //TODO:function play cpu turn
+}
+
+function askQuestion(){
+    var ansBool = null;
+    
+    questionAlert.alertShouldShow = true;
+    questionAlert.showAlert( function(that){
+        stage.add( that.alertLayer );
+    }, getCallback );
+    
+    function getCallback( that ){
+        if( that.getAnswer() )
+            determineNextPlayer(true);
+        else
+            determineNextPlayer(false);
+    }
+}
+//Add the Ball to the pitch
+function addBall() {
+    if( !gameModel.ball.exist ) {
+        gameModel.ball.instantiate(function (that) {
+            stage.add(that.layer);
+            that.layer.setZIndex(10);
+        });
+    }
+}
+
+/*
     //Test ::::::::::::
     var i = 0;
     var moveBall = function(){
@@ -78,33 +155,4 @@ function onFinish()
     },3000 );
 
     //End Test::::::::::::
-}
-
-function playGame(){
-    if( askQuestion() ){
-        //TODO:continue GAme
-    }
-
-}
-
-function askQuestion(){
-    questionAlert.alertShouldShow = true;
-    questionAlert.showAlert( function(that){
-        stage.add( that.alertLayer );
-    });
-
-    if( questionAlert.getAnswer() )
-        return true;
-    else
-        return false;
-}
-//Add the Ball to the pitch
-function addBall() {
-    if( !gameModel.ball.exist ) {
-        gameModel.ball.instantiate(function (that) {
-            stage.add(that.layer);
-            that.layer.setZIndex(10);
-        });
-    }
-}
-
+*/

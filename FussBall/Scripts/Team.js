@@ -8,6 +8,7 @@ var Team = function(url){
     this.currentPlayer = null;
     this.length = 11;
     this.country = url;
+    this.currentPlayer = null;
 };
 
 Team.prototype = {
@@ -43,5 +44,11 @@ Team.prototype = {
         //generate a random number between 1 and 11
         var playerNumber = Math.floor(  Math.random() * (11 - 1 ) ) + 1;
         this.players[0].passToPlayer( this.players[playerNumber], ball , 0.9 );
+        this.currentPlayer = this.players[playerNumber];
+    },
+    getNextPlayer : function(){
+        var rand = Math.floor(  Math.random() * 10 ) + 1;
+        this.currentPlayer = this.players[ rand ];
+        return this.players[ rand ];
     }
 };
