@@ -13,7 +13,15 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
+var gameDurationInMinutes = 4;
+var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
+var gameOverView = new GameOverView();
+var interval = setInterval(function(){
+        currentGameTimeInSeconds++;
+        if( currentGameTimeInSeconds > (gameDurationInMinutes * 60 ))
+            gameOver = true;
+    },1000);
 
 //create the pitch
 gameModel.pitch.instantiate( function(){
@@ -33,6 +41,9 @@ gameModel.teamB.instantiate( function( player ) {
     player.playingCircle.setDraggable(true);
     onFinish();
 });
+gameOverView.instantiate( function(that){
+        stage.add( that.layer );
+    });
 //change the second teams color to blue
 gameModel.teamB.changePlayersColor( 'blue' );
 
@@ -43,7 +54,7 @@ var positionA = [
     {x:75, y:35}, {x:80, y:55}
      ];
 var positionB = [
-    {x:97,y:50},
+    {x:95,y:50},
     {x:82,y:10}, {x:84,y:27}, {x:87,y:65}, {x:85,y:85},
     {x:60,y:10}, {x:56,y:50}, {x:60,y:90},
     {x:26,y:9}, {x:20,y:40}, {x:23,y:80}
@@ -64,7 +75,7 @@ gameModel.teamB.arrangePlayers( positionB );
 function onFinish()
 {
     addBall();
-    setTimeout( function() { playGame(); } , 3000 );
+    setTimeout( function() { playGame(); } , 2500 );
 }
 
 function playGame(){
@@ -92,67 +103,108 @@ function playPlayerTurn(){
         gameModel.teamA.goalKeeperLongShot( gameModel.ball );
         
         // Ask Question
-        setTimeout(function(){askQuestion();},3000);
+        setTimeout(function(){askQuestion();},3500);
     }else{
         //Play to a random player or score
-        var scoreProbaility = [5,5,10,10,10];
+        var scoreProbaility = [5,5,10,5,10];
         var i = Math.floor(  Math.random() * 5  ) ;
         if( scoreProbaility[i]%2 == 1 ){
             //then score
-            gameModel.currentPlayer.score( teamAGoalPosition, gameModel.ball, 2 );
+            gameModel.teamA.currentPlayer.score( teamAGoalPosition, gameModel.ball, 2 );
+            var catchProbability = [5,10,10,5,10];
+            var k = Math.floor(  Math.random() * 5  ) ;
+            if( catchProbability[k] % 2 == 1 ){
+                //CPU GoalKeeper defends the ball
+                gameModel.teamB.goalKeeperLongShot( gameModel.ball );
+                playCPUTurn();
+            }else{
+                //GOAL
+                //Show Goal Animation
+                scoreView.playGoalScoredAnimation( askQuestion );
+                gameModel.teamDidScoreGoal( gameModel.teamA );
+                beginningOfMatch = true;              
+            }
         }else{
-            //Play to a random player
-            //TODO: Ask Question
-        }//end inner else       
+            //Play to a random player & Ask Question
+            gameModel.teamA.currentPlayer.passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
+        }//end inner else 
+        
     }//end else
 }
 
 function playCPUTurn(){
-    //alert("CPU Playing");
-    //TODO:function play cpu turn
+    var CPUScoringProbablity = [ 5,5,5,5,10 ];
+    var k = Math.floor(  Math.random() * 5  ) ;
+    if( beginningOfMatch ){
+        //goal keeper long shot 
+        beginningOfMatch = false;
+         scoreView.showScores( function(that){
+            stage.add( that.layer );
+        }, gameModel.getScores() );
+        
+        //GoalKeeper long shot
+        gameModel.teamB.goalKeeperLongShot( gameModel.ball );
+        
+    }else{
+        //Play to a random player 
+        gameModel.teamB.currentPlayer.passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2 );
+    }
+    
+    //TODO: Score a goal or pass to a random let user answer question to play
+    if( CPUScoringProbablity[k] % 2 == 1 ){
+        //Score
+        gameModel.teamB.currentPlayer.score( teamBGoalPosition, gameModel.ball, 2 );
+        var catchProbability = [5,10,10,5,10];
+            var k = Math.floor(  Math.random() * 5  ) ;
+            if( catchProbability[k] % 2 == 1 ){
+                //Player GoalKeeper defends the ball
+                gameModel.teamA.goalKeeperLongShot( gameModel.ball );
+                askQuestion();
+            }else{
+                //GOAL
+                //Show Goal Animation
+                scoreView.playGoalScoredAnimation( askQuestion );
+                gameModel.teamDidScoreGoal( gameModel.teamB );
+                beginningOfMatch = true;  
+            }
+    }else{
+        //Pass to a random player and ask user question
+        gameModel.teamB.currentPlayer.passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2, askQuestion );
+    }
 }
 
 function askQuestion(){
-    var ansBool = null;
+    if( !gameOver ){
+        var ansBool = null;
+
+        questionAlert.alertShouldShow = true;
+        questionAlert.showAlert( function(that){
+            stage.add( that.alertLayer );
+        }, getCallback );
+
+        function getCallback( that ){
+            if( that.getAnswer() )
+                determineNextPlayer(true);
+            else
+                determineNextPlayer(false);
+        }
+    }else
+        gameDidFinish();
+}
+
+function gameDidFinish(){
+    clearInterval( interval );
     
-    questionAlert.alertShouldShow = true;
-    questionAlert.showAlert( function(that){
-        stage.add( that.alertLayer );
-    }, getCallback );
     
-    function getCallback( that ){
-        if( that.getAnswer() )
-            determineNextPlayer(true);
-        else
-            determineNextPlayer(false);
-    }
+    gameOverView.showAlert();    
 }
 //Add the Ball to the pitch
 function addBall() {
     if( !gameModel.ball.exist ) {
         gameModel.ball.instantiate(function (that) {
             stage.add(that.layer);
-            that.layer.setZIndex(10);
+            that.layer.moveToTop();
         });
     }
 }
 
-/*
-    //Test ::::::::::::
-    var i = 0;
-    var moveBall = function(){
-        //gameModel.teamA.goalKeeperLongShot( gameModel.ball );
-        gameModel.teamA.players[0].passToPlayer( gameModel.teamA.players[6], gameModel.ball,3 );
-        gameModel.teamA.players[6].score( teamAGoalPosition, gameModel.ball,2 );
-        i++;
-        setTimeout( moveBall, 2000 );
-    };
-    moveBall();
-    setTimeout( function(){
-        questionAlert.showAlert( function(that){
-            stage.add( that.alertLayer );
-        } );
-    },3000 );
-
-    //End Test::::::::::::
-*/

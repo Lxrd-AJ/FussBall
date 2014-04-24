@@ -17,6 +17,10 @@ GameModel.prototype = {
             'TeamA' : this.teamA.score,
             'TeamB' : this.teamB.score
         }
+    },
+    teamDidScoreGoal: function( teamRef ){
+        // Do all necessary actions to show goal scored
+        teamRef.score++;
     }
 
 };

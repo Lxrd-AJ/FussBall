@@ -74,9 +74,11 @@ Player.prototype = {
         this.circle.fill( color );
         this.layer.draw();
     },
-    passToPlayer: function( playerRef, ballRef , duration ){
+    passToPlayer: function( playerRef, ballRef , duration, onFinishCallBack ){
+       
         ballRef.setPosition( this.circle.x(), this.circle.y() );
         var that = this;
+        
         that.playingCircle.visible( false );
         var offset = 0;
         if( !duration )
@@ -86,7 +88,11 @@ Player.prototype = {
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: playerRef.circle.x() + offset,
-            y: playerRef.circle.y() + offset
+            y: playerRef.circle.y() + offset,
+            onFinish: function(){
+                if( onFinishCallBack )
+                    setTimeout( function(){ onFinishCallBack(); },1000);
+            }
         });
         tween.play();
         playerRef.playingCircle.visible( true );

@@ -36,7 +36,7 @@ AlertView.prototype = {
             height: window.innerHeight * 0.5,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 5,
+            strokeWidth: 2.5,
             fillPatternImage: this.questionImage,
             fillPatternOffset : [ this.alertRect.width*0.5, this.alertRect.height*0.2 ]
         });
@@ -50,7 +50,7 @@ AlertView.prototype = {
             height: 60,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 5
+            strokeWidth: 2.5
         });
         this.cancelRect.cornerRadius(10);
         this.cancelRect.listening( true );
@@ -66,6 +66,9 @@ AlertView.prototype = {
         this.onClick( this.cancelRect, function(obj) {
             that.didClickButtonAtRect(obj);
         } );
+        this.onClick( this.cancelText, function(obj) {
+            that.didClickButtonAtRect(obj);
+        } );
 
         this.okRect = new Kinetic.Rect({
             x: (window.innerWidth * 0.4) + this.cancelRect.x(),
@@ -74,7 +77,7 @@ AlertView.prototype = {
             height: 60,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 5
+            strokeWidth: 2.5
         });
         this.okRect.cornerRadius(10);
         this.okRect.listening( true );
@@ -87,6 +90,9 @@ AlertView.prototype = {
             fill: 'black'
         });
         this.onClick( this.okRect, function( obj ){
+            that.didClickButtonAtRect(obj);
+        } );
+        this.onClick( this.okText, function(obj) {
             that.didClickButtonAtRect(obj);
         } );
 
@@ -106,18 +112,18 @@ AlertView.prototype = {
         if( !this.exist ) {
             this.instantiate(callBack);
             this.exist = true;
-
-            this.questionDB.prepareQuestionObjects();
-            var questionObjects = this.questionDB.getQuestionObjects();
-            var that = this;
-
-            //Add the image and text
-            this.questionImage.onload = function(){
-                that.alertRect.fillPatternImage( that.questionImage );
-            };
-            this.questionImage.src = questionObjects.first.imageURL;
-            this.questionText.text(questionObjects.second.text);
         }
+        this.questionDB.prepareQuestionObjects();
+        var questionObjects = this.questionDB.getQuestionObjects();
+        var that = this;
+
+        //Add the image and text
+        this.questionImage.onload = function(){
+            that.alertRect.fillPatternImage( that.questionImage );
+        };
+        this.questionImage.src = questionObjects.first.imageURL;
+        this.questionText.text(questionObjects.second.text);
+
     },
     showAlert : function( callBack , getCallBack ){
         if( this.alertShouldShow ){
@@ -133,12 +139,11 @@ AlertView.prototype = {
         }
     },
     didClickButtonAtRect: function( Rect){
-        if( Rect === this.cancelRect ){
+        if( Rect == this.cancelRect ){
             this.answer = false;
-        }else if( Rect === this.okRect ){
+        }else if( Rect == this.okRect ){
             this.answer = true;
         }
-        //this.alertWillDisappear();
         this.removeAlert();
         this.tempCallBack( this );
     },
@@ -148,7 +153,7 @@ AlertView.prototype = {
         });
     },
     alertWillDisappear : function(){
-        this.exist = false;
+        //this.exist = false;
         //Case 1: Both question objects are the same
         var questionObjects = this.questionDB.getQuestionObjects();
         if( this.questionDB.areQuestionsSame( questionObjects.first,    questionObjects.second) )

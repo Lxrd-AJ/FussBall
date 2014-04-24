@@ -5,10 +5,9 @@ var Team = function(url){
     this.players = [];
     this.score = 0;
     this.positions = null;
-    this.currentPlayer = null;
+    this.currentPlayer = this.players[0];
     this.length = 11;
     this.country = url;
-    this.currentPlayer = null;
 };
 
 Team.prototype = {
@@ -40,6 +39,7 @@ Team.prototype = {
     },
     goalKeeperLongShot: function( ball ){
         //Move ball to keeper position if not there already
+        //TODO: animate this
         ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );
         //generate a random number between 1 and 11
         var playerNumber = Math.floor(  Math.random() * (11 - 1 ) ) + 1;
