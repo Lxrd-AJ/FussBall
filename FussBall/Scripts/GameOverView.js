@@ -5,6 +5,8 @@ var GameOverView = function(){
     this.fontFamily = "Calibri";
     this.fillColor = "blue";
     this.gameOverText = "Game Over!!!"
+    this.newGame = null;
+    this.clickCallBack = null;
 }
 
 GameOverView.prototype = {
@@ -18,9 +20,10 @@ GameOverView.prototype = {
         
         this.gameOverRect = new Kinetic.Rect({
             x: window.innerWidth * 0.2,
+            y: window.innerHeight * 0.1,
             width: window.innerWidth * 0.6,
             height: window.innerHeight * 0.5,
-            fill: this.fillColor,
+            fill: 'blue',
             stroke: 'white',
             strokeWidth: 3
         });
@@ -53,6 +56,7 @@ GameOverView.prototype = {
             fontSize: 35,
             fill: 'black'
         });
+        this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
         this.onClick( this.cancelGameRect, function(obj){
             that.didClickButtonAtRect(obj);
         });
@@ -61,11 +65,11 @@ GameOverView.prototype = {
         });
         
         this.newGameRect = new Kinetic.Rect({
-            x: (window.innerWidth * 0.4) + this.cancelGameRect.x(),
+            x: (window.innerWidth * 0.3) + this.cancelGameRect.x(),
             y: this.cancelGameRect.y(),
             width: 80,
             height: 60,
-            fill: 'green',
+            fill: 'blue',
             stroke: 'black',
             strokeWidth: 2.5
         });
@@ -79,6 +83,7 @@ GameOverView.prototype = {
             fontSize: 35,
             fill: 'black'
         });
+        this.newGameRect.width(this.newGameKineticText.getTextWidth());
         this.onClick( this.newGameRect, function(obj){
             that.didClickButtonAtRect( obj );
         });
@@ -97,9 +102,43 @@ GameOverView.prototype = {
         });
     },
     didClickButtonAtRect: function( obj ){
-        
+        if( obj == this.cancelGameRect ){
+            this.newGame = false;
+        }
+        else if( obj == this.newGameRect ){
+            this.newGame = true;
+            location.reload();
+        }     
+        this.dismissAlert();
+        this.clickCallBack( this );
     },
-    showAlert: function( text ){
-        
+    showAlert: function( textM , callB ){
+        this.gameOverKineticText.text( textM ); 
+        var showAnimation = new Kinetic.Tween({
+            node: this.viewGroup,
+            duration: 1,
+            easing: Kinetic.Easings.Linear,
+            y: window.innerHeight * 0.1
+        });
+        showAnimation.play();
+        this.clickCallBack = callB;
+    },
+    dismissAlert: function(){
+        var tween = new Kinetic.Tween({
+            node: this.viewGroup,
+            duration: 1,
+            easing: Kinetic.Easings.BounceEaseOut,
+            y: -window.innerHeight,
+            onFinish: function(){
+                
+            }
+        });
+        tween.play();
+    },
+    shouldStartNewGame: function( ){
+        if( this.newGame )
+            return true;
+        else
+            return false;
     }
 };

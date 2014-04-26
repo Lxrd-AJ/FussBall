@@ -76,7 +76,7 @@ Player.prototype = {
     },
     passToPlayer: function( playerRef, ballRef , duration, onFinishCallBack ){
        
-        ballRef.setPosition( this.circle.x(), this.circle.y() );
+        ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         var that = this;
         
         that.playingCircle.visible( false );
@@ -100,7 +100,7 @@ Player.prototype = {
         playerRef.playingCircle.y( that.circle.y() );
     },
     score: function( goalPost, ballRef, duration ){
-        ballRef.setPosition( this.circle.x(), this.circle.y() );
+        ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         if( !duration )
             duration = 1;
         var goalTween = new Kinetic.Tween({

@@ -145,7 +145,6 @@ AlertView.prototype = {
             this.answer = true;
         }
         this.removeAlert();
-        this.tempCallBack( this );
     },
     onClick : function( object, func ){
         object.on( 'click tap', function(){
@@ -169,17 +168,21 @@ AlertView.prototype = {
             else
                 this.answerCorrect = false;
         }
-        //alert( questionObjects.first.country);
-        //alert( questionObjects.second.country );
-        //alert( this.answerCorrect );
+        
     },
     removeAlert: function(){
         this.alertWillDisappear();
+        var that = this;
         var dismissAnimation = new Kinetic.Tween({
             node: this.alertGroup,
             duration: 0.5,
             easing: Kinetic.Easings.EaseOut,
-            y: -window.innerHeight
+            y: -window.innerHeight,
+            onFinish: function(){
+                setTimeout( function(){
+                    that.tempCallBack( that );
+                }, 1500 );
+            }
         });
         dismissAnimation.play();
     },

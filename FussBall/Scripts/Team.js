@@ -37,17 +37,18 @@ Team.prototype = {
             this.players[i].changeColor( color );
         }
     },
-    goalKeeperLongShot: function( ball ){
+    goalKeeperLongShot: function( ball, callBack ){
         //Move ball to keeper position if not there already
-        //TODO: animate this
         ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );
         //generate a random number between 1 and 11
-        var playerNumber = Math.floor(  Math.random() * (11 - 1 ) ) + 1;
+        var playerNumber = Math.floor((Math.random()*10)+1);
         this.players[0].passToPlayer( this.players[playerNumber], ball , 0.9 );
         this.currentPlayer = this.players[playerNumber];
+        if( callBack )
+            callBack();
     },
     getNextPlayer : function(){
-        var rand = Math.floor(  Math.random() * 10 ) + 1;
+        var rand = Math.floor((Math.random()*10)+1);
         this.currentPlayer = this.players[ rand ];
         return this.players[ rand ];
     }

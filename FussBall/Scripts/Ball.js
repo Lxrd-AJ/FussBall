@@ -25,9 +25,22 @@ Ball.prototype = {
         this.layer.add( this.circle );
         onfinish( this );
     },
-    setPosition: function( xPos, yPos ){
-        this.circle.x( xPos );
-        this.circle.y( yPos );
-        this.layer.draw();
+    setPosition: function( xPos, yPos , animate ){
+        if( animate ){
+            this.layer.setZIndex(23);
+            var tween = new Kinetic.Tween({
+                node: this.circle,
+                duration: 2,
+                easing: Kinetic.Easings.Linear,
+                y: yPos,
+                x: xPos
+            });
+            tween.play();
+        }else{
+            this.circle.x( xPos );
+            this.circle.y( yPos );
+            this.layer.draw();
+            this.layer.setZIndex(23);
+        }
     }
 };

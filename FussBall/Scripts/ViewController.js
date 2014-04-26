@@ -17,33 +17,38 @@ var gameDurationInMinutes = 4;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
-var interval = setInterval(function(){
-        currentGameTimeInSeconds++;
-        if( currentGameTimeInSeconds > (gameDurationInMinutes * 60 ))
-            gameOver = true;
-    },1000);
 
-//create the pitch
-gameModel.pitch.instantiate( function(){
-    gameModel.pitch.getLayer().add( gameModel.pitch._pitchImage );
-    stage.add(gameModel.pitch.getLayer());
-});
-//create the first team
-gameModel.teamA.instantiate( function( player ) {
-    stage.add(player.layer);
-    player.circle.setDraggable(true);
-    player.playingCircle.setDraggable(true);
-});
-//second team
-gameModel.teamB.instantiate( function( player ) {
-    stage.add( player.layer );
-    player.circle.draggable(true);
-    player.playingCircle.setDraggable(true);
-    onFinish();
-});
-gameOverView.instantiate( function(that){
-        stage.add( that.layer );
+var interval = null;
+
+function newGame(){
+    
+    //create the pitch
+    gameModel.pitch.instantiate( function(){
+        gameModel.pitch.getLayer().add( gameModel.pitch._pitchImage );
+        stage.add(gameModel.pitch.getLayer());
     });
+    //create the first team
+    gameModel.teamA.instantiate( function( player ) {
+        stage.add(player.layer);
+        player.circle.setDraggable(true);
+        player.playingCircle.setDraggable(true);
+    });
+    //second team
+    gameModel.teamB.instantiate( function( player ) {
+        stage.add( player.layer );
+        player.circle.draggable(true);
+        player.playingCircle.setDraggable(true);
+        onFinish();
+    });
+    
+    gameOverView.instantiate( function(that){
+        stage.add( that.layer );
+        that.layer.moveToBottom();
+    });      
+}
+
+newGame();
+
 //change the second teams color to blue
 gameModel.teamB.changePlayersColor( 'blue' );
 
@@ -75,7 +80,8 @@ gameModel.teamB.arrangePlayers( positionB );
 function onFinish()
 {
     addBall();
-    setTimeout( function() { playGame(); } , 2500 );
+    resetInterval();
+    setTimeout( function() { playGame(); } , 2000 );
 }
 
 function playGame(){
@@ -91,7 +97,6 @@ function determineNextPlayer( bool ){
 }
 
 function playPlayerTurn(){
-    //alert("player playing"); 
     if( beginningOfMatch ){
         this.beginningOfMatch = false;
         //Display the scores 
@@ -99,11 +104,9 @@ function playPlayerTurn(){
             stage.add( that.layer );
         }, gameModel.getScores() );
         
-        //GoalKeeper long shot
-        gameModel.teamA.goalKeeperLongShot( gameModel.ball );
+        //GoalKeeper long shot & Ask Question
+        gameModel.teamA.goalKeeperLongShot( gameModel.ball, askQuestion );
         
-        // Ask Question
-        setTimeout(function(){askQuestion();},3500);
     }else{
         //Play to a random player or score
         var scoreProbaility = [5,5,10,5,10];
@@ -127,8 +130,7 @@ function playPlayerTurn(){
         }else{
             //Play to a random player & Ask Question
             gameModel.teamA.currentPlayer.passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
-        }//end inner else 
-        
+        }//end inner else        
     }//end else
 }
 
@@ -143,7 +145,7 @@ function playCPUTurn(){
         }, gameModel.getScores() );
         
         //GoalKeeper long shot
-        gameModel.teamB.goalKeeperLongShot( gameModel.ball );
+        gameModel.teamB.goalKeeperLongShot( gameModel.ball,askQuestion );
         
     }else{
         //Play to a random player 
@@ -192,12 +194,23 @@ function askQuestion(){
         gameDidFinish();
 }
 
-function gameDidFinish(){
+function gameDidFinish()
+{   
     clearInterval( interval );
     
+    gameOverView.layer.moveToTop();
+    gameOverView.showAlert("Game Over", clickCallBack );    
     
-    gameOverView.showAlert();    
+    function clickCallBack( that ){
+        if( that.shouldStartNewGame() ){ 
+            //gameModel = new GameModel();
+            //newGame();
+        }else{
+            alert("Bye Bye");    
+        } 
+    }   
 }
+
 //Add the Ball to the pitch
 function addBall() {
     if( !gameModel.ball.exist ) {
@@ -206,5 +219,15 @@ function addBall() {
             that.layer.moveToTop();
         });
     }
+}
+
+function resetInterval(){
+    interval = setInterval(function(){
+        currentGameTimeInSeconds++;
+        if( currentGameTimeInSeconds >= (gameDurationInMinutes * 60 )){
+            gameOver = true;
+            currentGameTimeInSeconds = 0;
+        }
+    },1000);
 }
 
