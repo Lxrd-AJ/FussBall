@@ -13,7 +13,7 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
-var gameDurationInMinutes = 4;
+var gameDurationInMinutes = 5;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
@@ -113,7 +113,7 @@ function playPlayerTurn(){
         var i = Math.floor(  Math.random() * 5  ) ;
         if( scoreProbaility[i]%2 == 1 ){
             //then score
-            gameModel.teamA.currentPlayer.score( teamAGoalPosition, gameModel.ball, 2 );
+            gameModel.teamA.getNextPlayer().score( teamAGoalPosition, gameModel.ball, 2 );
             var catchProbability = [5,10,10,5,10];
             var k = Math.floor(  Math.random() * 5  ) ;
             if( catchProbability[k] % 2 == 1 ){
@@ -129,7 +129,7 @@ function playPlayerTurn(){
             }
         }else{
             //Play to a random player & Ask Question
-            gameModel.teamA.currentPlayer.passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
+            gameModel.teamA.getNextPlayer().passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
         }//end inner else        
     }//end else
 }
@@ -149,13 +149,13 @@ function playCPUTurn(){
         
     }else{
         //Play to a random player 
-        gameModel.teamB.currentPlayer.passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2 );
+        gameModel.teamB.getNextPlayer().passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2 );
     }
     
     //TODO: Score a goal or pass to a random let user answer question to play
     if( CPUScoringProbablity[k] % 2 == 1 ){
         //Score
-        gameModel.teamB.currentPlayer.score( teamBGoalPosition, gameModel.ball, 2 );
+        gameModel.teamB.getNextPlayer().score( teamBGoalPosition, gameModel.ball, 2 );
         var catchProbability = [5,10,10,5,10];
             var k = Math.floor(  Math.random() * 5  ) ;
             if( catchProbability[k] % 2 == 1 ){
@@ -171,7 +171,7 @@ function playCPUTurn(){
             }
     }else{
         //Pass to a random player and ask user question
-        gameModel.teamB.currentPlayer.passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2, askQuestion );
+        gameModel.teamB.getNextPlayer().passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2, askQuestion );
     }
 }
 
@@ -199,7 +199,15 @@ function gameDidFinish()
     clearInterval( interval );
     
     gameOverView.layer.moveToTop();
-    gameOverView.showAlert("Game Over", clickCallBack );    
+    
+    var text = "Game Over\n ";
+    if( gameModel.teamA.score > gameModel.teamB.score )
+        text += "You Win";
+    else if( gameModel.teamA.score < gameModel.teamB.score )
+        text += "You Lose";
+    else
+        text += "Draw";
+    gameOverView.showAlert( text , clickCallBack );    
     
     function clickCallBack( that ){
         if( that.shouldStartNewGame() ){ 

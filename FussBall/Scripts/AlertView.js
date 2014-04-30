@@ -19,6 +19,8 @@ var AlertView = function(){
     this.answer = null;
     this.answerCorrect = null;
     this.tempCallBack = null;
+    this.answerCorrectText = "Correct";
+    this.answerWrongText = "Wrong";
 };
 
 AlertView.prototype = {
@@ -102,9 +104,15 @@ AlertView.prototype = {
             fontSize: 40,
             fill: 'black'
         });
+        
+        this.feedbackText = new Kinetic.Text({
+            x: this.alertRect.x() + this.alertRect.width()/2.5 ,
+            y: this.alertRect.y() + this.alertRect.height()/1.3,
+            fontSize: 40,
+        });
 
         this.alertGroup.add( this.alertRect,this.cancelRect,this.cancelText,this.okRect,this.okText,
-                             this.questionText );
+                             this.questionText, this.feedbackText );
         this.alertLayer.add( this.alertGroup );
         callBack( this );
     },
@@ -123,6 +131,7 @@ AlertView.prototype = {
         };
         this.questionImage.src = questionObjects.first.imageURL;
         this.questionText.text(questionObjects.second.text);
+        this.feedbackText.text("");
 
     },
     showAlert : function( callBack , getCallBack ){
@@ -155,7 +164,7 @@ AlertView.prototype = {
         //this.exist = false;
         //Case 1: Both question objects are the same
         var questionObjects = this.questionDB.getQuestionObjects();
-        if( this.questionDB.areQuestionsSame( questionObjects.first,    questionObjects.second) )
+        if( this.questionDB.areQuestionsSame( questionObjects.first, questionObjects.second) )
         {
             if( this.answer == true )
                 this.answerCorrect = true;
@@ -163,10 +172,21 @@ AlertView.prototype = {
                 this.answerCorrect = false;
         }else{
             //CAse 2: Both questions are not the same
-            if( this.answer == false )
+            if( this.answer == false ){
                 this.answerCorrect = true;
+            }
             else
                 this.answerCorrect = false;
+        }
+        
+        //provide feedback to user
+        if( this.getAnswer() ){
+            this.feedbackText.text( this.answerCorrectText );
+            this.feedbackText.fill('green');
+        }
+        else{
+            this.feedbackText.text( this.answerWrongText );
+            this.feedbackText.fill( 'red');
         }
         
     },

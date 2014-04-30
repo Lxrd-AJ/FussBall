@@ -5,7 +5,6 @@ var Team = function(url){
     this.players = [];
     this.score = 0;
     this.positions = null;
-    this.currentPlayer = this.players[0];
     this.length = 11;
     this.country = url;
 };
@@ -22,6 +21,7 @@ Team.prototype = {
     instantiatePlayers : function( callBack ){
         for( var i in this.players ){
             this.players[i].instantiate( callBack, function(){} );
+            this.players[i].team = this;
         }
     },
     arrangePlayers : function( positions ){
@@ -39,17 +39,30 @@ Team.prototype = {
     },
     goalKeeperLongShot: function( ball, callBack ){
         //Move ball to keeper position if not there already
-        ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );
-        //generate a random number between 1 and 11
-        var playerNumber = Math.floor((Math.random()*10)+1);
-        this.players[0].passToPlayer( this.players[playerNumber], ball , 0.9 );
-        this.currentPlayer = this.players[playerNumber];
-        if( callBack )
-            callBack();
+        var that = this;
+        var animateToGoalKeeper = new Kinetic.Tween({
+            node: ball.circle,
+            duration: 1,
+            easing: Kinetic.Easings.Linear,
+            x: that.players[0].circle.x(),
+            y: that.players[0].circle.y(),
+            onFinish: function(){
+                  //generate a random number between 1 and 11
+                var playerNumber = Math.floor((Math.random()*10)+1);
+                console.log( playerNumber );
+                that.players[0].passToPlayer( that.players[playerNumber], ball , 0.9 );              
+                
+                if( callBack )
+                    callBack();
+            }
+        });
+        animateToGoalKeeper.play();
+        //ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );   
     },
     getNextPlayer : function(){
         var rand = Math.floor((Math.random()*10)+1);
-        this.currentPlayer = this.players[ rand ];
+        console.log( rand + " in function getNextPlayer() ");
+        
         return this.players[ rand ];
     }
 };

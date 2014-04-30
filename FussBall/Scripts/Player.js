@@ -13,6 +13,7 @@ var Player = function( url ){
     this.text = null;
     this.number = Math.floor(  Math.random() * (100 - 1 ) ) + 1;
     this.playingCircle = new Kinetic.Circle();
+    this.team = null;
 };
 
 Player.prototype = {
@@ -75,7 +76,8 @@ Player.prototype = {
         this.layer.draw();
     },
     passToPlayer: function( playerRef, ballRef , duration, onFinishCallBack ){
-       
+        playerRef = this.team.getNextPlayer();
+        
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         var that = this;
         
@@ -95,9 +97,11 @@ Player.prototype = {
             }
         });
         tween.play();
+        
         playerRef.playingCircle.visible( true );
         playerRef.playingCircle.x( that.circle.x() );
         playerRef.playingCircle.y( that.circle.y() );
+        
     },
     score: function( goalPost, ballRef, duration ){
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );

@@ -91,7 +91,7 @@ GameOverView.prototype = {
             that.didClickButtonAtRect( obj );
         });
         
-        this.viewGroup.add( this.gameOverRect, this.gameOverKineticText,                                             this.cancelGameRect, this.cancelGameKineticText,
+        this.viewGroup.add( this.gameOverRect, this.gameOverKineticText,                                                        this.cancelGameRect, this.cancelGameKineticText,
                             this.newGameRect, this.newGameKineticText );
         this.layer.add( this.viewGroup );
         callBack( this );
@@ -102,10 +102,10 @@ GameOverView.prototype = {
         });
     },
     didClickButtonAtRect: function( obj ){
-        if( obj == this.cancelGameRect ){
+        if( obj == this.cancelGameRect || obj == this.cancelGameKineticText ){
             this.newGame = false;
         }
-        else if( obj == this.newGameRect ){
+        else if( obj == this.newGameRect || obj == this.newGameKineticText ){
             this.newGame = true;
             location.reload();
         }     
@@ -140,5 +140,8 @@ GameOverView.prototype = {
             return true;
         else
             return false;
+    },
+    rectIsEqualtoRect: function( rect1, rect2 ){
+        
     }
 };
