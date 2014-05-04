@@ -1,25 +1,27 @@
 /**
  * Created by AJ on 10/04/2014.
  */
+
 "use strict";
 
-var Player = function( url ){
-    this.playerImage = new Image();
-    this.playerImageURL = url;
+var Player = function(){
+    this.playerImage = new Kinetic.Image();
+    this.ellipse = new Kinetic.Ellipse();
     this.circle = new Kinetic.Circle();
-    this.circleRadius = 30;
+    this.circleRadius = 10;
+    this.ellipseRadius = new Kinetic.Ellipse();
     this.layer = new Kinetic.Layer();
     this.fillColor = 'red';
-    this.text = null;
-    this.number = Math.floor(  Math.random() * (100 - 1 ) ) + 1;
-    this.playingCircle = new Kinetic.Circle();
     this.team = null;
+    this.onFinishLoadingCallback = null;
 };
 
 Player.prototype = {
     constructor: Player,
-    instantiate: function( callBack, showImage ){
-        var that = this;
+    instantiate: function( callBack, sources ){
+        var that = this; 
+        //sources = { teamImage: 'http://www.languagenut.com/images/nuts/150/cn_nut.png' };
+        this.onFinishLoadingCallback = callBack;
         this.circle = new Kinetic.Circle({
             x: 200,
             y: 370,
@@ -28,46 +30,55 @@ Player.prototype = {
             strokeWidth: 3,
             fillPatternImage: "",
             fillPatternOffset: [-220,370],
-            fill : this.fillColor
+            fill : 'black'
         });
-        this.playingCircle = new Kinetic.Circle({
-            x: this.circle.x(),
-            y: this.circle.y(),
-            radius: this.circleRadius + 5,
-            stroke : 'yellow',
-            strokeWidth: 3,
-            visible: true
-        });
-        this.text = new Kinetic.Text({
-            x: this.circle.x()-15,
-            y: this.circle.y()-15 ,
-            text: this.number,
-            fontFamily: 'Calibri',
-            fontSize: 30,
-            fill: 'black'
-        });
-        this.playerImage.onload = function(){
-            that.layer.add( that.playingCircle );
-            that.layer.add(that.circle);
-            that.layer.add(that.text);
-            that.playingCircle.visible( false );
-            callBack( that );
-            that.showImage();
-        };
-        this.playerImage.src = this.playerImageURL;
+        this.layer.add( this.circle );
+        this.loadImages( sources );
+    },
+    loadImages : function( source){
+        var images = {};
+        var loadedImages = 0;
+        var numImages = 0;
+        for( var src in source ){
+            numImages++;   
+        }
+        var that = this;
+        for( var src in source ){
+            images[src] = new Image();
+            images[src].onload = function(){
+                if( ++loadedImages >= numImages ){
+                    that.buildImagesOnLayer( images );
+                }
+            };
+            images[src].src = source[src];
+        }
+    },
+    buildImagesOnLayer : function( images ){
+        var that = this;
+        this.playerImage = new Kinetic.Image({
+            image: images.teamImage,
+            x: that.circle.x() - 40,
+            y: that.circle.y() - 50,
+            width : 80,
+            height : 50
+        }); 
+        this.layer.add( this.playerImage );
+        this.onFinishLoadingCallback( this );
     },
     setPosition : function( xPos, yPos ){
         this.circle.x( xPos );
         this.circle.y( yPos );
-        this.text.x( xPos );
-        this.text.y( yPos );
-        this.layer.draw();
-    },
-    //Scumbag function, doesn't work
-    showImage : function(){
-        //var thrash = this.circle.fillPatternImage();
-        //this.circle.fill("");
-        this.circle.fillPatternImage( this.playerImage );
+        this.ellipse = new Kinetic.Ellipse({
+            x: this.circle.x(),
+            y: this.circle.y(),
+            radius: {
+                x: 15,
+                y: 35
+            },
+            fill: this.fillColor,
+            stroke: 'white',
+            strokeWidth: 3
+        });
         this.layer.draw();
     },
     changeColor: function( color ){
@@ -80,11 +91,10 @@ Player.prototype = {
         
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         var that = this;
-        
-        that.playingCircle.visible( false );
         var offset = 0;
         if( !duration )
             duration = 1;
+        
         var tween = new Kinetic.Tween({
             node: ballRef.circle,
             duration: duration,
@@ -94,29 +104,44 @@ Player.prototype = {
             onFinish: function(){
                 if( onFinishCallBack )
                     setTimeout( function(){ onFinishCallBack(); },1000);
+                rotatePlayer.reverse();
             }
         });
-        tween.play();
+        var rotatePlayer = new Kinetic.Tween({
+            node: that.playerImage,
+            duration: 0.3,
+            x: that.playerImage.x() - 5,
+            easing: Kinetic.Easings.Linear,
+            //onFinish: rotatePlayer.reverse
+        });
         
-        playerRef.playingCircle.visible( true );
-        playerRef.playingCircle.x( that.circle.x() );
-        playerRef.playingCircle.y( that.circle.y() );
-        
+        rotatePlayer.play();
+        tween.play();  
     },
     score: function( goalPost, ballRef, duration ){
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         if( !duration )
             duration = 1;
+        
         var goalTween = new Kinetic.Tween({
             node: ballRef.circle,
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: ( goalPost.x * window.innerWidth/100 ),
-            y: ( goalPost.y * window.innerHeight/100 )
+            y: ( goalPost.y * window.innerHeight/100 ),
+            onFinish: function(){
+                movePlayer.reverse();
+            }
         });
+        var movePlayer = new Kinetic.Tween({
+            node: this.playerImage,
+            duration: 1,
+            x: this.playerImage.x() - 10,
+            easing: Kinetic.Easings.ElasticEaseIn
+        });
+        
+        movePlayer.play();
         goalTween.play();
 
     }
 };
-
-//TODO : Playing circle needs to appear on the current player with the ball

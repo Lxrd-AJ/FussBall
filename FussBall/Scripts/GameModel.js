@@ -5,8 +5,8 @@
 
 var GameModel = function(){
     this.pitch = new Pitch();
-    this.teamA = new Team( 'Resources/ball.png' );
-    this.teamB = new Team( 'Resources/ball.png' );
+    this.teamA = new Team( 'http://www.languagenut.com/images/nuts/150/de_nut.png' );
+    this.teamB = new Team( 'http://www.languagenut.com/images/nuts/150/en_nut.png' );
     this.ball = new Ball();
 };
 

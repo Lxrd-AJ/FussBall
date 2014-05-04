@@ -31,13 +31,11 @@ function newGame(){
     gameModel.teamA.instantiate( function( player ) {
         stage.add(player.layer);
         player.circle.setDraggable(true);
-        player.playingCircle.setDraggable(true);
     });
     //second team
     gameModel.teamB.instantiate( function( player ) {
         stage.add( player.layer );
         player.circle.draggable(true);
-        player.playingCircle.setDraggable(true);
         onFinish();
     });
     

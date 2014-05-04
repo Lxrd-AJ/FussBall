@@ -27,7 +27,7 @@ Ball.prototype = {
     },
     setPosition: function( xPos, yPos , animate ){
         if( animate ){
-            this.layer.setZIndex(23);
+            this.layer.setZIndex(24);
             var tween = new Kinetic.Tween({
                 node: this.circle,
                 duration: 2,
@@ -40,7 +40,7 @@ Ball.prototype = {
             this.circle.x( xPos );
             this.circle.y( yPos );
             this.layer.draw();
-            this.layer.setZIndex(23);
+            this.layer.setZIndex(24);
         }
     }
 };

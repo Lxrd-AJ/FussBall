@@ -1,12 +1,14 @@
 /**
  * Created by AJ on 10/04/2014.
  */
-var Team = function(url){
+var Team = function( url ){
     this.players = [];
     this.score = 0;
     this.positions = null;
     this.length = 11;
-    this.country = url;
+    this.country = {
+        teamImage : url
+    };
 };
 
 Team.prototype = {
@@ -14,13 +16,13 @@ Team.prototype = {
     instantiate : function( callBack ){
         //create 11 players and add to players array
         for( var i = 0; i < this.length; i++ ){
-            this.players.push( new Player(this.country) );
+            this.players.push( new Player() );
         }
         this.instantiatePlayers( callBack );
     },//end function instantiate
     instantiatePlayers : function( callBack ){
         for( var i in this.players ){
-            this.players[i].instantiate( callBack, function(){} );
+            this.players[i].instantiate( callBack, this.country );
             this.players[i].team = this;
         }
     },
@@ -49,7 +51,6 @@ Team.prototype = {
             onFinish: function(){
                   //generate a random number between 1 and 11
                 var playerNumber = Math.floor((Math.random()*10)+1);
-                console.log( playerNumber );
                 that.players[0].passToPlayer( that.players[playerNumber], ball , 0.9 );              
                 
                 if( callBack )
@@ -61,8 +62,6 @@ Team.prototype = {
     },
     getNextPlayer : function(){
         var rand = Math.floor((Math.random()*10)+1);
-        console.log( rand + " in function getNextPlayer() ");
-        
         return this.players[ rand ];
     }
 };

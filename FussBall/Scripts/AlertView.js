@@ -4,8 +4,8 @@
 
 var AlertView = function(){
     this.alertLayer = new Kinetic.Layer();
-    this.questionImage = new Image();
-    this.questionText = null;
+    this.questionImage = new Kinetic.Image();
+    this.questionText = null; //Kinetic Text
     this.font = "Calibri";
     this.cancelButtonTitle = "No";
     this.okButtonTitle = "Yes";
@@ -38,9 +38,7 @@ AlertView.prototype = {
             height: window.innerHeight * 0.5,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 2.5,
-            fillPatternImage: this.questionImage,
-            fillPatternOffset : [ this.alertRect.width*0.5, this.alertRect.height*0.2 ]
+            strokeWidth: 2.5
         });
         this.alertRect.cornerRadius(10);
         this.alertRect.listening( false );
@@ -57,8 +55,8 @@ AlertView.prototype = {
         this.cancelRect.cornerRadius(10);
         this.cancelRect.listening( true );
         this.cancelText = new Kinetic.Text({
-            x: this.cancelRect.x(),
-            y: this.cancelRect.y(),
+            x: this.cancelRect.x() + this.cancelRect.width() * 0.2,
+            y: this.cancelRect.y() + this.cancelRect.height() * 0.2,
             text: this.cancelButtonTitle,
             fontFamily: 'Calibri',
             fontSize: 35,
@@ -84,8 +82,8 @@ AlertView.prototype = {
         this.okRect.cornerRadius(10);
         this.okRect.listening( true );
         this.okText = new Kinetic.Text({
-            x: this.okRect.x(),
-            y: this.okRect.y(),
+            x: this.okRect.x() + this.okRect.width() * 0.2,
+            y: this.okRect.y() + this.okRect.width() * 0.2,
             text: this.okButtonTitle,
             fontFamily: 'Calibri',
             fontSize: 35,
@@ -112,7 +110,7 @@ AlertView.prototype = {
         });
 
         this.alertGroup.add( this.alertRect,this.cancelRect,this.cancelText,this.okRect,this.okText,
-                             this.questionText, this.feedbackText );
+                             this.questionText, this.feedbackText, this.questionImage );
         this.alertLayer.add( this.alertGroup );
         callBack( this );
     },
@@ -123,14 +121,21 @@ AlertView.prototype = {
         }
         this.questionDB.prepareQuestionObjects();
         var questionObjects = this.questionDB.getQuestionObjects();
+        //console.log( questionObjects.first.supportID );
+        //console.log( questionObjects.second.supportID );
         var that = this;
 
         //Add the image and text
-        this.questionImage.onload = function(){
-            that.alertRect.fillPatternImage( that.questionImage );
-        };
-        this.questionImage.src = questionObjects.first.imageURL;
-        this.questionText.text(questionObjects.second.text);
+        this.questionImage = questionObjects.first.LNImage;
+        this.questionImage.x( this.alertRect.x() + 10 );
+        this.questionImage.y( this.alertRect.y() + 10 );
+        this.questionImage.width( this.alertRect.width() * 0.4 );
+        this.questionImage.height( this.alertRect.height() * 0.4 );
+        this.alertLayer.draw();
+        
+        //console.log( this.questionImage.image.src );
+        //window.location = this.questionImage.image.src;
+        //this.questionText.text( questionObjects.second.targetText );
         this.feedbackText.text("");
 
     },
