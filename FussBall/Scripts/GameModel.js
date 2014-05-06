@@ -7,6 +7,7 @@ var GameModel = function(){
     this.pitch = new Pitch();
     this.teamA = new Team( 'http://www.languagenut.com/images/nuts/150/de_nut.png' );
     this.teamB = new Team( 'http://www.languagenut.com/images/nuts/150/en_nut.png' );
+    this.gameSounds = new Sounds();
     this.ball = new Ball();
 };
 
@@ -20,6 +21,7 @@ GameModel.prototype = {
     },
     teamDidScoreGoal: function( teamRef ){
         // Do all necessary actions to show goal scored
+        this.gameSounds.playGoalScoredSound();
         teamRef.score++;
     }
 

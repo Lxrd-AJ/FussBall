@@ -49,7 +49,7 @@ QuestionDB.prototype = {
         randObj.supportID = this.support[ randKey ];
         randObj.LNImage = this.kineticImages[ randKey ];
         randObj.targetText = this.target[ randKey ];
-        console.log( this.kineticImages[1] );
+        //console.log( this.kineticImages[1] );
         return randObj;
     },
     prepareQuestionObjects: function(){

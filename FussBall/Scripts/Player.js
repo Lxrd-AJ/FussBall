@@ -96,7 +96,7 @@ Player.prototype = {
             duration = 1;
         
         var tween = new Kinetic.Tween({
-            node: ballRef.circle,
+            node: ballRef.ballGroup,
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: playerRef.circle.x() + offset,
@@ -121,10 +121,10 @@ Player.prototype = {
     score: function( goalPost, ballRef, duration ){
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         if( !duration )
-            duration = 1;
+            duration = 2;
         
         var goalTween = new Kinetic.Tween({
-            node: ballRef.circle,
+            node: ballRef.ballGroup,
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: ( goalPost.x * window.innerWidth/100 ),

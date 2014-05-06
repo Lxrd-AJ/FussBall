@@ -62,7 +62,7 @@ ScoreView.prototype = {
         tween.play();
         //setTimeout( function(){ removeTween.play(); }, 1000);
     },
-    playGoalScoredAnimation: function( callBack ){
+    playGoalScoredAnimation: function( callBack  ){
         this.instantiate( this.retainedShowCallBack );
         var text = "GOAL!";
         this.scoreText.text( text );
@@ -84,7 +84,7 @@ ScoreView.prototype = {
                 setTimeout( function(){ callBack(); }, 1500);
             }
         });
+        
         tween.play();
-    
     }
 };
