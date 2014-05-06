@@ -1,7 +1,7 @@
 var GameOverView = function(){
     this.layer = new Kinetic.Layer();
-    this.newGameText = "New Game";
-    this.cancelGameText = "Cancel Game";
+    this.newGameText = "New";
+    this.cancelGameText = "Exit";
     this.fontFamily = "Calibri";
     this.fillColor = "blue";
     this.gameOverText = "Game Over!!!"
@@ -29,18 +29,18 @@ GameOverView.prototype = {
         });
         this.gameOverRect.cornerRadius(10);
         this.gameOverKineticText = new Kinetic.Text({
-            x: this.gameOverRect.x(),
-            y: this.gameOverRect.y(),
+            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.3,
+            y: this.gameOverRect.y() + this.gameOverRect.width() * 0.1,
             text: this.gameOverText,
             fontFamily: this.fontFamily,
-            fontSize : 35,
+            fontSize : 70,
             fill: 'red'
         });
         
         this.cancelGameRect = new Kinetic.Rect({
             x: window.innerWidth * 0.25,
             y: (window.innerHeight * 0.15 ) + this.gameOverRect.height(),
-            width: 80,
+            width: 180,
             height: 60,
             fill: 'red',
             stroke: 'white',
@@ -49,14 +49,14 @@ GameOverView.prototype = {
         this.cancelGameRect.cornerRadius(10);
         this.cancelGameRect.listening( true );
         this.cancelGameKineticText = new Kinetic.Text({
-            x: this.cancelGameRect.x(),
-            y: this.cancelGameRect.y(),
+            x: this.cancelGameRect.x() + this.cancelGameRect.width() * 0.2,
+            y: this.cancelGameRect.y() + this.cancelGameRect.width() * 0.05,
             text: this.cancelGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
             fill: 'black'
         });
-        this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
+        //this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
         this.onClick( this.cancelGameRect, function(obj){
             that.didClickButtonAtRect(obj);
         });
@@ -67,7 +67,7 @@ GameOverView.prototype = {
         this.newGameRect = new Kinetic.Rect({
             x: (window.innerWidth * 0.3) + this.cancelGameRect.x(),
             y: this.cancelGameRect.y(),
-            width: 80,
+            width: 180,
             height: 60,
             fill: 'blue',
             stroke: 'black',
@@ -76,14 +76,14 @@ GameOverView.prototype = {
         this.newGameRect.cornerRadius(10);
         this.newGameRect.listening( true );
         this.newGameKineticText = new Kinetic.Text({
-            x: this.newGameRect.x(),
-            y: this.newGameRect.y(),
+            x: this.newGameRect.x() + this.newGameRect.width() * 0.2,
+            y: this.newGameRect.y() + this.newGameRect.height() * 0.2,
             text: this.newGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
             fill: 'black'
         });
-        this.newGameRect.width(this.newGameKineticText.getTextWidth());
+        //this.newGameRect.width(this.newGameKineticText.getTextWidth());
         this.onClick( this.newGameRect, function(obj){
             that.didClickButtonAtRect( obj );
         });

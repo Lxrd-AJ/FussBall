@@ -31,13 +31,11 @@ function newGame(){
     gameModel.teamA.instantiate( function( player ) {
         stage.add(player.layer);
         player.circle.setDraggable(true);
-        player.playingCircle.setDraggable(true);
     });
     //second team
     gameModel.teamB.instantiate( function( player ) {
         stage.add( player.layer );
         player.circle.draggable(true);
-        player.playingCircle.setDraggable(true);
         onFinish();
     });
     
@@ -82,6 +80,7 @@ function onFinish()
     addBall();
     resetInterval();
     setTimeout( function() { playGame(); } , 2000 );
+    
 }
 
 function playGame(){
@@ -123,7 +122,7 @@ function playPlayerTurn(){
             }else{
                 //GOAL
                 //Show Goal Animation
-                scoreView.playGoalScoredAnimation( askQuestion );
+                scoreView.playGoalScoredAnimation( askQuestion  );
                 gameModel.teamDidScoreGoal( gameModel.teamA );
                 beginningOfMatch = true;              
             }
@@ -137,6 +136,7 @@ function playPlayerTurn(){
 function playCPUTurn(){
     var CPUScoringProbablity = [ 5,5,5,5,10 ];
     var k = Math.floor(  Math.random() * 5  ) ;
+    
     if( beginningOfMatch ){
         //goal keeper long shot 
         beginningOfMatch = false;
@@ -145,15 +145,9 @@ function playCPUTurn(){
         }, gameModel.getScores() );
         
         //GoalKeeper long shot
-        gameModel.teamB.goalKeeperLongShot( gameModel.ball,askQuestion );
-        
-    }else{
-        //Play to a random player 
-        gameModel.teamB.getNextPlayer().passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2 );
+        gameModel.teamB.goalKeeperLongShot( gameModel.ball,askQuestion );   
     }
-    
-    //TODO: Score a goal or pass to a random let user answer question to play
-    if( CPUScoringProbablity[k] % 2 == 1 ){
+    else if( CPUScoringProbablity[k] % 2 == 1 ){
         //Score
         gameModel.teamB.getNextPlayer().score( teamBGoalPosition, gameModel.ball, 2 );
         var catchProbability = [5,10,10,5,10];

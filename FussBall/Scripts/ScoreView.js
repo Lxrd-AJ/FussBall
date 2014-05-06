@@ -4,6 +4,7 @@ var ScoreView = function(){
     this.scoreGroup = new Kinetic.Group();
     this.layer = new Kinetic.Layer();
     this.retainedShowCallBack = null;
+    this.opacityValue = 0.4
 };
 
 ScoreView.prototype = {
@@ -15,7 +16,8 @@ ScoreView.prototype = {
             height : window.innerHeight * 0.15,
             fill : 'black',
             stroke : 'white',
-            strokeWidth : 5
+            strokeWidth : 5,
+            opacity: this.opacityValue
         });
         this.scoreRect.cornerRadius(10);
         this.scoreText = new Kinetic.Text({
@@ -26,7 +28,8 @@ ScoreView.prototype = {
             fontFamily: 'Calibri',
             fontSize: 75,
             fill: 'white',
-            text: '0-0'
+            text: '',
+            opacity: this.opacityValue
         });
         //this.scoreRect.width( this.scoreText.width() );
         this.scoreGroup = new Kinetic.Group({
@@ -40,8 +43,10 @@ ScoreView.prototype = {
     showScores: function( callBack, scoreObj ){
         this.retainedShowCallBack = callBack;
         this.instantiate( callBack );
+        this.scoreText.setText("");
         var text = " " + scoreObj.TeamA + " - " + scoreObj.TeamB ;  
-        this.scoreText.text( text );
+        this.scoreText.setText( text );
+        this.layer.batchDraw();
         var tween = new Kinetic.Tween({
             node: this.scoreGroup,
             duration: 0.3,
@@ -55,9 +60,9 @@ ScoreView.prototype = {
             y: -window.innerHeight
         });
         tween.play();
-        setTimeout( function(){ removeTween.play(); }, 1000);
+        //setTimeout( function(){ removeTween.play(); }, 1000);
     },
-    playGoalScoredAnimation: function( callBack ){
+    playGoalScoredAnimation: function( callBack  ){
         this.instantiate( this.retainedShowCallBack );
         var text = "GOAL!";
         this.scoreText.text( text );
@@ -79,7 +84,7 @@ ScoreView.prototype = {
                 setTimeout( function(){ callBack(); }, 1500);
             }
         });
+        
         tween.play();
-    
     }
 };
