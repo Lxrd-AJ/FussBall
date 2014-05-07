@@ -5,18 +5,18 @@
 
 var GameModel = function(){
     this.pitch = new Pitch();
-    this.teamA = new Team( 'http://www.languagenut.com/images/nuts/150/de_nut.png' );
-    this.teamB = new Team( 'http://www.languagenut.com/images/nuts/150/en_nut.png' );
+    this.teamA = new Team( 'http://www.languagenut.com/images/nuts/150/de_nut.png' , 'GER' );
+    this.teamB = new Team( 'http://www.languagenut.com/images/nuts/150/en_nut.png', 'ENG' );
     this.gameSounds = new Sounds();
     this.ball = new Ball();
 };
 
 GameModel.prototype = {
     constructor: GameModel,
-    getScores: function(){
+    getTeams: function(){
         return {
-            'TeamA' : this.teamA.score,
-            'TeamB' : this.teamB.score
+            'TeamA' : this.teamA,
+            'TeamB' : this.teamB
         }
     },
     teamDidScoreGoal: function( teamRef ){

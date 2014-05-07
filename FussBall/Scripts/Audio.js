@@ -2,12 +2,18 @@ var Sounds = function(){
     this.cheeringSound = new Howl({
         urls: ['Resources/stadium crowd applause.mp3'],
         autoplay: true,
-        loop: true,
+        //loop: true,
         volume: 0.5
     });
     this.goalSound = new Howl({
-        urls: ['Resources/kids cheering.mp3'],
-        autoplay: true
+        urls: ['Resources/goal.mp3']
+    });
+    this.sprites = new Howl({
+        urls: ['Resources/football.mp3'],
+        sprites: {
+            cheer: [0,1000] ,
+            mump: [1000,5000]
+        }
     });
 };
 
@@ -19,5 +25,8 @@ Sounds.prototype = {
     playGoalScoredSound : function(){
         //this.stopCrowdCheeringSound();
         this.goalSound.play();
+    },
+    playCheerSprite: function(){
+        this.sprites.play('cheer');
     }
 };

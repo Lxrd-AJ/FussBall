@@ -1,11 +1,12 @@
 /**
  * Created by AJ on 10/04/2014.
  */
-var Team = function( url ){
+var Team = function( url , name ){
     this.players = [];
     this.score = 0;
     this.positions = null;
     this.length = 11;
+    this.name = name;
     this.country = {
         teamImage : url
     };
@@ -43,7 +44,7 @@ Team.prototype = {
         //Move ball to keeper position if not there already
         var that = this;
         var animateToGoalKeeper = new Kinetic.Tween({
-            node: ball.circle,
+            node: ball.ballImage,
             duration: 1,
             easing: Kinetic.Easings.Linear,
             x: that.players[0].circle.x(),
@@ -58,7 +59,7 @@ Team.prototype = {
             }
         });
         animateToGoalKeeper.play();
-        //ball.setPosition( this.players[0].circle.x(), this.players[0].circle.y() );   
+        
     },
     getNextPlayer : function(){
         var rand = Math.floor((Math.random()*10)+1);

@@ -13,12 +13,11 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
-var gameDurationInMinutes = 9;
+var gameDurationInMinutes = 3;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
 
-var interval = null;
 
 function newGame(){
     
@@ -42,7 +41,9 @@ function newGame(){
     gameOverView.instantiate( function(that){
         stage.add( that.layer );
         that.layer.moveToBottom();
-    });      
+    });  
+    
+    scoreView.startCountDown( gameDurationInMinutes , gameDidFinish );
 }
 
 newGame();
@@ -78,7 +79,6 @@ gameModel.teamB.arrangePlayers( positionB );
 function onFinish()
 {
     addBall();
-    resetInterval();
     setTimeout( function() { playGame(); } , 2000 );
     
 }
@@ -101,7 +101,7 @@ function playPlayerTurn(){
         //Display the scores 
         scoreView.showScores( function(that){
             stage.add( that.layer );
-        }, gameModel.getScores() );
+        }, gameModel.getTeams() );
         
         //GoalKeeper long shot & Ask Question
         gameModel.teamA.goalKeeperLongShot( gameModel.ball, askQuestion );
@@ -142,7 +142,7 @@ function playCPUTurn(){
         beginningOfMatch = false;
          scoreView.showScores( function(that){
             stage.add( that.layer );
-        }, gameModel.getScores() );
+        }, gameModel.getTeams() );
         
         //GoalKeeper long shot
         gameModel.teamB.goalKeeperLongShot( gameModel.ball,askQuestion );   
@@ -190,8 +190,6 @@ function askQuestion(){
 
 function gameDidFinish()
 {   
-    clearInterval( interval );
-    
     gameOverView.layer.moveToTop();
     
     var text = "Game Over\n ";
@@ -221,15 +219,5 @@ function addBall() {
             that.layer.moveToTop();
         });
     }
-}
-
-function resetInterval(){
-    interval = setInterval(function(){
-        currentGameTimeInSeconds++;
-        if( currentGameTimeInSeconds >= (gameDurationInMinutes * 60 )){
-            gameOver = true;
-            currentGameTimeInSeconds = 0;
-        }
-    },1000);
 }
 

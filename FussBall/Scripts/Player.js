@@ -96,7 +96,7 @@ Player.prototype = {
             duration = 1;
         
         var tween = new Kinetic.Tween({
-            node: ballRef.ballGroup,
+            node: ballRef.ballImage,
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: playerRef.circle.x() + offset,
@@ -124,7 +124,7 @@ Player.prototype = {
             duration = 2;
         
         var goalTween = new Kinetic.Tween({
-            node: ballRef.ballGroup,
+            node: ballRef.ballImage,
             duration: duration,
             easing: Kinetic.Easings.EaseInOut,
             x: ( goalPost.x * window.innerWidth/100 ),

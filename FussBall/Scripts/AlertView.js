@@ -20,7 +20,7 @@ var AlertView = function(){
     this.answerCorrect = null;
     this.tempCallBack = null;
     this.answerCorrectText = "Correct";
-    this.answerWrongText = "Wrong";
+    this.answerWrongText = "Tackled!!!";
 };
 
 AlertView.prototype = {
@@ -147,7 +147,7 @@ AlertView.prototype = {
                 node: this.alertGroup,
                 duration: 0.5,
                 easing: Kinetic.Easings.EaseIn,
-                y: window.innerHeight * 0.1
+                y: window.innerHeight * 0.20
             });
             showAnimation.play();
         }

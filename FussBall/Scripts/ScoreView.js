@@ -4,16 +4,17 @@ var ScoreView = function(){
     this.scoreGroup = new Kinetic.Group();
     this.layer = new Kinetic.Layer();
     this.retainedShowCallBack = null;
-    this.opacityValue = 0.4
+    this.opacityValue = 0.5;
+    this.gameTimerText = new Kinetic.Rect();
 };
 
 ScoreView.prototype = {
     constructor: ScoreView,
     instantiate: function( callBack ){
         this.scoreRect = new Kinetic.Rect({
-            x : window.innerWidth * 0.4,
-            width : window.innerWidth * 0.15,
-            height : window.innerHeight * 0.15,
+            x : window.innerWidth * 0.35,
+            width : window.innerWidth * 0.30,
+            height : window.innerHeight * 0.10,
             fill : 'black',
             stroke : 'white',
             strokeWidth : 5,
@@ -26,16 +27,39 @@ ScoreView.prototype = {
             width: this.scoreRect.getWidth(),
             height: this.scoreRect.getHeight(),
             fontFamily: 'Calibri',
-            fontSize: 75,
+            fontSize: 45,
             fill: 'white',
-            opacity: this.opacityValue
+            opacity: this.opacityValue,
+            align: 'center'
         });
-        //this.scoreRect.width( this.scoreText.width() );
+        
+        //Timer
+        this.gameTimerRect = new Kinetic.Rect({
+            x: 5,
+            y: 5,
+            width: 100,
+            height: 50,
+            fill: 'black',
+            stroke: 'white',
+            opacity: this.opacityValue,
+            cornerRadius: 10
+        });
+        this.gameTimerText = new Kinetic.Text({
+            x: this.gameTimerRect.x(),
+            y: this.gameTimerRect.y(),
+            width: 90,
+            height: 40,
+            fill: 'white',
+            opacity: this.opacityValue,
+            align: 'center',
+            fontSize: 30
+        });
+        
         this.scoreGroup = new Kinetic.Group({
             x: 0,
             y: 0
         });
-        this.scoreGroup.add( this.scoreRect, this.scoreText );
+        this.scoreGroup.add(this.scoreRect,this.scoreText, this.gameTimerRect, this.gameTimerText);
         this.layer.add( this.scoreGroup );
         callBack( this );
     },
@@ -44,7 +68,7 @@ ScoreView.prototype = {
         this.instantiate( callBack ); 
         
         this.scoreText.setText(" ");
-        var text = " " + scoreObj.TeamA + " - " + scoreObj.TeamB ;  
+        var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name ;  
         this.scoreText.setText( text );
         this.layer.draw();
         var tween = new Kinetic.Tween({
@@ -88,5 +112,25 @@ ScoreView.prototype = {
         });
         
         tween.play();
+    },
+    startCountDown: function( timeInMinutes , callBack ){
+        var that = this;
+        var timeInSeconds = timeInMinutes * 60;
+        var min;
+        var sec;
+        var text;
+        var timer = setInterval( function(){
+            min = Math.floor(timeInSeconds / 60);
+            sec = timeInSeconds % 60;
+            text = min.toString() + " : " + sec.toString();
+            that.gameTimerText.setText( text );
+            timeInSeconds--;
+            that.layer.draw();
+            
+            if( timeInSeconds === 0 ){
+                callBack();
+                clearInterval( timer );
+            }
+        }, 1000);
     }
 };
