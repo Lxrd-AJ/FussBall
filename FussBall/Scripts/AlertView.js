@@ -38,7 +38,8 @@ AlertView.prototype = {
             height: window.innerHeight * 0.5,
             fill: 'yellow',
             stroke: 'black',
-            strokeWidth: 2.5
+            strokeWidth: 2.5,
+            opacity: 0.3
         });
         this.alertRect.cornerRadius(10);
         this.alertRect.listening( false );
@@ -97,7 +98,7 @@ AlertView.prototype = {
         } );
 
         this.questionText = new Kinetic.Text({
-            x: (window.innerWidth * 0.4) + this.cancelRect.x(),
+            x: (window.innerWidth * 0.3) + this.cancelRect.x(),
             y: (window.innerHeight * 0.15),
             fontSize: 40,
             fill: 'black'
@@ -121,21 +122,20 @@ AlertView.prototype = {
         }
         this.questionDB.prepareQuestionObjects();
         var questionObjects = this.questionDB.getQuestionObjects();
-        //console.log( questionObjects.first.supportID );
-        //console.log( questionObjects.second.supportID );
+        console.log( questionObjects.first.supportText );
+        console.log( questionObjects.second.supportText );
         var that = this;
 
         //Add the image and text
-        this.questionImage = questionObjects.first.LNImage;
+        this.questionImage.setImage( questionObjects.first.LNImage );
+        console.log( questionObjects.first.LNImage );
         this.questionImage.x( this.alertRect.x() + 10 );
         this.questionImage.y( this.alertRect.y() + 10 );
-        this.questionImage.width( this.alertRect.width() * 0.4 );
-        this.questionImage.height( this.alertRect.height() * 0.4 );
+        this.questionImage.width( this.alertRect.width() * 0.55 );
+        this.questionImage.height( this.alertRect.height() * 0.55 );
         this.alertLayer.draw();
         
-        //console.log( this.questionImage.image.src );
-        //window.location = this.questionImage.image.src;
-        //this.questionText.text( questionObjects.second.targetText );
+        this.questionText.text( questionObjects.second.targetText );
         this.feedbackText.text("");
 
     },
@@ -153,9 +153,9 @@ AlertView.prototype = {
         }
     },
     didClickButtonAtRect: function( Rect){
-        if( Rect == this.cancelRect ){
+        if( Rect === this.cancelRect ){
             this.answer = false;
-        }else if( Rect == this.okRect ){
+        }else if( Rect === this.okRect ){
             this.answer = true;
         }
         this.removeAlert();
@@ -166,23 +166,11 @@ AlertView.prototype = {
         });
     },
     alertWillDisappear : function(){
-        //this.exist = false;
-        //Case 1: Both question objects are the same
-        var questionObjects = this.questionDB.getQuestionObjects();
-        if( this.questionDB.areQuestionsSame( questionObjects.first, questionObjects.second) )
-        {
-            if( this.answer == true )
-                this.answerCorrect = true;
-            else
-                this.answerCorrect = false;
-        }else{
-            //CAse 2: Both questions are not the same
-            if( this.answer == false ){
-                this.answerCorrect = true;
-            }
-            else
-                this.answerCorrect = false;
-        }
+        
+        if( this.questionDB.evaluateAnswer( this.answer ) )
+            this.answerCorrect = true;
+        else
+            this.answerCorrect = false;
         
         //provide feedback to user
         if( this.getAnswer() ){
@@ -212,9 +200,6 @@ AlertView.prototype = {
         dismissAnimation.play();
     },
     getAnswer: function(){
-        if( this.answerCorrect )
-            return true;
-        else
-            return false;
+        return this.answerCorrect
     }
 };

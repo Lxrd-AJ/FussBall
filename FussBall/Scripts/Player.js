@@ -60,7 +60,7 @@ Player.prototype = {
             x: that.circle.x() - 40,
             y: that.circle.y() - 50,
             width : 80,
-            height : 50
+            height : 80
         }); 
         this.layer.add( this.playerImage );
         this.onFinishLoadingCallback( this );

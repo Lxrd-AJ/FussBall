@@ -28,7 +28,6 @@ ScoreView.prototype = {
             fontFamily: 'Calibri',
             fontSize: 75,
             fill: 'white',
-            text: '',
             opacity: this.opacityValue
         });
         //this.scoreRect.width( this.scoreText.width() );
@@ -42,11 +41,12 @@ ScoreView.prototype = {
     },
     showScores: function( callBack, scoreObj ){
         this.retainedShowCallBack = callBack;
-        this.instantiate( callBack );
-        this.scoreText.setText("");
+        this.instantiate( callBack ); 
+        
+        this.scoreText.setText(" ");
         var text = " " + scoreObj.TeamA + " - " + scoreObj.TeamB ;  
         this.scoreText.setText( text );
-        this.layer.batchDraw();
+        this.layer.draw();
         var tween = new Kinetic.Tween({
             node: this.scoreGroup,
             duration: 0.3,
@@ -63,6 +63,7 @@ ScoreView.prototype = {
         //setTimeout( function(){ removeTween.play(); }, 1000);
     },
     playGoalScoredAnimation: function( callBack  ){
+        var that = this;
         this.instantiate( this.retainedShowCallBack );
         var text = "GOAL!";
         this.scoreText.text( text );
@@ -72,7 +73,7 @@ ScoreView.prototype = {
             easing: Kinetic.Easings.BounceEaseInOut,
             y: window.innerHeight * 0.3,
             onFinish: function(){
-                removeTween.play();
+                removeTween.play();            
             }
         });
         var removeTween = new Kinetic.Tween({
@@ -81,6 +82,7 @@ ScoreView.prototype = {
             easing: Kinetic.Easings.BounceEaseOut,
             y: -window.innerHeight,
             onFinish: function(){
+                that.scoreGroup.destroy();
                 setTimeout( function(){ callBack(); }, 1500);
             }
         });

@@ -13,7 +13,7 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
-var gameDurationInMinutes = 5;
+var gameDurationInMinutes = 9;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
@@ -68,7 +68,7 @@ var teamAGoalPosition = {
     y: 50
 };
 var teamBGoalPosition = {
-    x: 1,
+    x: -1,
     y: 50
 };
 
