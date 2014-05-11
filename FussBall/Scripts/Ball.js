@@ -42,8 +42,8 @@ Ball.prototype = {
         var that = this;
         this.ballImage = new Kinetic.Image({
             image: images.ball,
-            x: window.innerWidth,
-            y: window.innerHeight,
+            x: window.innerWidth/2,
+            y: window.innerHeight/2,
             width: 50,
             height: 50
         });
