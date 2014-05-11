@@ -233,7 +233,7 @@ function addBall() {
 }
 
 function getNutURLAndName( obj ){
-    console.log( obj.id );  
+      
     var link = null;
     var teamName = null;
     switch( obj.id  )

@@ -160,10 +160,26 @@ AlertView.prototype = {
         if( this.getAnswer() ){
             this.feedbackText.text( this.answerCorrectText );
             this.feedbackText.fill('green');
+            //Play the answer correct sound
+            var cSound = new Howl({
+                urls:['Resources/crowd clapping.mp3'],
+                voume: 0.2,
+                sprite: { correct:[0,5000] }
+            });
+            cSound.play('correct');
+            cSound.fadeOut( 0.0, 3000 );
         }
         else{
             this.feedbackText.text( this.answerWrongText );
             this.feedbackText.fill( 'red');
+            //Play the answer wromg sound
+            var rSound = new Howl({
+                urls:['Resources/booing.mp3'],
+                volume: 0.3,
+                sprite: { wrong:[0,4000] }
+            });
+            rSound.play('wrong');
+            rSound.fadeOut( 0.0, 2000 );
         }      
     },
     removeAlert: function(){

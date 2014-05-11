@@ -6,7 +6,8 @@ var Sounds = function(){
         volume: 0.5
     });
     this.goalSound = new Howl({
-        urls: ['Resources/goal.mp3']
+        urls: ['Resources/goal.mp3'],
+        volume: 0.8
     });
     this.sprites = new Howl({
         urls: ['Resources/football.mp3'],
