@@ -5,7 +5,30 @@ var ScoreView = function(){
     this.layer = new Kinetic.Layer();
     this.retainedShowCallBack = null;
     this.opacityValue = 0.5;
-    this.gameTimerText = new Kinetic.Rect();
+    //this.gameTimerText = new Kinetic.Text();
+    //Timer
+    this.gameTimerRect = new Kinetic.Rect({
+        x: 5,
+        y: 5,
+        width: 100,
+        height: 50,
+        fill: 'black',
+        stroke: 'white',
+        opacity: this.opacityValue,
+        cornerRadius: 10
+    });
+        
+    this.gameTimerText = new Kinetic.Text({
+            x: this.gameTimerRect.x(),
+            y: this.gameTimerRect.y() + 5,
+            width: 100,
+            height: 40,
+            fill: 'white',
+            opacity: this.opacityValue,
+            align: 'center',
+            fontSize: 30,
+            fontFamily: 'Nunito'
+        });
 };
 
 ScoreView.prototype = {
@@ -26,35 +49,13 @@ ScoreView.prototype = {
             y: this.scoreRect.y(),
             width: this.scoreRect.getWidth(),
             height: this.scoreRect.getHeight(),
-            fontFamily: 'Calibri',
+            fontFamily: 'Nunito',
             fontSize: 45,
             fill: 'white',
             opacity: this.opacityValue,
             align: 'center'
         });
-        
-        //Timer
-        this.gameTimerRect = new Kinetic.Rect({
-            x: 5,
-            y: 5,
-            width: 100,
-            height: 50,
-            fill: 'black',
-            stroke: 'white',
-            opacity: this.opacityValue,
-            cornerRadius: 10
-        });
-        this.gameTimerText = new Kinetic.Text({
-            x: this.gameTimerRect.x(),
-            y: this.gameTimerRect.y(),
-            width: 90,
-            height: 40,
-            fill: 'white',
-            opacity: this.opacityValue,
-            align: 'center',
-            fontSize: 30
-        });
-        
+                
         this.scoreGroup = new Kinetic.Group({
             x: 0,
             y: 0
@@ -119,10 +120,14 @@ ScoreView.prototype = {
         var min;
         var sec;
         var text;
+        var minText;
+        var secText;
         var timer = setInterval( function(){
             min = Math.floor(timeInSeconds / 60);
             sec = timeInSeconds % 60;
-            text = min.toString() + " : " + sec.toString();
+            minText = ( min < 10 ? "0" + min : min );
+            secText = ( sec < 10 ? "0" + sec : sec );
+            text = minText + " : " + secText;
             that.gameTimerText.setText( text );
             timeInSeconds--;
             that.layer.draw();

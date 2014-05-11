@@ -3,65 +3,45 @@
  */
 var QuestionDB = function(){
     
-    this.images = [];
     this.supportLanguage = 14; // english
     this.targetLanguage = 3; // french
     this.unit = 1;
     this.section = 1;
-    this.support = [];
-    this.target = [];
-      
-    this.firstQuestionObject = null;
-    this.secondQuestionObject = null;
-    
+    this.support = []; //starts from 1 to 11 NOT 0 to 10
+    this.target = []; //starts from 1 to 11 NOT 0 to 10
+    this.images = []; 
     this.loadImages();
     this.getTextFromServer();
+    this.questionObject = null;//current question being displayed
 };
 
 QuestionDB.prototype = {
     constructor: QuestionDB,
     generateRandomObject: function(){
         var randObj = {
-            'supportText' : null,
-            'LNImage' : null,
-            'targetText' : null
+            LNImage : null,
+            targetAnswer : null,
+            options : []
         };   
         
-        //random support id between 0 and 9
-        var randKey = Math.floor( Math.random() * 10 );
+        var key = this.generateRandomNumber();
+        randObj.LNImage = this.images[ key ];
+        randObj.targetAnswer = this.target[ key+1 ];
+        randObj.options.push( this.target[ key+1 ] ); //let one correct answer be in
         
-        randObj.supportText = this.support[ randKey + 1 ];
-        randObj.LNImage = this.images[ randKey ];
-        randObj.targetText = this.target[ randKey + 1 ];
+        for( var i = 0; i < 3; i++ ){
+            var randMan = this.generateRandomNumberWithException( key );
+            randObj.options.push( this.target[ randMan + 1 ] );
+        }
+        this.shuffle( randObj.options );
+        
         return randObj;
     },
     prepareQuestionObjects: function(){
-        this.firstQuestionObject = this.generateRandomObject();
-        this.secondQuestionObject = this.generateRandomObject();
+        this.questionObject = this.generateRandomObject();
     },
     getQuestionObjects: function(){
-        return {
-            'first': this.firstQuestionObject,
-            'second': this.secondQuestionObject
-        }
-    },
-    areQuestionsSame: function( obj1, obj2 ){
-        if( obj1.supportText === obj2.supportText )
-            return true;
-        else
-            return false;
-    },
-    evaluateAnswer: function( answerBool ){
-        var decision = null;
-        if( this.firstQuestionObject.supportText === this.secondQuestionObject.supportText )
-            decision = true;
-        else
-            decision = false;
-        
-        if( answerBool === decision )
-            return true;
-        else 
-            return false;
+        return this.questionObject;
     },
     loadImages : function( sources ){
         var img = null;
@@ -103,5 +83,27 @@ QuestionDB.prototype = {
 
     });//end request
         
-    }
+    },
+    generateRandomNumber: function( max ){
+        if( !max )
+            max = 10;
+        
+        var randKey = Math.floor( Math.random() * max );
+        return randKey;
+    },
+    generateRandomNumberWithException: function( exceptNumber , max ){
+        var randNum = null;
+        if( !max )
+            max = 10;
+        
+        do{
+            randNum = Math.floor( Math.random() * max );        
+        }while( exceptNumber === randNum )    
+        
+        return randNum;
+    },
+    shuffle: function(list) {
+        for (var j, x, i = list.length; i; j = Math.floor(Math.random() * i), x = list[--               i], list[i] = list[j], list[j] = x);
+        return list;
+    },
 };

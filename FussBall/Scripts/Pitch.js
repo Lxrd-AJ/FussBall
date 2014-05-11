@@ -16,6 +16,7 @@ Pitch.prototype = {
     constructor: Pitch,
     instantiate: function(callback){
         var that = this;
+        callback();
         this.pitchImage.onload = function(){
             that._pitchImage = new Kinetic.Image({
                 x: 0,
@@ -24,7 +25,8 @@ Pitch.prototype = {
                 width: that.PITCH_WIDTH,
                 height: that.PITCH_HEIGHT
             });
-            callback();
+            that.layer.add( that._pitchImage );
+            that.layer.draw();      
         };
         this.pitchImage.src = 'Resources/Football_field.PNG';
     },

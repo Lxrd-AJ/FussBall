@@ -5,22 +5,17 @@
 var AlertView = function(){
     this.alertLayer = new Kinetic.Layer();
     this.questionImage = new Kinetic.Image();
-    this.questionText = null; //Kinetic Text
-    this.font = "Calibri";
-    this.cancelButtonTitle = "No";
-    this.okButtonTitle = "Yes";
+    this.font = "Nunito";
     this.alertRect = new Kinetic.Rect();
-    this.cancelRect = new Kinetic.Rect();
-    this.okRect = new Kinetic.Rect();
     this.alertGroup = new Kinetic.Group();
     this.questionDB = new QuestionDB();
     this.alertShouldShow = true;
     this.exist = false;
-    this.answer = null;
     this.answerCorrect = null;
     this.tempCallBack = null;
     this.answerCorrectText = "Correct";
     this.answerWrongText = "Tackled!!!";
+    this.options = [0,0,0,0];
 };
 
 AlertView.prototype = {
@@ -43,77 +38,64 @@ AlertView.prototype = {
         });
         this.alertRect.cornerRadius(10);
         this.alertRect.listening( false );
-
-        this.cancelRect = new Kinetic.Rect({
-            x: window.innerWidth * 0.25,
-            y: (window.innerHeight * 0.15) + this.alertRect.height(),
-            width: 80,
-            height: 60,
-            fill: 'yellow',
-            stroke: 'black',
-            strokeWidth: 2.5
-        });
-        this.cancelRect.cornerRadius(10);
-        this.cancelRect.listening( true );
-        this.cancelText = new Kinetic.Text({
-            x: this.cancelRect.x() + this.cancelRect.width() * 0.2,
-            y: this.cancelRect.y() + this.cancelRect.height() * 0.2,
-            text: this.cancelButtonTitle,
-            fontFamily: 'Calibri',
-            fontSize: 35,
-            fill: 'black'
-        });
-        var that = this;
-        this.onClick( this.cancelRect, function(obj) {
-            that.didClickButtonAtRect(obj);
-        } );
-        this.onClick( this.cancelText, function(obj) {
-            that.didClickButtonAtRect(obj);
-        } );
-
-        this.okRect = new Kinetic.Rect({
-            x: (window.innerWidth * 0.4) + this.cancelRect.x(),
-            y: this.cancelRect.y(),
-            width: 80,
-            height: 60,
-            fill: 'yellow',
-            stroke: 'black',
-            strokeWidth: 2.5
-        });
-        this.okRect.cornerRadius(10);
-        this.okRect.listening( true );
-        this.okText = new Kinetic.Text({
-            x: this.okRect.x() + this.okRect.width() * 0.2,
-            y: this.okRect.y() + this.okRect.width() * 0.2,
-            text: this.okButtonTitle,
-            fontFamily: 'Calibri',
-            fontSize: 35,
-            fill: 'black'
-        });
-        this.onClick( this.okRect, function( obj ){
-            that.didClickButtonAtRect(obj);
-        } );
-        this.onClick( this.okText, function(obj) {
-            that.didClickButtonAtRect(obj);
-        } );
-
-        this.questionText = new Kinetic.Text({
-            x: (window.innerWidth * 0.3) + this.cancelRect.x(),
-            y: (window.innerHeight * 0.15),
-            fontSize: 40,
-            fill: 'black'
-        });
         
         this.feedbackText = new Kinetic.Text({
             x: this.alertRect.x() + this.alertRect.width()/2.5 ,
-            y: this.alertRect.y() + this.alertRect.height()/1.3,
+            y: this.alertRect.y() + this.alertRect.height()/1.5,
             fontSize: 40,
+            fontFamily: 'Nunito'
         });
+        
+        //Create 4 option rects and add to the group
+        var x = this.alertRect.x() * 1.07;
+        var y = this.alertRect.y() + this.alertRect.height() - 50;
+        for( var i = 0; i < this.options.length; i++, x+=185 ){
+            this.options[i] = this.createOptionObjectWithButtonAndText( x, y );
+            this.alertGroup.add( this.options[i].button );
+            this.alertGroup.add( this.options[i].text );
+        }
+        
+        //timer pbject for questions
+        this.youngTimer = this.createYoungTimer( window.innerWidth * 0.46, window.innerHeight  );
+        this.youngTimer.recieveReferences( this.alertLayer );
+        this.youngTimer.layerRef.add( this.youngTimer.group );
 
-        this.alertGroup.add( this.alertRect,this.cancelRect,this.cancelText,this.okRect,this.okText,
-                             this.questionText, this.feedbackText, this.questionImage );
+        this.alertGroup.add( this.alertRect, this.feedbackText,this.questionImage);
         this.alertLayer.add( this.alertGroup );
         callBack( this );
+    },
+    createOptionObjectWithButtonAndText  : function( xPos, yPos  ){
+        var rect = new Kinetic.Rect({
+            x: xPos,
+            y: yPos,
+            width: 180,
+            height: 40,
+            fill: 'yellow',
+            stroke: 'black',
+            strokeWidth: 1.5,
+            opacity: 0.3,
+            cornerRadius: 10
+        });
+        
+        var text = new Kinetic.Text({
+            x: xPos,
+            y: yPos,
+            width: rect.width(),
+            height: rect.height(),
+            fontSize: 20,
+            fill: 'black',
+            padding: 10,
+            align: 'center',
+            fontFamily: 'Nunito'
+        });
+        
+        this.onClick( rect, this.didClickButtonAtRect );
+        this.onClick( text, this.didClickButtonAtRect );
+        
+        return{
+            'button' : rect,
+            'text' : text
+        }
     },
     alertWillShow: function( callBack ){
         if( !this.exist ) {
@@ -122,56 +104,58 @@ AlertView.prototype = {
         }
         this.questionDB.prepareQuestionObjects();
         var questionObjects = this.questionDB.getQuestionObjects();
-        console.log( questionObjects.first.supportText );
-        console.log( questionObjects.second.supportText );
         var that = this;
 
         //Add the image and text
-        this.questionImage.setImage( questionObjects.first.LNImage );
-        console.log( questionObjects.first.LNImage );
-        this.questionImage.x( this.alertRect.x() + 10 );
-        this.questionImage.y( this.alertRect.y() + 10 );
+        this.questionImage.setImage( questionObjects.LNImage );
+        this.questionImage.x( this.alertRect.x() * 1.6 );
+        this.questionImage.y( this.alertRect.y() * 1.6 );
         this.questionImage.width( this.alertRect.width() * 0.55 );
         this.questionImage.height( this.alertRect.height() * 0.55 );
         this.alertLayer.draw();
+        //Add the text
+        for( var i = 0 ; i < this.options.length; i++ )
+            this.options[i].text.setText( questionObjects.options[i] );
         
-        this.questionText.text( questionObjects.second.targetText );
         this.feedbackText.text("");
 
     },
     showAlert : function( callBack , getCallBack ){
         if( this.alertShouldShow ){
+            var that = this;
             this.alertWillShow( callBack );
             this.tempCallBack = getCallBack;
             var showAnimation = new Kinetic.Tween({
                 node: this.alertGroup,
                 duration: 0.5,
                 easing: Kinetic.Easings.EaseIn,
-                y: window.innerHeight * 0.20
+                y: window.innerHeight * 0.20,
+                onFinish: function(){
+                    //start the timer
+                    that.youngTimer.activateTimer( that.youngTimer );
+                }
             });
             showAnimation.play();
         }
     },
-    didClickButtonAtRect: function( Rect){
-        if( Rect === this.cancelRect ){
-            this.answer = false;
-        }else if( Rect === this.okRect ){
-            this.answer = true;
-        }
-        this.removeAlert();
+    didClickButtonAtRect: function( obj, that ){
+        var questionObjects = that.questionDB.getQuestionObjects();
+        //Get the text on the object
+        if( obj.text() === questionObjects.targetAnswer )
+            that.answerCorrect = true;
+        else
+            that.answerCorrect = false;
+        
+        that.youngTimer.deactivateTimer( that.youngTimer );
+        that.removeAlert();
     },
     onClick : function( object, func ){
+        var that = this;
         object.on( 'click tap', function(){
-            func( object );
+            func( object, that );
         });
     },
     alertWillDisappear : function(){
-        
-        if( this.questionDB.evaluateAnswer( this.answer ) )
-            this.answerCorrect = true;
-        else
-            this.answerCorrect = false;
-        
         //provide feedback to user
         if( this.getAnswer() ){
             this.feedbackText.text( this.answerCorrectText );
@@ -180,8 +164,7 @@ AlertView.prototype = {
         else{
             this.feedbackText.text( this.answerWrongText );
             this.feedbackText.fill( 'red');
-        }
-        
+        }      
     },
     removeAlert: function(){
         this.alertWillDisappear();
@@ -201,5 +184,97 @@ AlertView.prototype = {
     },
     getAnswer: function(){
         return this.answerCorrect
-    }
+    },
+    createYoungTimer: function( xPos, yPos ){
+        var timerBox = new Kinetic.Rect({
+            x: xPos,
+            y: yPos,
+            width: 100,
+            height: 50,
+            fill: 'black',
+            stroke: 'white',
+            strokeWidth: 1.5,
+            cornerRadius: 10
+        });
+        var timerText = new Kinetic.Text({
+            x: xPos,
+            y: yPos,
+            width: timerBox.width(),
+            height: timerBox.height(),
+            fontSize: 25,
+            fill: 'white',
+            padding: 10,
+            align: 'center',
+            fontFamily: 'Nunito'
+        });
+        var timerGroup = new Kinetic.Group({
+            x: 0,
+            y: 0
+        });
+        
+        return {
+            'box': timerBox,
+            'text': timerText,
+            'group': timerGroup,
+            'layerRef' : null,
+            countDown : null,
+            recieveReferences: function( layer ){
+                this.layerRef = layer;
+                this.group.add( this.box, this.text );
+            },
+            appear : function(){
+                var tween = new Kinetic.Tween({
+                    node: this.group,
+                    duration: 0.5,
+                    easing: Kinetic.Easings.ElasticEaseIn,
+                    y: window.innerHeight * -0.15
+                });  
+                tween.play();
+            },
+            disappear: function(){
+                var tween = new Kinetic.Tween({
+                    node: this.group,
+                    duration: 0.3,
+                    easing: Kinetic.Easings.BackEaseOut,
+                    y: window.innerHeight
+                });    
+                tween.play();
+            },
+            fillRed : function( callBack ){
+                var that = this;
+                var tween = new Kinetic.Tween({
+                    node: that.box,
+                    duration: 2,
+                    easing: Kinetic.Easings.EaseInOut,
+                    fillRed: 255,
+                    onFinish: function(){
+                        tween.reverse();
+                        callBack( that );
+                    }
+                });
+                tween.play();
+            },
+            activateTimer: function( me ){
+                var that = me;
+                this.appear();
+                var seconds = 30;
+                
+                that.countDown = setInterval( function(){
+                    var sec = ( seconds < 10 ? "0" + seconds : seconds );
+                    that.text.setText( sec );
+                    seconds--;
+                    that.layerRef.draw();
+
+                    if( seconds === 0 ){
+                        //Animate the time up
+                        that.fillRed( that.deactivateTimer );
+                     }
+                }, 1000);    
+            },
+            deactivateTimer: function( that ){
+                that.disappear(); 
+                clearInterval( that.countDown );
+            }
+        }     
+    }  
 };

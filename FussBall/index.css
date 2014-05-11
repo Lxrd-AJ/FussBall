@@ -1,3 +1,13 @@
+@font-face
+{
+ font-family: Nunito;
+ src: url('Resources/Nunito.ttf'),
+ url('Resources/Nunito.eot'), /* IE9 */
+ url('Resources/Nunito.fon'), /* IE9 */
+ url('Resources/Nunito.woff'),/* IE9 - IE10 IE11 */
+ url('Resources/Nunito.svg'); /* IE9 - IE10 IE11 */
+}
+
 body{
     padding: 1px;
     margin: 1px;

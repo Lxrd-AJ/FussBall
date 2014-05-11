@@ -1,7 +1,7 @@
 var Sounds = function(){
     this.cheeringSound = new Howl({
         urls: ['Resources/stadium crowd applause.mp3'],
-        autoplay: true,
+        //autoplay: true,
         //loop: true,
         volume: 0.5
     });

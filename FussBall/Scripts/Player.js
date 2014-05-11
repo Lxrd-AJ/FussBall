@@ -98,7 +98,7 @@ Player.prototype = {
         var tween = new Kinetic.Tween({
             node: ballRef.ballImage,
             duration: duration,
-            easing: Kinetic.Easings.EaseInOut,
+            easing: Kinetic.Easings.EaseOut,
             x: playerRef.circle.x() + offset,
             y: playerRef.circle.y() + offset,
             onFinish: function(){
@@ -126,11 +126,15 @@ Player.prototype = {
         var goalTween = new Kinetic.Tween({
             node: ballRef.ballImage,
             duration: duration,
-            easing: Kinetic.Easings.EaseInOut,
+            easing: Kinetic.Easings.EaseOut,
             x: ( goalPost.x * window.innerWidth/100 ),
             y: ( goalPost.y * window.innerHeight/100 ),
+            width: ballRef.ballImage.width() + 30,
+            height: ballRef.ballImage.height() + 30,
             onFinish: function(){
                 movePlayer.reverse();
+                ballRef.ballImage.width( ballRef.ballImage.width() - 30 );
+                ballRef.ballImage.height( ballRef.ballImage.height() - 30);
             }
         });
         var movePlayer = new Kinetic.Tween({
