@@ -1,14 +1,15 @@
 var MainMenu = function( callback, playGameCallback ){
+    this.nuts = ['cn', 'ca', 'de','en','es','fr','ga','ht','id','it','jp','ma','mx','pl','us'];
     this.teamImages = [];
     this.teams = [];
     this.loadTeamIages();
     this.layer = new Kinetic.Layer();
     this.playGameFunc = playGameCallback;
-    
+      
     this.loopingSound = new Howl({
         urls: ['Resources/FIFA World Cup - 2014 - Brazil.mp3'],
-        //autoplay: true,
-        //loop: true,
+        autoplay: true,
+        loop: true,
         volume: 0.5
     });
     
@@ -69,9 +70,10 @@ MainMenu.prototype = {
         var img = null;
         this.unit = 1;
         this.section = 1;
-        for (var k=0; k<10; k++) {
+        
+        for (var nut in this.nuts ) {
             img = new Image();
-            img.src = 'http://images.languagenut.com/illustrations/transparent_bg_150/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + (k>=9?'':'0') + (k+1) + '0001.png';
+            img.src = "http://www.languagenut.com/images/nuts/150/" + this.nuts[nut] + "_nut.png";
             this.teamImages.push(img);
         } 
     },
@@ -91,7 +93,7 @@ MainMenu.prototype = {
         var rect = new Kinetic.Rect({
             x: xPos,
             y: yPos,
-            width: 150,
+            width: window.innerWidth / 7,
             height: 100,
             stroke: 'yellow',
             cornerRadius: 15
@@ -100,8 +102,8 @@ MainMenu.prototype = {
         var teamImage = new Kinetic.Image({
             x: xPos,
             y: yPos,
-            width: rect.width() + 10,
-            height: rect.width() + 10,
+            width: rect.width() + 5,
+            height: rect.width() + 5,
             image: this.teamImages[0],
             cornerRadius: 15
         });
@@ -117,7 +119,7 @@ MainMenu.prototype = {
         });
         
         var LStepper = new Kinetic.RegularPolygon({
-            x: teamImage.x() - 5,
+            x: teamImage.x() - 15,
             y: teamImage.y() + teamImage.height()/2,
             sides: 3,
             radius: 20,
@@ -136,7 +138,7 @@ MainMenu.prototype = {
         });
         
         var RStepper = new Kinetic.RegularPolygon({
-            x: teamImage.x() + teamImage.width(),
+            x: teamImage.x() + teamImage.width() + 5,
             y: teamImage.y() + teamImage.height()/2 - 5.5,
             sides: 3,
             radius: 20,
@@ -211,18 +213,17 @@ MainMenu.prototype = {
     dismissMenu: function( onFinishCallBack ){
         //get the team urls
         var that = this;
-        var teamAURL = 'http://images.languagenut.com/illustrations/transparent_bg_150/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + ( this.teamA.step >=9?'':'0') + (this.teamA.step+1) + '0001.png';
-        var teamBURL = 'http://images.languagenut.com/illustrations/transparent_bg_150/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + ( this.teamB.step >=9?'':'0') + (this.teamB.step+1) + '0001.png';
-        
         var tween = new Kinetic.Tween({
             node: this.menuGroup,
             duration: 1,
             easing: Kinetic.Easings.Linear,
             x: -window.innerWidth * window.innerWidth,
             onFinish: function(){
+                that.stopLoopingSound();
                 onFinishCallBack( {
-                    'teamA' : { url :teamAURL, id: that.teamA.getStep() },
-                    'teamB' : { url : teamBURL, id: that.teamB.getStep() }
+                    'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
+                    'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
+                    
                 });
             }//end 
         });

@@ -1,15 +1,17 @@
 /**
  * Created by AJ on 10/04/2014.
  */
-var Team = function( url , name ){
+var Team = function( url , name, goalPosition ){
     this.players = [];
     this.score = 0;
     this.positions = null;
     this.length = 11;
     this.name = name;
+    this.answerCount = 0;
     this.country = {
         teamImage : url
     };
+    this.goalDirection = goalPosition;
 };
 
 Team.prototype = {
@@ -64,5 +66,14 @@ Team.prototype = {
     getNextPlayer : function(){
         var rand = Math.floor((Math.random()*10)+1);
         return this.players[ rand ];
+    },
+    incrementCount: function(){
+        if( this.answerCount > 4 )
+            this.resetCount();
+        
+        this.answerCount++;
+    },
+    resetCount: function(){
+        this.answerCount = 0;
     }
 };

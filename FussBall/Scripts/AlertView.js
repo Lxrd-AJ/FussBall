@@ -49,16 +49,11 @@ AlertView.prototype = {
         //Create 4 option rects and add to the group
         var x = this.alertRect.x() * 1.07;
         var y = this.alertRect.y() + this.alertRect.height() - 50;
-        for( var i = 0; i < this.options.length; i++, x+=185 ){
+        for( var i = 0; i < this.options.length; i++, x+=this.alertRect.width() / 4  ){
             this.options[i] = this.createOptionObjectWithButtonAndText( x, y );
             this.alertGroup.add( this.options[i].button );
             this.alertGroup.add( this.options[i].text );
         }
-        
-        //timer pbject for questions
-        this.youngTimer = this.createYoungTimer( window.innerWidth * 0.46, window.innerHeight  );
-        this.youngTimer.recieveReferences( this.alertLayer );
-        this.youngTimer.layerRef.add( this.youngTimer.group );
 
         this.alertGroup.add( this.alertRect, this.feedbackText,this.questionImage);
         this.alertLayer.add( this.alertGroup );
@@ -68,7 +63,7 @@ AlertView.prototype = {
         var rect = new Kinetic.Rect({
             x: xPos,
             y: yPos,
-            width: 180,
+            width: this.alertRect.width() / 5,
             height: 40,
             fill: 'yellow',
             stroke: 'black',
@@ -120,7 +115,7 @@ AlertView.prototype = {
         this.feedbackText.text("");
 
     },
-    showAlert : function( callBack , getCallBack ){
+    showAlert : function( callBack , getCallBack, timerCallback  ){
         if( this.alertShouldShow ){
             var that = this;
             this.alertWillShow( callBack );
@@ -132,7 +127,11 @@ AlertView.prototype = {
                 y: window.innerHeight * 0.20,
                 onFinish: function(){
                     //start the timer
-                    that.youngTimer.activateTimer( that.youngTimer );
+                    if( !that.timer ){
+                        that.timer = new Timer( window.innerWidth * 0.46, window.innerHeight );
+                        that.timer.receiveReferences( timerCallback, that.removeAlert , that );
+                        that.timer.activate( that.timer );
+                    }
                 }
             });
             showAnimation.play();
@@ -146,8 +145,9 @@ AlertView.prototype = {
         else
             that.answerCorrect = false;
         
-        that.youngTimer.deactivateTimer( that.youngTimer );
-        that.removeAlert();
+        that.timer.deactivate( that.timer );
+        that.removeAlert( that );
+        that.timer = null;
     },
     onClick : function( object, func ){
         var that = this;
@@ -180,13 +180,15 @@ AlertView.prototype = {
             });
             rSound.play('wrong');
             rSound.fadeOut( 0.0, 2000 );
-        }      
+        }  
+        
+        this.timer = null;
     },
-    removeAlert: function(){
-        this.alertWillDisappear();
-        var that = this;
+    removeAlert: function( me ){
+        me.alertWillDisappear();
+        var that = me;
         var dismissAnimation = new Kinetic.Tween({
-            node: this.alertGroup,
+            node: that.alertGroup,
             duration: 0.5,
             easing: Kinetic.Easings.EaseOut,
             y: -window.innerHeight,
@@ -200,97 +202,5 @@ AlertView.prototype = {
     },
     getAnswer: function(){
         return this.answerCorrect
-    },
-    createYoungTimer: function( xPos, yPos ){
-        var timerBox = new Kinetic.Rect({
-            x: xPos,
-            y: yPos,
-            width: 100,
-            height: 50,
-            fill: 'black',
-            stroke: 'white',
-            strokeWidth: 1.5,
-            cornerRadius: 10
-        });
-        var timerText = new Kinetic.Text({
-            x: xPos,
-            y: yPos,
-            width: timerBox.width(),
-            height: timerBox.height(),
-            fontSize: 25,
-            fill: 'white',
-            padding: 10,
-            align: 'center',
-            fontFamily: 'Nunito'
-        });
-        var timerGroup = new Kinetic.Group({
-            x: 0,
-            y: 0
-        });
-        
-        return {
-            'box': timerBox,
-            'text': timerText,
-            'group': timerGroup,
-            'layerRef' : null,
-            countDown : null,
-            recieveReferences: function( layer ){
-                this.layerRef = layer;
-                this.group.add( this.box, this.text );
-            },
-            appear : function(){
-                var tween = new Kinetic.Tween({
-                    node: this.group,
-                    duration: 0.5,
-                    easing: Kinetic.Easings.ElasticEaseIn,
-                    y: window.innerHeight * -0.15
-                });  
-                tween.play();
-            },
-            disappear: function(){
-                var tween = new Kinetic.Tween({
-                    node: this.group,
-                    duration: 0.3,
-                    easing: Kinetic.Easings.BackEaseOut,
-                    y: window.innerHeight
-                });    
-                tween.play();
-            },
-            fillRed : function( callBack ){
-                var that = this;
-                var tween = new Kinetic.Tween({
-                    node: that.box,
-                    duration: 2,
-                    easing: Kinetic.Easings.EaseInOut,
-                    fillRed: 255,
-                    onFinish: function(){
-                        tween.reverse();
-                        callBack( that );
-                    }
-                });
-                tween.play();
-            },
-            activateTimer: function( me ){
-                var that = me;
-                this.appear();
-                var seconds = 30;
-                
-                that.countDown = setInterval( function(){
-                    var sec = ( seconds < 10 ? "0" + seconds : seconds );
-                    that.text.setText( sec );
-                    seconds--;
-                    that.layerRef.draw();
-
-                    if( seconds === 0 ){
-                        //Animate the time up
-                        that.fillRed( that.deactivateTimer );
-                     }
-                }, 1000);    
-            },
-            deactivateTimer: function( that ){
-                that.disappear(); 
-                clearInterval( that.countDown );
-            }
-        }     
     }  
 };

@@ -23,8 +23,8 @@ GameOverView.prototype = {
             y: window.innerHeight * 0.1,
             width: window.innerWidth * 0.6,
             height: window.innerHeight * 0.5,
-            fill: 'blue',
-            stroke: 'white',
+            fill: 'white',
+            stroke: 'orange',
             strokeWidth: 3
         });
         this.gameOverRect.cornerRadius(10);
@@ -42,8 +42,8 @@ GameOverView.prototype = {
             y: (window.innerHeight * 0.15 ) + this.gameOverRect.height(),
             width: 180,
             height: 60,
-            fill: 'red',
-            stroke: 'white',
+            fill: '#F9F996',
+            stroke: '#FF8919',
             strokeWidth: 2.5
         });
         this.cancelGameRect.cornerRadius(10);
@@ -54,7 +54,8 @@ GameOverView.prototype = {
             text: this.cancelGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: 'black'
+            fill: '#F9F996',
+            stroke: '#FF8919'
         });
         //this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
         this.onClick( this.cancelGameRect, function(obj){
@@ -69,8 +70,8 @@ GameOverView.prototype = {
             y: this.cancelGameRect.y(),
             width: 180,
             height: 60,
-            fill: 'blue',
-            stroke: 'black',
+            fill: '#F9F996',
+            stroke: '#FF8919',
             strokeWidth: 2.5
         });
         this.newGameRect.cornerRadius(10);
@@ -81,7 +82,8 @@ GameOverView.prototype = {
             text: this.newGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: 'black'
+            fill: '#F9F996',
+            stroke: '#FF8919'
         });
         //this.newGameRect.width(this.newGameKineticText.getTextWidth());
         this.onClick( this.newGameRect, function(obj){

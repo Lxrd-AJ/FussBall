@@ -5,6 +5,7 @@ var ScoreView = function(){
     this.layer = new Kinetic.Layer();
     this.retainedShowCallBack = null;
     this.opacityValue = 0.5;
+    this.exist = false;
     //this.gameTimerText = new Kinetic.Text();
     //Timer
     this.gameTimerRect = new Kinetic.Rect({
@@ -63,10 +64,10 @@ ScoreView.prototype = {
         this.scoreGroup.add(this.scoreRect,this.scoreText, this.gameTimerRect, this.gameTimerText);
         this.layer.add( this.scoreGroup );
         callBack( this );
+        
+        this.exist = true;
     },
-    showScores: function( callBack, scoreObj ){
-        this.retainedShowCallBack = callBack;
-        this.instantiate( callBack ); 
+    showScores: function(  scoreObj ){
         
         this.scoreText.setText(" ");
         var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name ;  
@@ -85,30 +86,21 @@ ScoreView.prototype = {
             y: -window.innerHeight
         });
         tween.play();
-        //setTimeout( function(){ removeTween.play(); }, 1000);
     },
     playGoalScoredAnimation: function( callBack  ){
         var that = this;
-        this.instantiate( this.retainedShowCallBack );
+        //this.instantiate( this.retainedShowCallBack );
         var text = "GOAL!";
         this.scoreText.text( text );
+        this.layer.draw();
         var tween = new Kinetic.Tween({
             node: this.scoreGroup,
             duration: 0.3,
             easing: Kinetic.Easings.BounceEaseInOut,
-            y: window.innerHeight * 0.3,
+            //y: window.innerHeight * 0.3,
             onFinish: function(){
-                removeTween.play();            
-            }
-        });
-        var removeTween = new Kinetic.Tween({
-            node: this.scoreGroup,
-            duration: 0.2,
-            easing: Kinetic.Easings.BounceEaseOut,
-            y: -window.innerHeight,
-            onFinish: function(){
-                that.scoreGroup.destroy();
-                setTimeout( function(){ callBack(); }, 1500);
+                //Display next player to play  
+                callBack();
             }
         });
         

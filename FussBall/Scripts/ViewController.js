@@ -15,7 +15,7 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
-var gameDurationInMinutes = 3;
+var gameDurationInMinutes = 1;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
@@ -31,12 +31,13 @@ var positionB = [
     {x:60,y:10}, {x:56,y:50}, {x:60,y:90},
     {x:26,y:9}, {x:20,y:40}, {x:23,y:80}
 ];
+
 var teamAGoalPosition = {
     x: 100,
     y: 50
 };
 var teamBGoalPosition = {
-    x: -1,
+    x: -5,
     y: 50
 };
 
@@ -58,26 +59,31 @@ function newGame( urlObj ){
     
     //create the first team
     var obj = getNutURLAndName( urlObj.teamA );
-    gameModel.teamA = new Team( obj.url, obj.name );
+    gameModel.teamA = new Team( obj.url, obj.name, teamAGoalPosition );
     gameModel.teamA.instantiate( function( player ) {
         stage.add(player.layer);
         player.circle.setDraggable(true);
     });
     //second team
     var obj = getNutURLAndName( urlObj.teamB );
-    gameModel.teamB = new Team( obj.url, obj.name );
+    gameModel.teamB = new Team( obj.url, obj.name, teamBGoalPosition );
     gameModel.teamB.instantiate( function( player ) {
         stage.add( player.layer );
         player.circle.draggable(true);
         onFinish();
     });
+    gameModel.setTeams( gameModel.teamA, gameModel.teamB );
     
     gameOverView.instantiate( function(that){
         stage.add( that.layer );
         that.layer.moveToBottom();
     });  
     
+    scoreView.instantiate( function(that){
+        stage.add( that.layer );
+    });
     scoreView.startCountDown( gameDurationInMinutes , gameDidFinish );
+    scoreView.showScores( gameModel.getTeams() );
     
     //change the second teams color to blue
     gameModel.teamB.changePlayersColor( 'blue' );
@@ -106,38 +112,58 @@ function askQuestion(){
         questionAlert.alertShouldShow = true;
         questionAlert.showAlert( function(that){
             stage.add( that.alertLayer );
-        }, getCallback );
+        }, getCallback , determineNextPlayer );
 
         function getCallback( that ){
-            if( that.getAnswer() )
+            if( that.getAnswer() ){
                 determineNextPlayer(true);
-            else
+                gameModel.currentPlayer().incrementCount();
+            }
+            else{
                 determineNextPlayer(false);
+                gameModel.currentPlayer().resetCount();
+            }
         }
+        
+      
     }else
         gameDidFinish();
 }
 
 function determineNextPlayer( bool ){
     if( bool )
-        playPlayerTurn();
+        playPlayerTurn( gameModel.currentPlayer() );
     else
-        playCPUTurn();
+        playPlayerTurn( gameModel.nextPlayer() );
 }
 
-function playPlayerTurn(){
+function playPlayerTurn( currentTeam ){
+    
     if( beginningOfMatch ){
         this.beginningOfMatch = false;
         //Display the scores 
-        scoreView.showScores( function(that){
-            stage.add( that.layer );
-        }, gameModel.getTeams() );
-        
+        scoreView.showScores( gameModel.getTeams() );
+        console.log( currentTeam );
         //GoalKeeper long shot & Ask Question
-        gameModel.teamA.goalKeeperLongShot( gameModel.ball, askQuestion );
-        
+        currentTeam.goalKeeperLongShot( gameModel.ball, askQuestion );
     }else{
-        //Play to a random player or score
+        if( currentTeam.answerCount < 4 )
+            currentTeam.getNextPlayer().passToPlayer( currentTeam.getNextPlayer(), gameModel.ball, 2, askQuestion );
+        else{
+            //score a goal
+            currentTeam.getNextPlayer().score( currentTeam.goalDirection, gameModel.ball, 2 );
+            scoreView.playGoalScoredAnimation( askQuestion  );
+            gameModel.teamDidScoreGoal( gameModel.teamA );
+            beginningOfMatch = true;
+        }
+    }        
+}
+
+    
+
+function playCPUTurn(){
+    /*
+    //Play to a random player or score
         var scoreProbaility = [5,5,10,5,10];
         var i = Math.floor(  Math.random() * 5  ) ;
         if( scoreProbaility[i]%2 == 1 ){
@@ -160,10 +186,11 @@ function playPlayerTurn(){
             //Play to a random player & Ask Question
             gameModel.teamA.getNextPlayer().passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
         }//end inner else        
-    }//end else
-}
-
-function playCPUTurn(){
+    }//end else   
+    
+    
+    
+    
     var CPUScoringProbablity = [ 5,5,5,5,10 ];
     var k = Math.floor(  Math.random() * 5  ) ;
     
@@ -197,6 +224,8 @@ function playCPUTurn(){
         //Pass to a random player and ask user question
         gameModel.teamB.getNextPlayer().passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2, askQuestion );
     }
+    
+    askQuestion();*/
 }
 
 function gameDidFinish()
@@ -205,9 +234,9 @@ function gameDidFinish()
     
     var text = "Game Over\n ";
     if( gameModel.teamA.score > gameModel.teamB.score )
-        text += "You Win";
+        text += gameModel.teamA.name + " Wins";
     else if( gameModel.teamA.score < gameModel.teamB.score )
-        text += "You Lose";
+        text += gameModel.teamB.name + " Wins";
     else
         text += "Draw";
     gameOverView.showAlert( text , clickCallBack );    
@@ -234,49 +263,58 @@ function addBall() {
 
 function getNutURLAndName( obj ){
       
-    var link = null;
+    var link = 'http://www.languagenut.com/images/nuts/150/' + obj.nuts[obj.id] + '_nut.png';
+    //USE an array for teamName based on obj.id
     var teamName = null;
     switch( obj.id  )
     {
         case 0:
-            link = 'http://www.languagenut.com/images/nuts/150/fr_nut.png';
-            teamName = "FR";
+            teamName = "CHN";
             break;
         case 1:
-            link = 'http://www.languagenut.com/images/nuts/150/sp_nut.png';
-            teamName = "ESP";
+            teamName = "CND";
             break;
         case 2:
-            link = 'http://www.languagenut.com/images/nuts/150/en_nut.png';
-            teamName = 'ENG';
-            break;
-        case 3:
-            link = 'http://www.languagenut.com/images/nuts/150/nut.png';
-            teamName = 'HND';
-            break;
-        case 4:
-            link = 'http://www.languagenut.com/images/nuts/150/de_nut.png';
             teamName = 'GRM';
             break;
+        case 3:
+            teamName = 'ENG';
+            break;
+        case 4:
+            teamName = 'ESP';
+            break;
         case 5:
-            link = 'http://www.languagenut.com/images/nuts/150/nut.png';
-            teamName = 'URD';
+            teamName = 'FRN';
             break;
         case 6:
-            link = 'http://www.languagenut.com/images/nuts/150/cc_nut.png';
-            teamName = 'CHN';
+            teamName = 'GLE';
             break;
         case 7:
-            link = 'http://www.languagenut.com/images/nuts/150/nut.png';
-            teamName = 'BNG';
+            teamName = '000';
             break;
         case 8:
-            link = 'http://www.languagenut.com/images/nuts/150/nut.png';
-            teamName = 'ARB';
+            teamName = '000';
             break;
         case 9:
-            link = 'http://www.languagenut.com/images/nuts/150/it_nut.png';
             teamName = 'ITL';
+            break;
+        case 10:
+            teamName = 'JPN';
+            break;
+        case 11:
+            teamName = 'MAO';
+            break;
+        case 12:
+            teamName = 'MEX';
+            break;
+        case 13:
+            teamName = 'POL';
+            break;
+        case 14:
+            teamName = 'USA';
+            break;
+        default:
+            link = 'http://www.languagenut.com/images/nuts/150/nut.png';
             break;
     }
     
