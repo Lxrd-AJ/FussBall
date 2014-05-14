@@ -5,10 +5,6 @@
 
 var GameModel = function(){
     this.pitch = new Pitch();
-    /*
-    this.teamA = new Team( 'http://www.languagenut.com/images/nuts/150/de_nut.png' , 'GER' );
-    this.teamB = new Team( 'http://www.languagenut.com/images/nuts/150/en_nut.png', 'ENG' );
-    */
     this.teams = [ this.teamA, this.teamB ];
     this.currentPlayerTeam = 0;
     this.gameSounds = new Sounds();

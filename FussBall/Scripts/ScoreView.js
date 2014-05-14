@@ -70,7 +70,7 @@ ScoreView.prototype = {
     showScores: function(  scoreObj ){
         
         this.scoreText.setText(" ");
-        var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name ;  
+        var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name  ;  
         this.scoreText.setText( text );
         this.layer.draw();
         var tween = new Kinetic.Tween({

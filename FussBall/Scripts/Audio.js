@@ -1,8 +1,8 @@
 var Sounds = function(){
     this.cheeringSound = new Howl({
         urls: ['Resources/stadium crowd applause.mp3'],
-        //autoplay: true,
-        //loop: true,
+        autoplay: true,
+        loop: true,
         volume: 0.5
     });
     this.goalSound = new Howl({
@@ -24,8 +24,9 @@ Sounds.prototype = {
         this.cheeringSound.stop();
     },
     playGoalScoredSound : function(){
-        //this.stopCrowdCheeringSound();
+        this.stopCrowdCheeringSound();
         this.goalSound.play();
+        this.cheeringSound.play();
     },
     playCheerSprite: function(){
         this.sprites.play('cheer');

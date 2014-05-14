@@ -199,8 +199,22 @@ AlertView.prototype = {
             }
         });
         dismissAnimation.play();
+        //Play the sound
+        var cSound = new Howl({
+                urls:['Resources/kids cheering.mp3'],
+                voume: 0.2
+        });
+        cSound.play();
     },
     getAnswer: function(){
         return this.answerCorrect
-    }  
+    },
+    changeColor: function( turn ){
+        if( turn )
+            this.alertRect.fill("red");
+        else
+            this.alertRect.fill("Blue");
+        
+        this.alertLayer.draw();
+    }
 };

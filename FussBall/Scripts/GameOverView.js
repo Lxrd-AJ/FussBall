@@ -120,7 +120,16 @@ GameOverView.prototype = {
             node: this.viewGroup,
             duration: 1,
             easing: Kinetic.Easings.Linear,
-            y: window.innerHeight * 0.1
+            y: window.innerHeight * 0.1,
+            onFinish: function(){
+                //Play the answer correct sound
+                var cSound = new Howl({
+                    urls:['Resources/The Fans - Ole Ole Ole - The Name Of The Game.mp3'],
+                    voume: 0.2,
+                    loop: true
+                });
+                cSound.play();
+            }
         });
         showAnimation.play();
         this.clickCallBack = callB;
@@ -142,8 +151,5 @@ GameOverView.prototype = {
             return true;
         else
             return false;
-    },
-    rectIsEqualtoRect: function( rect1, rect2 ){
-        
     }
 };

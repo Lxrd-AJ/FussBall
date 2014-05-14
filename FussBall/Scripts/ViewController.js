@@ -2,7 +2,6 @@
  * Created by AJ on 10/04/2014.
  */
 
-
 //All layer adding is done in the view controller
 window.onload = showMainMenu;
 
@@ -15,7 +14,7 @@ var gameModel = new GameModel();
 var questionAlert = new AlertView();
 var scoreView = new ScoreView();
 var gameOver = false;
-var gameDurationInMinutes = 1;
+var gameDurationInMinutes = 3.5;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
 var gameOverView = new GameOverView();
@@ -139,11 +138,22 @@ function determineNextPlayer( bool ){
 
 function playPlayerTurn( currentTeam ){
     
+    var bool = null;
+    if( currentTeam === gameModel.teams[0] )
+        bool = true;
+    else
+        bool = false;
+    questionAlert.changeColor(bool);
+    
+    if( currentTeam.answerCount > 4 ){
+        currentTeam = gameModel.nextPlayer();
+        currentTeam.resetCount();
+    }
+    
     if( beginningOfMatch ){
         this.beginningOfMatch = false;
         //Display the scores 
         scoreView.showScores( gameModel.getTeams() );
-        console.log( currentTeam );
         //GoalKeeper long shot & Ask Question
         currentTeam.goalKeeperLongShot( gameModel.ball, askQuestion );
     }else{
@@ -153,79 +163,11 @@ function playPlayerTurn( currentTeam ){
             //score a goal
             currentTeam.getNextPlayer().score( currentTeam.goalDirection, gameModel.ball, 2 );
             scoreView.playGoalScoredAnimation( askQuestion  );
-            gameModel.teamDidScoreGoal( gameModel.teamA );
+            gameModel.teamDidScoreGoal( currentTeam );
             beginningOfMatch = true;
+            
         }
     }        
-}
-
-    
-
-function playCPUTurn(){
-    /*
-    //Play to a random player or score
-        var scoreProbaility = [5,5,10,5,10];
-        var i = Math.floor(  Math.random() * 5  ) ;
-        if( scoreProbaility[i]%2 == 1 ){
-            //then score
-            gameModel.teamA.getNextPlayer().score( teamAGoalPosition, gameModel.ball, 2 );
-            var catchProbability = [5,10,10,5,10];
-            var k = Math.floor(  Math.random() * 5  ) ;
-            if( catchProbability[k] % 2 == 1 ){
-                //CPU GoalKeeper defends the ball
-                gameModel.teamB.goalKeeperLongShot( gameModel.ball );
-                playCPUTurn();
-            }else{
-                //GOAL
-                //Show Goal Animation
-                scoreView.playGoalScoredAnimation( askQuestion  );
-                gameModel.teamDidScoreGoal( gameModel.teamA );
-                beginningOfMatch = true;              
-            }
-        }else{
-            //Play to a random player & Ask Question
-            gameModel.teamA.getNextPlayer().passToPlayer( gameModel.teamA.getNextPlayer(), gameModel.ball, 2, askQuestion );
-        }//end inner else        
-    }//end else   
-    
-    
-    
-    
-    var CPUScoringProbablity = [ 5,5,5,5,10 ];
-    var k = Math.floor(  Math.random() * 5  ) ;
-    
-    if( beginningOfMatch ){
-        //goal keeper long shot 
-        beginningOfMatch = false;
-         scoreView.showScores( function(that){
-            stage.add( that.layer );
-        }, gameModel.getTeams() );
-        
-        //GoalKeeper long shot
-        gameModel.teamB.goalKeeperLongShot( gameModel.ball,askQuestion );   
-    }
-    else if( CPUScoringProbablity[k] % 2 == 1 ){
-        //Score
-        gameModel.teamB.getNextPlayer().score( teamBGoalPosition, gameModel.ball, 2 );
-        var catchProbability = [5,10,10,5,10];
-            var k = Math.floor(  Math.random() * 5  ) ;
-            if( catchProbability[k] % 2 == 1 ){
-                //Player GoalKeeper defends the ball
-                gameModel.teamA.goalKeeperLongShot( gameModel.ball );
-                askQuestion();
-            }else{
-                //GOAL
-                //Show Goal Animation
-                scoreView.playGoalScoredAnimation( askQuestion );
-                gameModel.teamDidScoreGoal( gameModel.teamB );
-                beginningOfMatch = true;  
-            }
-    }else{
-        //Pass to a random player and ask user question
-        gameModel.teamB.getNextPlayer().passToPlayer( gameModel.teamB.getNextPlayer(), gameModel.ball, 2, askQuestion );
-    }
-    
-    askQuestion();*/
 }
 
 function gameDidFinish()
@@ -239,7 +181,9 @@ function gameDidFinish()
         text += gameModel.teamB.name + " Wins";
     else
         text += "Draw";
-    gameOverView.showAlert( text , clickCallBack );    
+    gameOverView.showAlert( text , clickCallBack );
+    
+    questionAlert = null;
     
     function clickCallBack( that ){
         if( that.shouldStartNewGame() ){ 
