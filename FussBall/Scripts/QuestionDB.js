@@ -54,7 +54,7 @@ QuestionDB.prototype = {
     },
     getTextFromServer: function(){
         var that = this;
-         $.get("http://www.languagenut.com/en/webservice/sections?" + $.param({
+         $.get("http://ww3.languagenut.com/en/webservice/sections?" + $.param({
       //$.get("/FussBall/Scripts/Sections?" + $.param({
       language_uid: this.supportLanguage.toString() + ',' + this.targetLanguage.toString(), 
       from: ((this.unit-1) * 6) + this.section, 
@@ -67,14 +67,12 @@ QuestionDB.prototype = {
 
              case that.supportLanguage.toString():
                   for (var j=0; j<data[i].sections[0].vocab.length; j++) {
-                       that.support[ data[i].sections[0].vocab[j].termId ] =
-                        data[i].sections[0].vocab[j].title;
+                       that.support[ j ] = data[i].sections[0].vocab[j].title;
                   }
                   break;
              case that.targetLanguage.toString() :
                   for (var j=0; j<data[i].sections[0].vocab.length; j++) {
-                   that.target[ data[i].sections[0].vocab[j].termId ] =
-                    data[i].sections[0].vocab[j].title;
+                   that.target[ j ] = data[i].sections[0].vocab[j].title;
                   }
                   break;
 
