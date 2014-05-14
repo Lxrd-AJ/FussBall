@@ -20,8 +20,8 @@ var AlertView = function(){
 
 AlertView.prototype = {
     constructor: AlertView,
-    setUnitAndSection: function( unit, section ){
-        this.questionDB = new QuestionDB( unit, section );    
+    setUnitAndSection: function( unit, section, targetLang ){
+        this.questionDB = new QuestionDB( unit, section, targetLang );    
     },
     instantiate : function( callBack ){
         this.exist = true;
@@ -112,8 +112,9 @@ AlertView.prototype = {
         this.questionImage.height( this.alertRect.height() * 0.55 );
         this.alertLayer.draw();
         //Add the text
-        for( var i = 0 ; i < this.options.length; i++ )
+        for( var i = 0 ; i < this.options.length; i++ ){
             this.options[i].text.setText( questionObjects.options[i] );
+        }
         
         this.feedbackText.text("");
 
