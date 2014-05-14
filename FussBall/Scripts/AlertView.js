@@ -67,7 +67,7 @@ AlertView.prototype = {
             x: xPos,
             y: yPos,
             width: this.alertRect.width() / 5,
-            height: 40,
+            height: 50,
             fill: 'yellow',
             stroke: 'black',
             strokeWidth: 1.5,

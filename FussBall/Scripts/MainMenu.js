@@ -1,5 +1,25 @@
 var MainMenu = function( callback, playGameCallback ){
     this.nuts = ['cn', 'ca', 'de','en','es','fr','ga','ht','id','it','jp','ma','mx','pl','us'];
+    this.targetObjects = [
+        [ 3 , 'French' ],
+        [ 4 , 'Spanish' ],
+        [ 5 , 'Italian' ],
+        [ 6 , 'German' ],
+        [ 7 , 'Mandarin-Pinyin' ],
+        [ 10 , 'Japnese-Kanji' ],
+        [ 11 , 'Japanese-Romanji' ],
+        [ 12 , 'Mandarin-Hanzi' ],
+        [ 14 , 'English' ],
+        [ 16 , 'Arabic-script' ],
+        [ 17 , 'Maori' ],
+        [ 19 , 'Indonesian' ],
+        [ 23 , 'Spanish (Latin America)' ],
+        [ 24 , 'Haitian Creole' ],
+        [ 26 , 'English (US)' ],
+        [ 75 , 'Gaelic' ],
+        [ 134 , 'ww int ww' ],
+        [ 135 , 'Traditional Arabic' ]
+    ];
     this.teamImages = [];
     this.teams = [];
     this.loadTeamImages();
@@ -269,7 +289,7 @@ MainMenu.prototype = {
         var bottomText = new Kinetic.Text({
             x: xPos,
             y: BStepper.y() + 20,
-            width: window.innerWidth / 7,
+            width: window.innerWidth / 6,
             height: window.innerHeight / 9,
             fontSize: 40,
             fill: '#663300',
@@ -287,8 +307,14 @@ MainMenu.prototype = {
             'getCount' : function(){
                 return count;
             },
+            'incrementCount' : function(){
+                count++;
+            },
             'setMax': function( int ){
                 max = int;
+            },
+            'setCount': function( int ){
+                count = int;
             }
         }
     },
@@ -338,8 +364,17 @@ MainMenu.prototype = {
         this.section.setMax(6);
         
         //Target Language
-        this.targetLanguage = this.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.3, this.menuRect.y() + 100 );
-        this.targetLanguage.BottomText.setText('Target Language');
+        var that = this;
+        this.targetLanguage = this.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.243, this.menuRect.y() + 100 );
+        this.targetLanguage.BottomText.setText('Language');
+        this.targetLanguage.setMax( this.targetObjects.length );
+        this.targetLanguage.TopStepper.on( 'click tap', function(){
+            if( that.targetLanguage.getCount() >= that.targetObjects.length )
+                that.targetLanguage.setCount(0);
+            that.targetLanguage.incrementCount();
+            that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
+            that.layer.draw();       
+        });
         
         
         this.menuGroup.add( this.menuRect, playGameButton.button, playGameButton.text, cancelGameButton.button, cancelGameButton.text, this.unit.BottomStepper, this.unit.textBox, this.unit.TopStepper, this.section.TopStepper, this.section.textBox, this.section.BottomStepper, this.unit.BottomText, this.section.BottomText , that.targetLanguage.BottomStepper, that.targetLanguage.BottomText, that.targetLanguage.textBox, that.targetLanguage.TopStepper );
