@@ -105,10 +105,10 @@ AlertView.prototype = {
 
         //Add the image and text
         this.questionImage.setImage( questionObjects.LNImage );
-        this.questionImage.x( this.alertRect.x() * 1.6 );
         this.questionImage.y( this.alertRect.y() * 1.6 );
-        this.questionImage.width( this.alertRect.width() * 0.55 );
-        this.questionImage.height( this.alertRect.height() * 0.55 );
+        this.questionImage.width( this.alertRect.width() * 0.6 );
+        this.questionImage.x( this.alertRect.x() + (this.alertRect.width() / 2) - (this.questionImage.width() / 2));
+        this.questionImage.height( this.questionImage.width() / questionObjects.LNImage.width * questionObjects.LNImage.height );
         this.alertLayer.draw();
         //Add the text
         for( var i = 0 ; i < this.options.length; i++ )
@@ -195,9 +195,7 @@ AlertView.prototype = {
             easing: Kinetic.Easings.EaseOut,
             y: -window.innerHeight,
             onFinish: function(){
-                setTimeout( function(){
-                    that.tempCallBack( that );
-                }, 1500 );
+                that.tempCallBack( that );
             }
         });
         dismissAnimation.play();

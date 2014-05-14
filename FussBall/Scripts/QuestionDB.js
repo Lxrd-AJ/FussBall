@@ -26,12 +26,17 @@ QuestionDB.prototype = {
         
         var key = this.generateRandomNumber();
         randObj.LNImage = this.images[ key ];
-        randObj.targetAnswer = this.target[ key+1 ];
-        randObj.options.push( this.target[ key+1 ] ); //let one correct answer be in
+        randObj.targetAnswer = this.target[ key ];
+        randObj.options.push( this.target[ key ] ); //let one correct answer be in
         
-        for( var i = 0; i < 3; i++ ){
-            var randMan = this.generateRandomNumberWithException( key );
-            randObj.options.push( this.target[ randMan + 1 ] );
+	while( randObj.options.length < 4) {
+            var randomIndex = this.generateRandomNumber( );
+	    var newCandidate = this.target[ randomIndex ];
+		var skip = false;
+	    for (var k=0; k<randObj.options.length; k++) {
+		if (randObj.options[k] == newCandidate) skip = true;
+	    }
+	    if (!skip) randObj.options.push( newCandidate );
         }
         this.shuffle( randObj.options );
         
@@ -48,7 +53,7 @@ QuestionDB.prototype = {
         
         for (var k=0; k<10; k++) {
             img = new Image();
-            img.src = 'http://images.languagenut.com/illustrations/transparent_bg_150/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + (k>=9?'':'0') + (k+1) + '0001.png';
+            img.src = 'http://images.languagenut.com/illustrations/transparent_bg/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + (k>=9?'':'0') + (k+1) + '0001.png';
             this.images.push(img);
         } 
     },
@@ -88,17 +93,6 @@ QuestionDB.prototype = {
         
         var randKey = Math.floor( Math.random() * max );
         return randKey;
-    },
-    generateRandomNumberWithException: function( exceptNumber , max ){
-        var randNum = null;
-        if( !max )
-            max = 10;
-        
-        do{
-            randNum = Math.floor( Math.random() * max );        
-        }while( exceptNumber === randNum )    
-        
-        return randNum;
     },
     shuffle: function(list) {
         for (var j, x, i = list.length; i; j = Math.floor(Math.random() * i), x = list[--               i], list[i] = list[j], list[j] = x);
