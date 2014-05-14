@@ -1,12 +1,12 @@
 /**
  * Created by AJ on 16/04/2014.
  */
-var QuestionDB = function(){
+var QuestionDB = function( unit, section ){
     
     this.supportLanguage = 14; // english
     this.targetLanguage = 3; // french
-    this.unit = 1;
-    this.section = 1;
+    this.unit = unit; //1
+    this.section = section; //1
     this.support = []; //starts from 1 to 11 NOT 0 to 10
     this.target = []; //starts from 1 to 11 NOT 0 to 10
     this.images = []; 
@@ -54,11 +54,11 @@ QuestionDB.prototype = {
     },
     getTextFromServer: function(){
         var that = this;
-         //$.get("http://www.languagenut.com/en/webservice/sections?" + $.param({
-      $.get("/FussBall/Scripts/Sections?" + $.param({
+         $.get("http://www.languagenut.com/en/webservice/sections?" + $.param({
+      //$.get("/FussBall/Scripts/Sections?" + $.param({
       language_uid: this.supportLanguage.toString() + ',' + this.targetLanguage.toString(), 
-      from: (this.unit-1 * 6) + this.section, 
-      to: (that.unit-1 * 6) + that.section }),
+      from: ((this.unit-1) * 6) + this.section, 
+      to: ((that.unit-1) * 6) + that.section }),
       function(response)
       {
            var data = $.parseJSON(response);

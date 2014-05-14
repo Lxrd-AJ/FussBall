@@ -17,6 +17,8 @@ var gameOver = false;
 var gameDurationInMinutes = 3.5;
 var currentGameTimeInSeconds = 0;
 var beginningOfMatch = null;
+this.unit = 0;
+this.section = 0;
 var gameOverView = new GameOverView();
 var positionA = [
     {x:4, y:50},
@@ -90,6 +92,8 @@ function newGame( urlObj ){
 
     gameModel.teamA.arrangePlayers( positionA );
     gameModel.teamB.arrangePlayers( positionB );
+    
+    questionAlert.setUnitAndSection( urlObj.UnitSectionID.unit, urlObj.UnitSectionID.section );
 }
 
 

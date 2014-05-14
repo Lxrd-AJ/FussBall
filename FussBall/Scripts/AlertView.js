@@ -8,7 +8,7 @@ var AlertView = function(){
     this.font = "Nunito";
     this.alertRect = new Kinetic.Rect();
     this.alertGroup = new Kinetic.Group();
-    this.questionDB = new QuestionDB();
+    //this.questionDB = new QuestionDB();
     this.alertShouldShow = true;
     this.exist = false;
     this.answerCorrect = null;
@@ -20,6 +20,9 @@ var AlertView = function(){
 
 AlertView.prototype = {
     constructor: AlertView,
+    setUnitAndSection: function( unit, section ){
+        this.questionDB = new QuestionDB( unit, section );    
+    },
     instantiate : function( callBack ){
         this.exist = true;
         this.alertGroup = new Kinetic.Group({
