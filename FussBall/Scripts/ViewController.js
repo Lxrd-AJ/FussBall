@@ -61,17 +61,21 @@ function newGame( urlObj ){
     //create the first team
     var obj = getNutURLAndName( urlObj.teamA );
     gameModel.teamA = new Team( obj.url, obj.name, teamAGoalPosition );
+	var numberOfPlayersInstantiated = 0;
     gameModel.teamA.instantiate( function( player ) {
+	numberOfPlayersInstantiated++;
         stage.add(player.layer);
         player.circle.setDraggable(true);
+        if (numberOfPlayersInstantiated == 22) onFinish();
     });
     //second team
     var obj = getNutURLAndName( urlObj.teamB );
     gameModel.teamB = new Team( obj.url, obj.name, teamBGoalPosition );
     gameModel.teamB.instantiate( function( player ) {
+	numberOfPlayersInstantiated++;
         stage.add( player.layer );
         player.circle.draggable(true);
-        onFinish();
+        if (numberOfPlayersInstantiated == 22) onFinish();
     });
     gameModel.setTeams( gameModel.teamA, gameModel.teamB );
     
