@@ -6,7 +6,7 @@ var MainMenu = function( callback, playGameCallback ){
         [ 5 , 'Italian' ],
         [ 6 , 'German' ],
         [ 7 , 'Mandarin-Pinyin' ],
-        [ 10 , 'Japnese-Kanji' ],
+        [ 10 , 'Japanese-Kanji' ],
         [ 11 , 'Japanese-Romanji' ],
         [ 12 , 'Mandarin-Hanzi' ],
         [ 14 , 'English' ],
@@ -410,7 +410,7 @@ MainMenu.prototype = {
                 onFinishCallBack( {
                     'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
                     'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
-                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetLanguage.getCount() }            
+                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetObjects[that.targetLanguage.getCount()][0] }            
                 });
             }//end 
         });
