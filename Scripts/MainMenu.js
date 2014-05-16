@@ -1,4 +1,6 @@
 var MainMenu = function( callback, playGameCallback ){
+    this.ronin = new Ronin();
+    
     this.nuts = ['cn', 'ca', 'de','en','es','fr','ga','ht','id','it','jp','ma','mx','pl','us'];
     this.targetObjects = [
         [ 3 , 'French' ],
@@ -40,23 +42,10 @@ var MainMenu = function( callback, playGameCallback ){
         y:0
     });
     
-    this.menuRect = new Kinetic.Rect({
-        x: window.innerWidth,
-        y: window.innerHeight * 0.1,
-        width: window.innerWidth * 0.6,
-        height: window.innerHeight * 0.8,
-        fill: '#F0F0F0',
-        stroke: 'orange',
-        strokeWidth: 5,
-        cornerRadius: 15
-    });
-    this.menuGroup.add( this.menuRect );
-    
-    
     this.layer.add( this.menuGroup );
     callback( this );  
     
-    this.showMenu();
+    this.showInstructionsMenu();
 };
 
 MainMenu.prototype = {
@@ -73,6 +62,33 @@ MainMenu.prototype = {
             this.teamImages.push(img);
         } 
     },
+    showInstructionsMenu : function(){
+        //Remove all elements on screen
+        this.menuGroup.destroyChildren();
+        
+        //create the menu
+        var instructionsMenu = this.ronin.createLNRect( window.innerWidth * 0.2, window.innerHeight * 0.1 );
+        var Titletext = this.ronin.createLNText( window.innerWidth * 0.4, window.innerHeight * 0.15 );
+        Titletext.setText("LanguageNut World Cup");
+        Titletext.fill("orange");
+        
+        var smallText = this.ronin.createLNText( window.innerWidth * 0.385, window.innerHeight * 0.20 );
+        smallText.setText("\tThe World Cup is nearly here.\n Use your language skills to beat your friends!");
+        smallText.fontSize(15);
+        smallText.align("center");
+        
+        var sectionHeaderText = this.ronin.createLNText( window.innerWidth * 0.45, window.innerHeight * 0.30 );
+        sectionHeaderText.setText("Instructions");
+        
+        var sectionText = this.ronin.createLNText( window.innerWidth * 0.22, window.innerHeight * 0.40 );
+        sectionText.fontSize(18);
+        sectionText.fill("#7A6C01");
+        sectionText.setText("• Find a friend to play against, or form two teams to play on a whiteboard\n\n• Each side gets 10 seconds to answer as many questions as they can. \nEach correct answer passes the ball. After 4 passes you can score a goal.\n\n• If you get a question wrong, or you score a goal, play passes to \nthe other team\n\n• The game ends after 1 minute.");
+        
+        //Add the objects 
+        this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText );
+        this.layer.draw();
+    },
     showMenu: function(){
         var that = this;
         that.loadMenuContents();
@@ -88,6 +104,18 @@ MainMenu.prototype = {
         tween.play();
     },
     loadMenuContents: function(){
+        this.menuRect = new Kinetic.Rect({
+            x: window.innerWidth,
+            y: window.innerHeight * 0.1,
+            width: window.innerWidth * 0.6,
+            height: window.innerHeight * 0.8,
+            fill: '#F0F0F0',
+            stroke: 'orange',
+            strokeWidth: 5,
+            cornerRadius: 15
+        });
+        this.menuGroup.add( this.menuRect );
+        
         //Team choosing
         var offset = window.innerWidth * 0.4;
         this.teamA = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + 80,this.menuRect.y() + 50 ,'Team A' );
@@ -242,12 +270,12 @@ MainMenu.prototype = {
         var max = 0;
         var Text = new Kinetic.Text({
             x: xPos,
-            y: yPos + 20,
-            width: window.innerWidth / 7,
-            height: window.innerHeight / 9,
+            y: yPos ,
+            //width: window.innerWidth / 7,
+            //height: window.innerHeight / 9,
             fontSize: 20,
             fill: 'black',
-            padding: 10,
+            padding: 20,
             align: 'center',
             fontFamily: 'Nunito',
             text: count
@@ -289,15 +317,16 @@ MainMenu.prototype = {
         var bottomText = new Kinetic.Text({
             x: xPos,
             y: BStepper.y() + 20,
-            width: window.innerWidth / 6,
-            height: window.innerHeight / 9,
+            //width: window.innerWidth / 6,
+            //height: window.innerHeight / 9,
             fontSize: 40,
             fill: '#663300',
-            padding: 10,
+            //padding: 10,
             align: 'center',
             fontFamily: 'Nunito',
             text: 'Unit'
         });
+        bottomText.x( bottomText.x() - bottomText.width()/2 );
         
         return{
             'textBox' : Text,
@@ -341,7 +370,6 @@ MainMenu.prototype = {
             x: -window.innerWidth * window.innerWidth,
             onFinish: function(){
                 tween.reverse();
-                that.stopLoopingSound();
             }//end 
         });
         tween.play();    
@@ -373,6 +401,7 @@ MainMenu.prototype = {
         var that = this;
         this.targetLanguage = this.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.243, this.menuRect.y() + 100 );
         this.targetLanguage.BottomText.setText('Language');
+        this.targetLanguage.textBox.x( this.targetLanguage.textBox.x() - this.targetLanguage.textBox.width()/2);
         that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
         this.targetLanguage.setMax( this.targetObjects.length );
         this.targetLanguage.TopStepper.off('click tap');

@@ -64,9 +64,8 @@ QuestionDB.prototype = {
     },
     getTextFromServer: function(){
         var that = this;
-        $.get("http://ww3.languagenut.com/en/webservice/sections?" + $.param({
-      //$.get("/FussBall/Scripts/Sections?" + $.param({
-
+        //$.get("http://ww3.languagenut.com/en/webservice/sections?" + $.param({
+      $.get("/Scripts/Sections?" + $.param({
       language_uid: this.supportLanguage.toString() + ',' + this.targetLanguage.toString(), 
       from: ((this.unit-1) * 6) + this.section, 
       to: ((that.unit-1) * 6) + that.section }),

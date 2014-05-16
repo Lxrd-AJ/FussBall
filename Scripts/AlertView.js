@@ -33,7 +33,7 @@ AlertView.prototype = {
         this.alertRect = new Kinetic.Rect({
             x: window.innerWidth * 0.2,
             width: window.innerWidth * 0.6,
-            height: window.innerHeight * 0.65,
+            height: window.innerHeight * 0.75,
             fill: 'yellow',
             stroke: 'black',
             strokeWidth: 2.5,

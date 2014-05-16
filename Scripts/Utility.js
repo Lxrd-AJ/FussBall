@@ -48,7 +48,7 @@ Timer.prototype = {
             node: this.timerGroup,
             duration: 1,
             easing: Kinetic.Easings.Linear,
-            y: this.timerGroup.y() * -0.2,
+            y: this.timerGroup.y() * -0.1,
             x: window.innerWidth * -0.0,
             onFinish: function(){
                 
