@@ -79,7 +79,6 @@ AlertView.prototype = {
             x: xPos,
             y: yPos,
             width: rect.width(),
-            //height: rect.height(),
             fontSize: 20,
             fill: 'black',
             padding: 10,
@@ -87,7 +86,6 @@ AlertView.prototype = {
             fontFamily: 'Nunito',
             opacity: 1
         });
-        rect.height( text.height() );
         
         this.onClick( rect, this.didClickButtonAtRect );
         this.onClick( text, this.didClickButtonAtRect );
@@ -116,6 +114,7 @@ AlertView.prototype = {
         //Add the text
         for( var i = 0 ; i < this.options.length; i++ ){
             this.options[i].text.setText( questionObjects.options[i] );
+            this.options[i].button.height( this.options[i].text.height() );
             this.options[i].text.align('center');
         }
         
