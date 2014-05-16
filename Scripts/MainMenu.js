@@ -410,8 +410,7 @@ MainMenu.prototype = {
                 onFinishCallBack( {
                     'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
                     'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
-                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetLanguage.getCount() }
-                    
+                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetLanguage.getCount() }            
                 });
             }//end 
         });
