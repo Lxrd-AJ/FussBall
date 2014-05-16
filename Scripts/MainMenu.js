@@ -310,11 +310,17 @@ MainMenu.prototype = {
             'incrementCount' : function(){
                 count++;
             },
+            'decrementCount' : function(){
+                count--;
+            },
             'setMax': function( int ){
                 max = int;
             },
             'setCount': function( int ){
                 count = int;
+            },
+            'getMax': function(){
+                return max;
             }
         }
     },
@@ -367,13 +373,23 @@ MainMenu.prototype = {
         var that = this;
         this.targetLanguage = this.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.243, this.menuRect.y() + 100 );
         this.targetLanguage.BottomText.setText('Language');
+        that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
         this.targetLanguage.setMax( this.targetObjects.length );
+        this.targetLanguage.TopStepper.off('click tap');
         this.targetLanguage.TopStepper.on( 'click tap', function(){
+            that.targetLanguage.incrementCount();
             if( that.targetLanguage.getCount() >= that.targetObjects.length )
                 that.targetLanguage.setCount(0);
-            that.targetLanguage.incrementCount();
             that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
             that.layer.draw();       
+        });
+        this.targetLanguage.BottomStepper.off('click tap');
+        this.targetLanguage.BottomStepper.on('click tap', function(){
+            if( that.targetLanguage.getCount() < 1 )
+                that.targetLanguage.setCount( that.targetObjects.length );
+            that.targetLanguage.decrementCount();
+            that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
+            that.layer.draw();
         });
         
         
@@ -394,7 +410,7 @@ MainMenu.prototype = {
                 onFinishCallBack( {
                     'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
                     'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
-                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetLanguage() }
+                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetLanguage.getCount() }
                     
                 });
             }//end 

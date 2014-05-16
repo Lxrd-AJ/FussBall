@@ -20,7 +20,7 @@ var AlertView = function(){
 
 AlertView.prototype = {
     constructor: AlertView,
-    setUnitAndSection: function( unit, section, targetLang ){
+    setUnitSectionAndTarget: function( unit, section, targetLang ){
         this.questionDB = new QuestionDB( unit, section, targetLang );    
     },
     instantiate : function( callBack ){
@@ -33,7 +33,7 @@ AlertView.prototype = {
         this.alertRect = new Kinetic.Rect({
             x: window.innerWidth * 0.2,
             width: window.innerWidth * 0.6,
-            height: window.innerHeight * 0.5,
+            height: window.innerHeight * 0.65,
             fill: 'yellow',
             stroke: 'black',
             strokeWidth: 2.5,
@@ -51,7 +51,7 @@ AlertView.prototype = {
         
         //Create 4 option rects and add to the group
         var x = this.alertRect.x() * 1.07;
-        var y = this.alertRect.y() + this.alertRect.height() - 50;
+        var y = this.alertRect.y() + (this.alertRect.height() * 0.8);
         for( var i = 0; i < this.options.length; i++, x+=this.alertRect.width() / 4  ){
             this.options[i] = this.createOptionObjectWithButtonAndText( x, y );
             this.alertGroup.add( this.options[i].button );
@@ -67,11 +67,11 @@ AlertView.prototype = {
             x: xPos,
             y: yPos,
             width: this.alertRect.width() / 5,
-            height: 50,
+            height: 60,
             fill: 'yellow',
             stroke: 'black',
             strokeWidth: 1.5,
-            opacity: 0.3,
+            opacity: 1,
             cornerRadius: 10
         });
         
@@ -79,12 +79,15 @@ AlertView.prototype = {
             x: xPos,
             y: yPos,
             width: rect.width(),
-            fontSize: 15,
+            //height: rect.height(),
+            fontSize: 20,
             fill: 'black',
             padding: 10,
             align: 'center',
-            fontFamily: 'Nunito'
+            fontFamily: 'Nunito',
+            opacity: 1
         });
+        rect.height( text.height() );
         
         this.onClick( rect, this.didClickButtonAtRect );
         this.onClick( text, this.didClickButtonAtRect );
@@ -105,7 +108,7 @@ AlertView.prototype = {
 
         //Add the image and text
         this.questionImage.setImage( questionObjects.LNImage );
-        this.questionImage.y( this.alertRect.y() * 1.6 );
+        this.questionImage.y( this.alertRect.y()  );
         this.questionImage.width( this.alertRect.width() * 0.6 );
         this.questionImage.x( this.alertRect.x() + (this.alertRect.width() / 2) - (this.questionImage.width() / 2));
         this.questionImage.height( this.questionImage.width() / questionObjects.LNImage.width * questionObjects.LNImage.height );
@@ -113,6 +116,7 @@ AlertView.prototype = {
         //Add the text
         for( var i = 0 ; i < this.options.length; i++ ){
             this.options[i].text.setText( questionObjects.options[i] );
+            this.options[i].text.align('center');
         }
         
         this.feedbackText.text("");
@@ -127,7 +131,7 @@ AlertView.prototype = {
                 node: this.alertGroup,
                 duration: 0.5,
                 easing: Kinetic.Easings.EaseIn,
-                y: window.innerHeight * 0.20,
+                y: window.innerHeight * 0.12,
                 onFinish: function(){
                     //start the timer
                     if( !that.timer ){

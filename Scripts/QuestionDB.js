@@ -1,14 +1,14 @@
 /**
  * Created by AJ on 16/04/2014.
  */
-var QuestionDB = function( unit, section ){
+var QuestionDB = function( unit, section , target ){
     
     this.supportLanguage = 14; // english
-    this.targetLanguage = 3; // french
+    this.targetLanguage = target; 
     this.unit = unit; //1
     this.section = section; //1
-    this.support = []; //starts from 1 to 11 NOT 0 to 10
-    this.target = []; //starts from 1 to 11 NOT 0 to 10
+    this.support = []; 
+    this.target = []; 
     this.images = []; 
     this.loadImages();
     this.getTextFromServer();
@@ -29,14 +29,19 @@ QuestionDB.prototype = {
         randObj.targetAnswer = this.target[ key ];
         randObj.options.push( this.target[ key ] ); //let one correct answer be in
         
-	while( randObj.options.length < 4) {
-            var randomIndex = this.generateRandomNumber( );
-	    var newCandidate = this.target[ randomIndex ];
-		var skip = false;
-	    for (var k=0; k<randObj.options.length; k++) {
-		if (randObj.options[k] == newCandidate) skip = true;
-	    }
-	    if (!skip) randObj.options.push( newCandidate );
+        if( this.target.length < 10 )
+        {
+            console.log("Connection not established");   
+        }else{
+            while( randObj.options.length < 4) {
+                var randomIndex = this.generateRandomNumber( );
+            var newCandidate = this.target[ randomIndex ];
+            var skip = false;
+            for (var k=0; k<randObj.options.length; k++) {
+            if (randObj.options[k] == newCandidate) skip = true;
+            }
+            if (!skip) randObj.options.push( newCandidate );
+            }
         }
         this.shuffle( randObj.options );
         
@@ -60,8 +65,7 @@ QuestionDB.prototype = {
     getTextFromServer: function(){
         var that = this;
          //$.get("http://ww3.languagenut.com/en/webservice/sections?" + $.param({
-      $.get("/FussBall/Scripts/Sections?" + $.param({
-
+      $.get("/Scripts/Sections?" + $.param({
       language_uid: this.supportLanguage.toString() + ',' + this.targetLanguage.toString(), 
       from: ((this.unit-1) * 6) + this.section, 
       to: ((that.unit-1) * 6) + that.section }),

@@ -97,7 +97,7 @@ function newGame( urlObj ){
     gameModel.teamA.arrangePlayers( positionA );
     gameModel.teamB.arrangePlayers( positionB );
     
-    questionAlert.setUnitAndSection( urlObj.UnitSectionID.unit, urlObj.UnitSectionID.section );
+    questionAlert.setUnitSectionAndTarget( urlObj.UnitSectionID.unit, urlObj.UnitSectionID.section, urlObj.UnitSectionID.targetLang );
 }
 
 
