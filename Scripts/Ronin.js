@@ -30,5 +30,27 @@ Ronin.prototype = {
             padding: 1
         });
         return text;
+    },
+    
+    createLNButton: function( xPos, yPos ){
+        var rect = new Kinetic.Rect({
+            x: xPos,
+            y: yPos,
+            width: 180,
+            height: 40,
+            fill: 'yellow',
+            stroke: 'black',
+            strokeWidth: 1.5,
+            cornerRadius: 10
+        });
+        var text = this.createLNText( xPos, yPos );
+        text.width( rect.width() );
+        text.height( rect.height() );
+        text.padding( 10 );
+        
+        return {
+            'button' : rect,
+            'text' : text
+        }
     }
 };

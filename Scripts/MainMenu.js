@@ -63,6 +63,7 @@ MainMenu.prototype = {
         } 
     },
     showInstructionsMenu : function(){
+        var context = this;
         //Remove all elements on screen
         this.menuGroup.destroyChildren();
         
@@ -83,14 +84,20 @@ MainMenu.prototype = {
         var sectionText = this.ronin.createLNText( window.innerWidth * 0.22, window.innerHeight * 0.40 );
         sectionText.fontSize(18);
         sectionText.fill("#7A6C01");
-        sectionText.setText("• Find a friend to play against, or form two teams to play on a whiteboard\n\n• Each side gets 10 seconds to answer as many questions as they can. \nEach correct answer passes the ball. After 4 passes you can score a goal.\n\n• If you get a question wrong, or you score a goal, play passes to \nthe other team\n\n• The game ends after 1 minute.");
+        sectionText.setText("• Find a friend to play against, or form two teams to play on a whiteboard\n\n• Each side gets 10 seconds to answer as many questions as they can. \nEach correct answer passes the ball. After 4 passes you can score a goal.\n\n• If you get a question wrong, or you score a goal, play passes to \nthe other team\n\n• The game ends after 1 minute\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t It's not rocket science.");
+        
+        var playButton = this.ronin.createLNButton( window.innerWidth * 0.45, window.innerHeight * 0.80 );
+        playButton.text.setText("\t\t\t\t\t Got it!!");
+        playButton.text.on( 'click tap', function(){
+            context.showMenu( context );
+        });
         
         //Add the objects 
-        this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText );
+        this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText, playButton.button, playButton.text );
         this.layer.draw();
     },
-    showMenu: function(){
-        var that = this;
+    showMenu: function( context ){
+        var that = context;
         that.loadMenuContents();
         var tween = new Kinetic.Tween({
             node: this.menuGroup,
@@ -355,10 +362,9 @@ MainMenu.prototype = {
     },
     didClickButton: function( button  ){
         if( button.text() === "Play Game" ){
-            //this.dismissMenu( this.playGameFunc );
             this.allowUserChooseSection();
         }else if( button.text() === "Start Game" )
-            this.dismissMenu( this.playGameFunc )
+            this.dismissMenu( this.playGameFunc );
              
     },
     allowUserChooseSection: function(){
