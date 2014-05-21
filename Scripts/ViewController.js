@@ -130,9 +130,7 @@ function askQuestion(){
                 determineNextPlayer(false);
                 gameModel.currentPlayer().resetCount();
             }
-        }
-        
-      
+        }      
     }else
         gameDidFinish();
 }
@@ -140,8 +138,11 @@ function askQuestion(){
 function determineNextPlayer( bool ){
     if( bool )
         playPlayerTurn( gameModel.currentPlayer() );
-    else
-        playPlayerTurn( gameModel.nextPlayer() );
+    else{
+        var team = gameModel.nextPlayer();
+        playPlayerTurn( team );
+    }
+        
 }
 
 function playPlayerTurn( currentTeam ){
@@ -154,8 +155,8 @@ function playPlayerTurn( currentTeam ){
     questionAlert.changeColor(bool);
     
     if( currentTeam.answerCount > 4 ){
-        currentTeam = gameModel.nextPlayer();
         currentTeam.resetCount();
+        currentTeam = gameModel.nextPlayer();
     }
     
     if( beginningOfMatch ){
@@ -188,7 +189,7 @@ function gameDidFinish()
     else if( gameModel.teamA.score < gameModel.teamB.score )
         text += gameModel.teamB.name + " Wins";
     else
-        text += "Draw";
+        text += "Draw!!";
     gameOverView.showAlert( text , clickCallBack );
     
     questionAlert = null;

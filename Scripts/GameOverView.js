@@ -23,7 +23,7 @@ GameOverView.prototype = {
             y: window.innerHeight * 0.1,
             width: window.innerWidth * 0.6,
             height: window.innerHeight * 0.5,
-            fill: 'white',
+            fill: '#E6E6E6',
             stroke: 'orange',
             strokeWidth: 3
         });
@@ -34,7 +34,8 @@ GameOverView.prototype = {
             text: this.gameOverText,
             fontFamily: this.fontFamily,
             fontSize : 70,
-            fill: 'red'
+            fill: '#0099FF',
+            align: 'center'
         });
         
         this.cancelGameRect = new Kinetic.Rect({
