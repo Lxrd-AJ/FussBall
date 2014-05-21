@@ -52,5 +52,20 @@ Ronin.prototype = {
             'button' : rect,
             'text' : text
         }
+    },
+    
+    createLNImage: function( xPos, yPos, src, layerRef, group ){
+        var img = new Image();
+        var kImage = new Kinetic.Image();
+        img.onload = function(){
+            kImage = new Kinetic.Image({
+                image: img,
+                x: xPos,
+                y: yPos
+            }); 
+            group.add( kImage );
+            layerRef.draw();
+        };
+        img.src = src;
     }
 };

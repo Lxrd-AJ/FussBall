@@ -33,7 +33,7 @@ GameOverView.prototype = {
             y: this.gameOverRect.y() + this.gameOverRect.width() * 0.1,
             text: this.gameOverText,
             fontFamily: this.fontFamily,
-            fontSize : 70,
+            fontSize : 50,
             fill: '#0099FF',
             align: 'center'
         });

@@ -92,6 +92,9 @@ MainMenu.prototype = {
             context.showMenu( context );
         });
         
+        //Image on the top left
+        var nutImage = this.ronin.createLNImage(window.innerWidth * 0.23, window.innerHeight * 0.1,'http://www.languagenut.com/images/nuts/150/nut.png', this.layer, this.menuGroup );
+        
         //Add the objects 
         this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText, playButton.button, playButton.text );
         this.layer.draw();
