@@ -29,8 +29,8 @@ GameOverView.prototype = {
         });
         this.gameOverRect.cornerRadius(10);
         this.gameOverKineticText = new Kinetic.Text({
-            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.3,
-            y: this.gameOverRect.y() + this.gameOverRect.width() * 0.1,
+            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.5,
+            y: this.gameOverRect.y() + this.gameOverRect.width() * 0.15,
             text: this.gameOverText,
             fontFamily: this.fontFamily,
             fontSize : 50,

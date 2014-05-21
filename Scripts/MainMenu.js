@@ -22,6 +22,181 @@ var MainMenu = function( callback, playGameCallback ){
         [ 134 , 'ww int ww' ],
         [ 135 , 'Traditional Arabic' ]
     ];
+    
+    this.sections = [
+        ['1', 'Languages'],
+        ['2', 'Ways of greeting'],
+        ['3', 'Names'],
+        ['4', 'Family members'],
+        ['5', 'Numbers up to 10'],
+        ['6', 'Age indicators'],
+        ['7', 'The Farmer in his Den'],
+        ['8', 'Numbers 1 to 10'],
+        ['9', 'I love to play (sentence builder)'],
+        ['10', 'Conkers'],
+        ['11', 'Numbers 11 to 20'],
+        ['12', 'Fun games'],
+        ['13', 'Things I do well'],
+        ['14', 'Birthday Party'],
+        ['15', 'Games at my party'],
+        ['16', 'Invitation to a Birthday'],
+        ['17', 'The Olympics'],
+        ['18', 'The Olympics 2'],
+        ['19', 'My body'],
+        ['20', 'Colours'],
+        ['21', 'Facial Features'],
+        ['22', 'Beastly Body Parts'],
+        ['23', 'Hair and Eye Colours'],
+        ['24', 'How we look (sentence building)'],
+        ['25', 'The four friends'],
+        ['26', 'Ten animals'],
+        ['27', 'Animal and Colours '],
+        ['28', 'Animal Magic (animals doing things)'],
+        ['29', 'Animal Chorus (general support)'],
+        ['30', 'Animals on show: sentence builder'],
+        ['31', 'In the veg garden (veg and opinions)'],
+        ['32', 'Life cycle of a plant'],
+        ['33', 'Jack and the Beanstalk (key words)'],
+        ['34', 'Retelling the story (more key words)'],
+        ['35', 'At the Market (fruit)'],
+        ['36', 'Buying Vegetables'],
+        ['37', 'How I go to school'],
+        ['38', 'Where different languages are spoken'],
+        ['39', 'Weather'],
+        ['40', 'On our travels - where and how'],
+        ['41', 'Travel arrangements (days)'],
+        ['42', 'Planning a trip (key things)'],
+        ['43', 'Toy Shop (toys and opinions)'],
+        ['44', ' Likes and dislikes (opinions)'],
+        ['45', 'Numbers 21 - 30'],
+        ['46', 'Birthday Presents (wish list)'],
+        ['47', 'Expressing preferences '],
+        ['48', 'Toy advert (comparing things)'],
+        ['49', 'Sleeping Beauty (key words)'],
+        ['50', 'Giving instructions'],
+        ['51', 'Counting in multiples of 10 to 100'],
+        ['52', 'Descriptions (adjectives)'],
+        ['53', 'Setting the scene: key words and phrases'],
+        ['54', 'Tell me a story! (verbs and opinons)'],
+        ['55', 'Talking sports (10 sports)'],
+        ['56', 'Healthy eating'],
+        ['57', 'More healthy eating'],
+        ['58', 'Diary of activities (days...)'],
+        ['59', 'Comparing activities with a friend'],
+        ['60', 'Making a poster: what you need'],
+        ['61', 'Meet 10 animals '],
+        ['62', 'Describing animals with colours'],
+        ['63', 'What\'s the time? (Telling the time)'],
+        ['64', 'Animal descriptions    (10 adjectives)'],
+        ['65', 'Animal habitats'],
+        ['66', 'Carnival time             (Qs and As)'],
+        ['67', 'What\'s the weather like?'],
+        ['68', 'Numbers 31 - 40'],
+        ['69', 'What temperature is it?'],
+        ['70', 'The Wind and the Sun'],
+        ['71', 'Dressing for the weather (clothes)'],
+        ['72', 'Weather reports'],
+        ['73', 'Packed lunch'],
+        ['74', 'Likes and dislikes of food'],
+        ['75', 'Good for your health'],
+        ['76', 'Celebrations'],
+        ['77', 'Food for a celebration'],
+        ['78', 'La Pizza '],
+        ['79', 'Types of music'],
+        ['80', 'Expressing opinions'],
+        ['81', 'Buying a CD'],
+        ['82', 'musical instruments'],
+        ['83', 'It’s a rap! near future of \'to play\''],
+        ['84', 'Music contest: types of body percussion'],
+        ['85', 'Alphabet A - J'],
+        ['86', 'Local Features'],
+        ['87', 'Journey to school: Directions'],
+        ['88', 'More journeys to school'],
+        ['89', 'Saying that you don’t understand'],
+        ['90', 'Preparing a short presentation'],
+        ['91', 'Beach scene'],
+        ['92', 'Bringing a picture to life'],
+        ['93', 'Writing a description: adjectives'],
+        ['94', 'Comparing beaches: adjectives'],
+        ['95', 'Class poem'],
+        ['96', 'Beach scene items'],
+        ['97', 'Months and seasons'],
+        ['98', 'Weather and seasons'],
+        ['99', 'Joining in a poem (spring vocabulary)'],
+        ['100', 'Seasonal colours (opposites)'],
+        ['101', 'Conscience Alley (seasons and colours)'],
+        ['102', 'Preparing a performance: connectives'],
+        ['103', 'Introducing the planets'],
+        ['104', 'Describing the planets: some adjectives'],
+        ['105', 'Writing about a planet: sentence building'],
+        ['106', 'Distances from the sun: sentence building'],
+        ['107', 'Making compound sentences'],
+        ['108', 'Planetary features'],
+        ['109', 'What’s the time? (half past the hour)'],
+        ['110', 'Places in our school'],
+        ['111', 'Tour of our school'],
+        ['112', 'School subjects'],
+        ['113', 'Breaktime (past tense)'],
+        ['114', 'Breaktime diaries '],
+        ['115', 'Continents'],
+        ['116', 'World Rivers '],
+        ['117', 'Language detectives: river vocab'],
+        ['118', 'Landscape features'],
+        ['119', 'The journey of the Congo: features'],
+        ['120', 'Explorers (future weather)'],
+        ['121', 'Café vocab'],
+        ['122', '\'The Café Song’ '],
+        ['123', 'What’s on the menu? Past tense'],
+        ['124', 'Ice cream flavours'],
+        ['125', 'Making a milkshake'],
+        ['126', 'Café theatre (silly food)'],
+        ['127', 'Places in a town centre'],
+        ['128', 'That’s a date: 1910 - 2000'],
+        ['129', 'Then and now: places in town past and present'],
+        ['130', 'Find the difference: describe places in town'],
+        ['131', 'Compare and contrast: \'to be\' imperfect'],
+        ['132', 'A guide for tourists: key vocab'],
+        ['133', 'Theme park rides '],
+        ['134', 'Creating a theme park Qs & As'],
+        ['135', 'past tense of \'to go\''],
+        ['136', 'Ghost train characters'],
+        ['137', 'What did you see and hear? (past phrases)'],
+        ['138', 'Writing (past tense sentences)'],
+        ['139', 'Newspaper Column Types'],
+        ['140', 'News games: adjectives'],
+        ['141', 'In my opinion (opinion phrases)'],
+        ['142', 'In the paper'],
+        ['143', 'Ask me again (Qs and As)'],
+        ['144', 'Here I am! (connectives)'],
+    ];
+
+    this.units = [
+        ['1', 'Me, myself and I'],
+        ['2', 'Singing and playing'],
+        ['3', 'Party Time'],
+        ['4', 'How I Look'],
+        ['5', 'The Four Friends Story'],
+        ['6', 'Growing Things'],
+        ['7', 'All Aboard'],
+        ['8', 'Pocket Money'],
+        ['9', 'Tell me a Story!'],
+        ['10', 'Our Sporting Lives'],
+        ['11', 'Animals\' Carnival'],
+        ['12', 'What\'s the Weather?'],
+        ['13', 'Healthy Eating'],
+        ['14', 'I am the Music Man'],
+        ['15', 'On the way to school'],
+        ['16', 'Beach scene'],
+        ['17', 'The Four Seasons'],
+        ['18', 'The Planets'],
+        ['19', 'Our School'],
+        ['20', 'Our world'],
+        ['21', 'Creating a cafe'],
+        ['22', 'Then and now'],
+        ['23', 'At the theme park'],
+        ['24', 'What\'s in the news?'],
+    ];
+    
     this.teamImages = [];
     this.teams = [];
     this.loadTeamImages();
@@ -62,7 +237,7 @@ MainMenu.prototype = {
             this.teamImages.push(img);
         } 
     },
-    showInstructionsMenu : function(){
+    showInstructionsMenu : function( anim ){
         var context = this;
         //Remove all elements on screen
         this.menuGroup.destroyChildren();
@@ -94,10 +269,14 @@ MainMenu.prototype = {
         
         //Image on the top left
         var nutImage = this.ronin.createLNImage(window.innerWidth * 0.23, window.innerHeight * 0.1,'http://www.languagenut.com/images/nuts/150/nut.png', this.layer, this.menuGroup );
+        var ballImage = this.ronin.createLNImage(window.innerWidth * 0.32, window.innerHeight * 0.28,'Resources/ballTransparent.png', this.layer, this.menuGroup );
+        ballImage.width( 50 );
+        ballImage.height( 50 );
         
         //Add the objects 
         this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText, playButton.button, playButton.text );
         this.layer.draw();
+        
     },
     showMenu: function( context ){
         var that = context;
@@ -151,8 +330,7 @@ MainMenu.prototype = {
         this.menuGroup.add( cancelGameButton.button );
         this.menuGroup.add( cancelGameButton.text );
 
-        this.layer.draw();
-        
+        this.layer.draw();      
     },
     createImageBoxWithTopTextAndStepper : function( xPos, yPos, text ){
         var stepper = 0;
@@ -266,115 +444,29 @@ MainMenu.prototype = {
         text.on( 'click tap', function(){
             that.didClickButton( text );    
         });
-        
-        
+         
         return{
             'button' : rect,
             'text' : text
         }
     },
-    createLabelWithStepperAndText: function( xPos, yPos )
-    {
-        var that = this;
-        var count = 1;
-        var max = 0;
-        var Text = new Kinetic.Text({
-            x: xPos,
-            y: yPos ,
-            //width: window.innerWidth / 7,
-            //height: window.innerHeight / 9,
-            fontSize: 20,
-            fill: 'black',
-            padding: 20,
-            align: 'center',
-            fontFamily: 'Nunito',
-            text: count
-        });
-        
-        var TStepper = new Kinetic.RegularPolygon({
-            x: xPos + Text.width()/2,
-            y: yPos,
-            sides: 3,
-            radius: 20,
-            fill: 'yellow',
-            stroke: 'black',
-            strokeWidth: 2
-        });
-        TStepper.on( 'click tap', function(){
-            if( count >= max )
-                count = 0;
-            count++;
-            Text.text( count );
-            that.layer.draw();
-        });  
-        var BStepper = new Kinetic.RegularPolygon({
-            x: TStepper.x(),
-            y: Text.y() + Text.height(),
-            sides: 3,
-            radius: 20,
-            fill: 'yellow',
-            stroke: 'black',
-            strokeWidth: 2,
-            rotation: 180
-        });
-        BStepper.on( 'click tap', function(){
-            count--;
-            if( count < 1 )
-                count = max;
-            Text.text( count );
-            that.layer.draw();
-        });
-        var bottomText = new Kinetic.Text({
-            x: xPos,
-            y: BStepper.y() + 20,
-            //width: window.innerWidth / 6,
-            //height: window.innerHeight / 9,
-            fontSize: 40,
-            fill: '#663300',
-            //padding: 10,
-            align: 'center',
-            fontFamily: 'Nunito',
-            text: 'Unit'
-        });
-        bottomText.x( bottomText.x() - bottomText.width()/2 );
-        
-        return{
-            'textBox' : Text,
-            'TopStepper' : TStepper,
-            'BottomStepper' : BStepper,
-            'BottomText' : bottomText,
-            'getCount' : function(){
-                return count;
-            },
-            'incrementCount' : function(){
-                count++;
-            },
-            'decrementCount' : function(){
-                count--;
-            },
-            'setMax': function( int ){
-                max = int;
-            },
-            'setCount': function( int ){
-                count = int;
-            },
-            'getMax': function(){
-                return max;
-            }
-        }
-    },
+    
     didClickButton: function( button  ){
         if( button.text() === "Play Game" ){
             this.allowUserChooseSection();
         }else if( button.text() === "Start Game" )
             this.dismissMenu( this.playGameFunc );
+        else if( button.text() === "Cancel Game"){}
+            //this.showInstructionsMenu();
+        else if( button.text() === "Back" )
+            this.loadMenuContents();
              
     },
     allowUserChooseSection: function(){
         var that = this;
         var tween = new Kinetic.Tween({
             node: this.menuGroup,
-            duration: 1,
+            duration: 0.5,
             easing: Kinetic.Easings.Linear,
             x: -window.innerWidth * window.innerWidth,
             onFinish: function(){
@@ -400,17 +492,19 @@ MainMenu.prototype = {
         var playGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.5,"Start Game");
         var cancelGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.5,"Back");
         //Add the Label with steppers
-        this.unit = this.createLabelWithStepperAndText(this.menuRect.x() + 80,this.menuRect.y() + 50);
+        this.unit = this.ronin.createLabelWithStepperAndText(this.menuRect.x() + 80,this.menuRect.y() + 50);
         this.unit.setMax(24);
-        this.section = this.createLabelWithStepperAndText(this.menuRect.x() + window.innerWidth * 0.4,this.menuRect.y() + 50);
+        this.unit.BottomText.x( this.unit.BottomText.x() + 35 );
+        this.section = this.ronin.createLabelWithStepperAndText(this.menuRect.x() + window.innerWidth * 0.4,this.menuRect.y() + 50);
         this.section.BottomText.setText("Section");
-        this.section.setMax(6);
+        this.section.BottomText.x( this.section.BottomText.x() + 32 );
+        this.section.setMax(144);
+        this.section.setCount(1);
         
         //Target Language
         var that = this;
-        this.targetLanguage = this.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.243, this.menuRect.y() + 100 );
+        this.targetLanguage = this.ronin.createLabelWithStepperAndText( this.menuRect.x() + window.innerWidth * 0.23,this.menuRect.y() + 100 );
         this.targetLanguage.BottomText.setText('Language');
-        this.targetLanguage.textBox.x( this.targetLanguage.textBox.x() - this.targetLanguage.textBox.width()/2);
         that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
         this.targetLanguage.setMax( this.targetObjects.length );
         this.targetLanguage.TopStepper.off('click tap');
@@ -419,6 +513,7 @@ MainMenu.prototype = {
             if( that.targetLanguage.getCount() >= that.targetObjects.length )
                 that.targetLanguage.setCount(0);
             that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
+            that.targetLanguage.trimText();
             that.layer.draw();       
         });
         this.targetLanguage.BottomStepper.off('click tap');
@@ -427,9 +522,69 @@ MainMenu.prototype = {
                 that.targetLanguage.setCount( that.targetObjects.length );
             that.targetLanguage.decrementCount();
             that.targetLanguage.textBox.text( that.targetObjects[that.targetLanguage.getCount()][1] );
+            that.targetLanguage.trimText();
             that.layer.draw();
         });
         
+        //Unit and Section Text Displaying
+        //Unit
+        this.unit.TopStepper.off('click tap');
+        that.unit.textBox.text( that.unit.getCount() + 1 + ".  " + that.units[that.unit.getCount()][1] );
+        this.unit.TopStepper.on( 'click tap', function(){
+            that.unit.incrementCount();
+            if( that.unit.getCount() >= that.units.length )
+                that.unit.setCount(0);
+            that.unit.textBox.text( that.unit.getCount() + 1 + ".  " + that.units[that.unit.getCount()][1] );
+            
+            //set the section text and count
+            //that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+            that.section.textBox.text( (that.section.getCount() % 6) + 1 + ". " + that.sections[that.section.getCount()][1] );
+            that.unit.trimText();
+            that.section.trimText();
+            
+            that.layer.draw();
+        });
+        this.unit.BottomStepper.off('click tap');
+        this.unit.BottomStepper.on( 'click tap', function(){
+            if( that.unit.getCount() < 1 )
+                that.unit.setCount( that.units.length );
+            that.unit.decrementCount();
+            that.unit.textBox.text( that.unit.getCount() + 1 + ". " + that.units[that.unit.getCount()][1] );
+            that.unit.trimText();
+            that.section.trimText();
+            
+            //set the section text and count
+            that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+            that.section.textBox.text( (that.section.getCount() % 6)+ 1 + ". " + that.sections[that.section.getCount()][1] );
+            
+            that.layer.draw();
+        });
+        //Section 
+        this.section.TopStepper.off('click tap');
+        //that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+        that.section.textBox.text( (that.section.getCount() % 6) + 1+ ". " + that.sections[that.section.getCount()][1] );
+        this.section.TopStepper.on('click tap', function(){
+            that.section.incrementCount();
+            if( that.section.getCount() >= ((that.unit.getCount() * 6 ) + 6) )
+                that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+            that.section.textBox.text( (that.section.getCount() % 6)+ 1 + ". " + that.sections[that.section.getCount()][1] );
+            that.section.trimText();
+            that.layer.draw();
+        });
+        this.section.BottomStepper.off('click tap');
+        this.section.BottomStepper.on('click tap', function(){
+            if( that.section.getCount() < ((that.unit.getCount() * 6 ) + 1 ) )
+                that.section.setCount( ((that.unit.getCount() * 6 ) ) + 6 );
+            that.section.decrementCount();
+            that.section.textBox.text( (that.section.getCount() % 6)+ 1 + ". " + that.sections[that.section.getCount()][1] );
+            that.section.trimText();
+            that.layer.draw();
+        });
+        
+        //Adjust the text positions
+        that.section.trimText();
+        this.targetLanguage.trimText();
+        that.unit.trimText();
         
         this.menuGroup.add( this.menuRect, playGameButton.button, playGameButton.text, cancelGameButton.button, cancelGameButton.text, this.unit.BottomStepper, this.unit.textBox, this.unit.TopStepper, this.section.TopStepper, this.section.textBox, this.section.BottomStepper, this.unit.BottomText, this.section.BottomText , that.targetLanguage.BottomStepper, that.targetLanguage.BottomText, that.targetLanguage.textBox, that.targetLanguage.TopStepper );
         
@@ -448,9 +603,9 @@ MainMenu.prototype = {
                 onFinishCallBack( {
                     'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
                     'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
-                    'UnitSectionID' : { unit: that.unit.getCount(), section: that.section.getCount(), targetLang : that.targetObjects[that.targetLanguage.getCount()][0] }            
+                    'UnitSectionID' : { unit: that.units[that.unit.getCount()][0] , section: (that.section.getCount() % 6 ) , targetLang : that.targetObjects[that.targetLanguage.getCount()][0] }            
                 });
-            }//end 
+            }//end that.section.getCount()
         });
         tween.play();
         console.log(this.unit.getCount() );

@@ -195,7 +195,7 @@ AlertView.prototype = {
         var that = me;
         var dismissAnimation = new Kinetic.Tween({
             node: that.alertGroup,
-            duration: 1.5,
+            duration: 3.0,
             easing: Kinetic.Easings.EaseOut,
             y: -window.innerHeight,
             onFinish: function(){
