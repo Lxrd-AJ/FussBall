@@ -100,7 +100,7 @@ QuestionDB.prototype = {
         return randKey;
     },
     shuffle: function(list) {
-        for (var j, x, i = list.length; i; j = Math.floor(Math.random() * i), x = list[--               i], list[i] = list[j], list[j] = x);
+        for (var j, x, i = list.length; i; j = Math.floor(Math.random() * i), x = list[--i], list[i] = list[j], list[j] = x);
         return list;
     },
 };

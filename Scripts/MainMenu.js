@@ -24,25 +24,25 @@ var MainMenu = function( callback, playGameCallback ){
     ];
     
     this.sections = [
-        ['1', 'Languages'],
+        ['1', 'Languages'],//Unit 1
         ['2', 'Ways of greeting'],
         ['3', 'Names'],
         ['4', 'Family members'],
         ['5', 'Numbers up to 10'],
         ['6', 'Age indicators'],
-        ['7', 'The Farmer in his Den'],
+        ['7', 'The Farmer in his Den'],//Unit 2
         ['8', 'Numbers 1 to 10'],
         ['9', 'I love to play (sentence builder)'],
         ['10', 'Conkers'],
         ['11', 'Numbers 11 to 20'],
         ['12', 'Fun games'],
-        ['13', 'Things I do well'],
+        ['13', 'Things I do well'],//Unit 3
         ['14', 'Birthday Party'],
         ['15', 'Games at my party'],
         ['16', 'Invitation to a Birthday'],
         ['17', 'The Olympics'],
         ['18', 'The Olympics 2'],
-        ['19', 'My body'],
+        ['19', 'My body'],//Unit 4
         ['20', 'Colours'],
         ['21', 'Facial Features'],
         ['22', 'Beastly Body Parts'],
@@ -537,7 +537,7 @@ MainMenu.prototype = {
             that.unit.textBox.text( that.unit.getCount() + 1 + ".  " + that.units[that.unit.getCount()][1] );
             
             //set the section text and count
-            //that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+            that.section.setCount( ((that.unit.getCount() * 6 ) ) );
             that.section.textBox.text( (that.section.getCount() % 6) + 1 + ". " + that.sections[that.section.getCount()][1] );
             that.unit.trimText();
             that.section.trimText();
@@ -561,7 +561,7 @@ MainMenu.prototype = {
         });
         //Section 
         this.section.TopStepper.off('click tap');
-        //that.section.setCount( ((that.unit.getCount() * 6 ) ) );
+        that.section.setCount( ((that.unit.getCount() * 6 ) ) );
         that.section.textBox.text( (that.section.getCount() % 6) + 1+ ". " + that.sections[that.section.getCount()][1] );
         this.section.TopStepper.on('click tap', function(){
             that.section.incrementCount();
@@ -603,12 +603,13 @@ MainMenu.prototype = {
                 onFinishCallBack( {
                     'teamA' : {  id: that.teamA.getStep(), nuts : that.nuts },
                     'teamB' : {  id: that.teamB.getStep(), nuts : that.nuts },
-                    'UnitSectionID' : { unit: that.units[that.unit.getCount()][0] , section: (that.section.getCount() % 6 ) , targetLang : that.targetObjects[that.targetLanguage.getCount()][0] }            
+                    'UnitSectionID' : { unit: that.units[that.unit.getCount()][0] , section: ((that.section.getCount() % 6 )+1) , targetLang : that.targetObjects[that.targetLanguage.getCount()][0] }            
                 });
             }//end that.section.getCount()
         });
         tween.play();
-        console.log(this.unit.getCount() );
-        console.log(this.section.getCount() );
+        console.log( that.units[that.unit.getCount()][0] );
+        console.log( (this.section.getCount()% 6)+1 );
+        console.log( that.targetObjects[that.targetLanguage.getCount()][0] );
     }
 };
