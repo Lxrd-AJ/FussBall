@@ -74,12 +74,13 @@ QuestionDB.prototype = {
            var data = $.parseJSON(response);
            for (var i=0; i<data.length; i++) {
             switch (data[i].language) {
-
+            /*
              case that.supportLanguage.toString():
                   for (var j=0; j<data[i].sections[0].vocab.length; j++) {
                        that.support[ j ] = data[i].sections[0].vocab[j].title;
                   }
                   break;
+                  */
              case that.targetLanguage.toString() :
                   for (var j=0; j<data[i].sections[0].vocab.length; j++) {
                    that.target[ j ] = data[i].sections[0].vocab[j].title;
