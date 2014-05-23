@@ -14,6 +14,10 @@ var Player = function(){
     this.fillColor = 'red';
     this.team = null;
     this.onFinishLoadingCallback = null;
+    this.kickSound = new Howl({
+        urls: ['Resources/ballKick.mp3'],
+        volume: 1.0
+    });
 };
 
 Player.prototype = {
@@ -117,6 +121,7 @@ Player.prototype = {
         
         rotatePlayer.play();
         tween.play();  
+        this.kickSound.play();
     },
     score: function( goalPost, ballRef, duration ){
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
@@ -146,6 +151,7 @@ Player.prototype = {
         
         movePlayer.play();
         goalTween.play();
+        this.kickSound.play();
 
     }
 };

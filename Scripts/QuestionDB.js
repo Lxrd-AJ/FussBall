@@ -72,15 +72,15 @@ QuestionDB.prototype = {
       {
            var data = $.parseJSON(response);
            for (var i=0; i<data.length; i++) {
-		if (data[i].language == that.targetLanguage.toString()) {
-                  for (var j=0; j<data[i].sections[0].vocab.length; j++) {
-                       that.target[ j ] = data[i].sections[0].vocab[j].title;
-                  }
-		}
+           if (data[i].language == that.targetLanguage.toString()) {
+              for (var j=0; j<data[i].sections[0].vocab.length; j++) {
+                   that.target[ j ] = data[i].sections[0].vocab[j].title;
+              }
+            }
          }//end for
 
     });//end request
-        
+
     },
     generateRandomNumber: function( max ){
         if( !max )
