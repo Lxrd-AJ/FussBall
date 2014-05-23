@@ -106,7 +106,7 @@ Timer.prototype = {
                 //Animate the time up
                 that.fillRed( that.deactivate );
                 that.alertRemove( that.alert );
-                //that.deactivationCallback( false );
+                that.deactivationCallback( false );
              }
         }, 1000);    
     },
