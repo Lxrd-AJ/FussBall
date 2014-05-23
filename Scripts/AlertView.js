@@ -11,11 +11,12 @@ var AlertView = function(){
     //this.questionDB = new QuestionDB();
     this.alertShouldShow = true;
     this.exist = false;
-    this.answerCorrect = null;
+    this.answerCorrect = false;
     this.tempCallBack = null;
     this.answerCorrectText = "Correct";
     this.answerWrongText = "Tackled!!!";
     this.options = [0,0,0,0];
+    this.aPlayer = null;
 };
 
 AlertView.prototype = {
@@ -121,16 +122,16 @@ AlertView.prototype = {
         this.feedbackText.text("");
 
     },
-    showAlert : function( callBack , getCallBack, timerCallback  ){
+    showAlert : function( callBack , getCallBack, timerCallback , alertSide ){
         if( this.alertShouldShow ){
             var that = this;
             this.alertWillShow( callBack );
             this.tempCallBack = getCallBack;
-            var showAnimation = new Kinetic.Tween({
+            this.showAnimation = new Kinetic.Tween({
                 node: this.alertGroup,
                 duration: 0.5,
                 easing: Kinetic.Easings.EaseIn,
-                y: window.innerHeight * 0.12,
+                x: this.getBipolarX( alertSide ),
                 onFinish: function(){
                     //start the timer
                     if( !that.timer ){
@@ -140,7 +141,7 @@ AlertView.prototype = {
                     }
                 }
             });
-            showAnimation.play();
+            this.showAnimation.play();
         }
     },
     didClickButtonAtRect: function( obj, that ){
@@ -203,6 +204,7 @@ AlertView.prototype = {
             }
         });
         dismissAnimation.play();
+        //that.showAnimation.reverse();
         //Play the sound
         var cSound = new Howl({
                 urls:['Resources/kids cheering.mp3'],
@@ -220,5 +222,16 @@ AlertView.prototype = {
             this.alertRect.fill("Blue");
         
         this.alertLayer.draw();
+    },
+    getBipolarX: function( side ){
+        this.alertGroup.y( window.innerHeight * 0.12 );
+        if( side ){
+            this.alertGroup.x(window.innerWidth * -1);
+            return window.innerWidth * -0.18;
+        }
+        else{
+            this.alertGroup.x(window.innerWidth) * 2;
+            return window.innerWidth * 0.18;  
+        }
     }
 };

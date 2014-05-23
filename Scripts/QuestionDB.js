@@ -55,7 +55,6 @@ QuestionDB.prototype = {
     },
     loadImages : function( sources ){
         var img = null;
-        
         for (var k=0; k<10; k++) {
             img = new Image();
             img.src = 'http://images.languagenut.com/illustrations/transparent_bg/trans.img_u' + (this.unit>9?'':'0') + this.unit + '_s' + this.section + '_' + (k>=9?'':'0') + (k+1) + '0001.png';
@@ -64,6 +63,7 @@ QuestionDB.prototype = {
     },
     getTextFromServer: function(){
         var that = this;
+         
         $.get("http://ww3.languagenut.com/en/webservice/sections?" + $.param({
       language_uid: this.supportLanguage.toString() + ',' + this.targetLanguage.toString(), 
       from: ((this.unit-1) * 6) + this.section, 
@@ -80,7 +80,7 @@ QuestionDB.prototype = {
          }//end for
 
     });//end request
-
+        //$.get("/Scripts/Sections?" + $.param({
     },
     generateRandomNumber: function( max ){
         if( !max )

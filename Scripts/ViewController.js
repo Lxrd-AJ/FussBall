@@ -117,9 +117,17 @@ function askQuestion(){
         var ansBool = null;
 
         questionAlert.alertShouldShow = true;
+        //query to determine which side the alert should show
+        var biPolarSide = false;
+        if( gameModel.currentPlayer() == gameModel.teams[0] )
+            biPolarSide = true;
+        else
+            biPolarSide = false;
+        
+        questionAlert.changeColor(biPolarSide);
         questionAlert.showAlert( function(that){
             stage.add( that.alertLayer );
-        }, getCallback , determineNextPlayer );
+        }, getCallback , determineNextPlayer, biPolarSide );
 
         function getCallback( that ){
             if( that.getAnswer() ){
@@ -152,7 +160,6 @@ function playPlayerTurn( currentTeam ){
         bool = true;
     else
         bool = false;
-    questionAlert.changeColor(bool);
     
     if( currentTeam.answerCount > 4 ){
         currentTeam.resetCount();

@@ -29,11 +29,11 @@ GameOverView.prototype = {
         });
         this.gameOverRect.cornerRadius(10);
         this.gameOverKineticText = new Kinetic.Text({
-            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.5,
-            y: this.gameOverRect.y() + this.gameOverRect.width() * 0.15,
+            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.35,
+            y: this.gameOverRect.y() + this.gameOverRect.width() * 0.1,
             text: this.gameOverText,
             fontFamily: this.fontFamily,
-            fontSize : 50,
+            fontSize : 40,
             fill: '#0099FF',
             align: 'center'
         });
@@ -55,8 +55,7 @@ GameOverView.prototype = {
             text: this.cancelGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: '#F9F996',
-            stroke: '#FF8919'
+            fill: 'black'
         });
         //this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
         this.onClick( this.cancelGameRect, function(obj){
@@ -83,8 +82,7 @@ GameOverView.prototype = {
             text: this.newGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: '#F9F996',
-            stroke: '#FF8919'
+            fill: 'black'
         });
         //this.newGameRect.width(this.newGameKineticText.getTextWidth());
         this.onClick( this.newGameRect, function(obj){
