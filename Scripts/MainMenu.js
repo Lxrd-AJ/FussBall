@@ -206,8 +206,8 @@ var MainMenu = function( callback, playGameCallback ){
     this.maxUnit = 24;
       
     this.loopingSound = new Howl({
-        urls: ['Resources/FIFA World Cup - 2014 - Brazil.mp3'],
-        autoplay: true,
+        urls: [],
+        //autoplay: true,
         loop: true,
         volume: 0.5
     });
@@ -226,7 +226,7 @@ var MainMenu = function( callback, playGameCallback ){
 MainMenu.prototype = {
     constructor: MainMenu,
     stopLoopingSound: function(){
-        this.loopingSound.stop();
+        //this.loopingSound.stop();
     },
     loadTeamImages: function(){
         var img = null;
@@ -259,7 +259,7 @@ MainMenu.prototype = {
         var sectionText = this.ronin.createLNText( window.innerWidth * 0.22, window.innerHeight * 0.40 );
         sectionText.fontSize(18);
         sectionText.fill("#7A6C01");
-        sectionText.setText("• Find a friend to play against, or form two teams to play on a whiteboard\n\n• Each side gets 10 seconds to answer as many questions as they can. \nEach correct answer passes the ball. After 4 passes you can score a goal.\n\n• If you get a question wrong, or you score a goal, play passes to \nthe other team\n\n• The game ends after 1 minute\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t It's not rocket science.");
+        sectionText.setText("• Find a friend to play against, or form two teams to play on a whiteboard\n\n• Each side gets 10 seconds to answer as many questions as they can. \nEach correct answer passes the ball. After 4 passes you can score a goal.\n\n• If you get a question wrong, or you score a goal, play passes to \nthe other team\n\n• The game ends after 3 minute\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t It's not rocket science.");
         
         var playButton = this.ronin.createLNButton( window.innerWidth * 0.45, window.innerHeight * 0.80 );
         playButton.text.setText("\t\t\t\t\t Got it!!");
@@ -305,10 +305,14 @@ MainMenu.prototype = {
         });
         this.menuGroup.add( this.menuRect );
         
+        //Add the top text
+        var topText = this.ronin.createLNText( this.menuRect.x() * 1.2, this.menuRect.y() + 25 );
+        topText.setText("Choose your teams");
+        
         //Team choosing
         var offset = window.innerWidth * 0.4;
-        this.teamA = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + 80,this.menuRect.y() + 50 ,'Team A' );
-        this.teamB = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + offset, this.menuRect.y() + 50 ,'Team B' ) ;
+        this.teamA = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + 80,this.menuRect.y() + 60 ,'' );
+        this.teamB = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + offset, this.menuRect.y() + 60 ,'' ) ;
         this.teamB.image.setImage( this.teamImages[1] );
         this.teamB.incrementStep();
         this.teams.push( this.teamA );
@@ -322,14 +326,15 @@ MainMenu.prototype = {
         }
 
         //Back and continue game buttons
-        var playGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.5, "Play Game"  );
+        var playGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.4, "Play Game"  );
         this.menuGroup.add( playGameButton.button );
         this.menuGroup.add( playGameButton.text );
 
-        var cancelGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.5, "Cancel Game"  );
+        var cancelGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.4, "Cancel Game"  );
         this.menuGroup.add( cancelGameButton.button );
         this.menuGroup.add( cancelGameButton.text );
-
+        
+        this.menuGroup.add( topText );
         this.layer.draw();      
     },
     createImageBoxWithTopTextAndStepper : function( xPos, yPos, text ){
@@ -489,8 +494,8 @@ MainMenu.prototype = {
         });
         
         //Add the buttons
-        var playGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.5,"Start Game");
-        var cancelGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.5,"Back");
+        var playGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.3,"Start Game");
+        var cancelGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.3,"Back");
         //Add the Label with steppers
         this.unit = this.ronin.createLabelWithStepperAndText(this.menuRect.x() + 80,this.menuRect.y() + 50);
         this.unit.setMax(24);

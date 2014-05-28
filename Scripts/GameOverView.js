@@ -123,11 +123,11 @@ GameOverView.prototype = {
             onFinish: function(){
                 //Play the answer correct sound
                 var cSound = new Howl({
-                    urls:['Resources/The Fans - Ole Ole Ole - The Name Of The Game.mp3'],
+                    urls:[''],
                     voume: 0.2,
                     loop: true
                 });
-                cSound.play();
+                //cSound.play();
             }
         });
         showAnimation.play();
