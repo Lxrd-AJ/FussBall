@@ -118,7 +118,6 @@ Player.prototype = {
             easing: Kinetic.Easings.Linear,
             //onFinish: rotatePlayer.reverse
         });
-        
         rotatePlayer.play();
         tween.play();  
         this.kickSound.play();

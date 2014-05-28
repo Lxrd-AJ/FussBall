@@ -49,7 +49,7 @@ AlertView.prototype = {
             fontSize: 40,
             fontFamily: 'Nunito'
         });
-        
+        this.alertGroup.add( this.alertRect, this.feedbackText,this.questionImage);
         //Create 4 option rects and add to the group
         var x = this.alertRect.x() * 1.07;
         var y = this.alertRect.y() + (this.alertRect.height() * 0.8);
@@ -59,7 +59,7 @@ AlertView.prototype = {
             this.alertGroup.add( this.options[i].text );
         }
 
-        this.alertGroup.add( this.alertRect, this.feedbackText,this.questionImage);
+        
         this.alertLayer.add( this.alertGroup );
         callBack( this );
     },
@@ -136,9 +136,10 @@ AlertView.prototype = {
                     //start the timer
                     if( !that.timer ){
                         that.timer = new Timer( window.innerWidth * 0.46, window.innerHeight );
-                        that.timer.receiveReferences( timerCallback, that.removeAlert , that );
+                       that.timer.receiveReferences( timerCallback, that.removeAlert , that );
                         that.timer.activate( that.timer );
                     }
+                    
                 }
             });
             this.showAnimation.play();
@@ -196,8 +197,8 @@ AlertView.prototype = {
         var that = me;
         var dismissAnimation = new Kinetic.Tween({
             node: that.alertGroup,
-            duration: 3.0,
-            easing: Kinetic.Easings.EaseOut,
+            duration: 1.0,
+            easing: Kinetic.Easings.Linear,
             y: -window.innerHeight,
             onFinish: function(){
                 that.tempCallBack( that );

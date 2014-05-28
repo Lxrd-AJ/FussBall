@@ -6,6 +6,7 @@ var ScoreView = function(){
     this.retainedShowCallBack = null;
     this.opacityValue = 0.5;
     this.exist = false;
+    this.ronin = new Ronin();
     //this.gameTimerText = new Kinetic.Text();
     //Timer
     this.gameTimerRect = new Kinetic.Rect({
@@ -89,22 +90,33 @@ ScoreView.prototype = {
     },
     playGoalScoredAnimation: function( callBack  ){
         var that = this;
-        //this.instantiate( this.retainedShowCallBack );
-        var text = "GOAL!";
-        this.scoreText.text( text );
-        this.layer.draw();
+
+        //-------------------------------------------------
+        var goal = this.ronin.createLNRect( window.innerWidth * 0.2 , window.innerHeight * 0.2 );
+        var text = this.ronin.createLNText( window.innerWidth * 0.3, window.innerHeight * 0.2 );
+        text.setText("GOAL!!");
+        text.fontSize( 60 );
+        text.fill("yellow");
+        text.stroke("black");
+        //this.layer.add( goal );
+        this.layer.add( text );
         var tween = new Kinetic.Tween({
-            node: this.scoreGroup,
-            duration: 0.3,
-            easing: Kinetic.Easings.BounceEaseInOut,
-            //y: window.innerHeight * 0.3,
+           node: text,
+           easing: Kinetic.Easings.BounceEaseInOut,
+            duration: 3,
+            x: window.innerWidth * 0.4,
+            y: window.innerHeight * 0.6,
+            //fontSize: 50,
+            //fill: 'yellow',
             onFinish: function(){
-                //Display next player to play  
+                goal.destroy();
+                text.destroy();
                 callBack();
             }
         });
-        
         tween.play();
+        
+        
     },
     startCountDown: function( timeInMinutes , callBack ){
         var that = this;
@@ -129,5 +141,6 @@ ScoreView.prototype = {
                 clearInterval( timer );
             }
         }, 1000);
+        
     }
 };
