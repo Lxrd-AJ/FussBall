@@ -35,7 +35,7 @@ AlertView.prototype = {
             x: window.innerWidth * 0.2,
             width: window.innerWidth * 0.6,
             height: window.innerHeight * 0.75,
-            fill: 'yellow',
+            fill: 'red',
             stroke: 'black',
             strokeWidth: 2.5,
             opacity: 0.3
