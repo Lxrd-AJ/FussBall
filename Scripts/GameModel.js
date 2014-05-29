@@ -6,7 +6,7 @@
 var GameModel = function(){
     this.pitch = new Pitch();
     this.teams = [ this.teamA, this.teamB ];
-    this.currentPlayerTeam = 0;
+    this.currentPlayerTeam = 1;
     this.gameSounds = new Sounds();
     this.ball = new Ball();
 };

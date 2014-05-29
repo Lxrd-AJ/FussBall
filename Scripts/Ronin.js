@@ -32,6 +32,7 @@ Ronin.prototype = {
     },
     
     createLNButton: function( xPos, yPos ){
+        //Feature: Put em' in a group
         var rect = new Kinetic.Rect({
             x: xPos,
             y: yPos,
