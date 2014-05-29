@@ -19,7 +19,6 @@ var MainMenu = function( callback, playGameCallback ){
         [ 24 , 'Haitian Creole' ],
         [ 26 , 'English (US)' ],
         [ 75 , 'Gaelic' ],
-        [ 134 , 'ww int ww' ],
         [ 135 , 'Traditional Arabic' ]
     ];
     
