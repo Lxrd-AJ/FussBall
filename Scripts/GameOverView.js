@@ -57,7 +57,8 @@ GameOverView.prototype = {
             text: this.cancelGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: 'black'
+            fill: 'black',
+            align: 'center'
         });
         //this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
         this.onClick( this.cancelGameRect, function(obj){
@@ -84,7 +85,8 @@ GameOverView.prototype = {
             text: this.newGameText,
             fontFamily: this.fontFamily,
             fontSize: 35,
-            fill: 'black'
+            fill: 'black',
+            align: 'center'
         });
         //this.newGameRect.width(this.newGameKineticText.getTextWidth());
         this.onClick( this.newGameRect, function(obj){

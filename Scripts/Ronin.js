@@ -38,7 +38,7 @@ Ronin.prototype = {
             y: yPos,
             width: 180,
             height: 40,
-            fill: 'yellow',
+            fill: '#FF4D00',
             stroke: 'black',
             strokeWidth: 1.5,
             cornerRadius: 10
