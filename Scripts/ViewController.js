@@ -156,12 +156,13 @@ function determineNextPlayer( bool ){
 }
 
 function playPlayerTurn( currentTeam ){
-    
+    /*
     var bool = null;
     if( currentTeam === gameModel.teams[0] )
         bool = true;
     else
         bool = false;
+        */
     
     if( currentTeam.answerCount >= 4 ){
         currentTeam.resetCount();

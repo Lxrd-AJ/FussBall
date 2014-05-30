@@ -7,6 +7,7 @@ var GameOverView = function(){
     this.gameOverText = "Game Over!!!"
     this.newGame = null;
     this.clickCallBack = null;
+    this.ronin = new Ronin();
 }
 
 GameOverView.prototype = {
@@ -29,7 +30,7 @@ GameOverView.prototype = {
         });
         this.gameOverRect.cornerRadius(10);
         this.gameOverKineticText = new Kinetic.Text({
-            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.35,
+            x: this.gameOverRect.x() + this.gameOverRect.width() * 0.65,
             y: this.gameOverRect.y() + this.gameOverRect.width() * 0.1,
             text: this.gameOverText,
             fontFamily: this.fontFamily,
@@ -37,6 +38,7 @@ GameOverView.prototype = {
             fill: '#0099FF',
             align: 'center'
         });
+        this.gameOverImage = this.ronin.createLNImage( this.gameOverRect.x(), this.gameOverRect.y(), 'http://images.languagenut.com/illustrations/transparent_bg/trans.img_u03_s5_020001.png', this.layer, this.viewGroup );
         
         this.cancelGameRect = new Kinetic.Rect({
             x: window.innerWidth * 0.25,

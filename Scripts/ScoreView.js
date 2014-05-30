@@ -98,7 +98,7 @@ ScoreView.prototype = {
         var goal = this.ronin.createLNRect( window.innerWidth * 0.2 , window.innerHeight * 0.2 );
         var text = this.ronin.createLNText( window.innerWidth * 0.3, window.innerHeight * 0.2 );
         text.setText("GOAL!!");
-        text.fontSize( 60 );
+        text.fontSize( 160 );
         text.fill("yellow");
         text.stroke("black");
         //this.layer.add( goal );
