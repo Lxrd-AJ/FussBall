@@ -25,7 +25,7 @@ var Timer = function( xPos, yPos , execFunction  ){
         y: yPos
     });
     
-    this.deactivationCallback = null;
+    this.answer = null;
     this.alertRemove = null;
     this.alert = null;
        
@@ -33,8 +33,8 @@ var Timer = function( xPos, yPos , execFunction  ){
 
 Timer.prototype = {
     constructor: Timer,
-    receiveReferences: function( deactivationCallback , alertCallback, alert ){
-        this.deactivationCallback = deactivationCallback; 
+    receiveReferences: function(  alertCallback, alert ){
+        //this.answer = answerWrong; 
         this.alertRemove = alertCallback;
         this.alert = alert;
         
@@ -70,23 +70,11 @@ Timer.prototype = {
             y: this.timerGroup.y() + window.innerHeight,
             onFinish: function(){
                 that.timerGroup.destroy();
+                that.alert.setAnswer( false );
+                that.alertRemove( that.alert );
                 //that.alert.timer = null;
             }
         });    
-        tween.play();
-    },
-    fillRed : function( callBack ){
-        var that = this;
-        var tween = new Kinetic.Tween({
-            node: that.timerBox,
-            duration: 2,
-            easing: Kinetic.Easings.EaseInOut,
-            fillRed: 255,
-            onFinish: function(){
-                tween.reverse();
-                callBack( that );
-            }
-        });
         tween.play();
     },
     activate: function( ){
@@ -102,16 +90,21 @@ Timer.prototype = {
             that.layer.draw();
 
             if( seconds === 0 ){
+                that.deactivate( that );
+                that.disappear();
                 clearInterval( that.countDown );
                 //Animate the time up
-                that.fillRed( that.deactivate );
-                that.alertRemove( that.alert );
-                that.deactivationCallback( false );
              }
         }, 1000);    
     },
     deactivate: function( that ){
-        clearInterval( that.countDown );
-        that.disappear(); 
+        var tween = new Kinetic.Tween({
+            node: that.timerGroup,
+            duration: 1,
+            easing: Kinetic.Easings.BackEaseOut,
+            y: that.timerGroup.y() + window.innerHeight,
+        });    
+        tween.play();
+        clearInterval( that.countDown ); 
     }
 }

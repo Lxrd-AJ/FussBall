@@ -12,6 +12,7 @@ var Team = function( url , name, goalPosition ){
         teamImage : url
     };
     this.goalDirection = goalPosition;
+    //TODO: Each player should have a position number
 };
 
 Team.prototype = {

@@ -23,13 +23,13 @@ var gameOverView = new GameOverView();
 var positionA = [
     {x:4, y:50},
     {x:15, y:8}, {x:10,y:28}, {x:10,y:65}, {x:15,y:95},
-    {x:40, y:10}, {x:45, y:35}, {x:51, y:65}, {x:42, y:95},
+    {x:40, y:15}, {x:45, y:35}, {x:51, y:65}, {x:42, y:95},
     {x:75, y:35}, {x:80, y:55}
      ];
 var positionB = [
     {x:95,y:50},
     {x:82,y:10}, {x:84,y:27}, {x:87,y:65}, {x:85,y:85},
-    {x:60,y:10}, {x:56,y:50}, {x:60,y:90},
+    {x:60,y:15}, {x:56,y:50}, {x:60,y:90},
     {x:26,y:9}, {x:20,y:40}, {x:23,y:80}
 ];
 
@@ -84,12 +84,6 @@ function newGame( urlObj ){
         that.layer.moveToBottom();
     });  
     
-    scoreView.instantiate( function(that){
-        stage.add( that.layer );
-    });
-    scoreView.startCountDown( gameDurationInMinutes , gameDidFinish );
-    scoreView.showScores( gameModel.getTeams() );
-    
     //change the second teams color to blue
     gameModel.teamB.changePlayersColor( 'blue' );
 
@@ -98,6 +92,13 @@ function newGame( urlObj ){
     gameModel.teamB.arrangePlayers( positionB );
     
     questionAlert.setUnitSectionAndTarget( urlObj.UnitSectionID.unit, urlObj.UnitSectionID.section, urlObj.UnitSectionID.targetLang );
+    
+    //add the scoreview
+    scoreView.instantiate( function(that){
+        stage.add( that.layer );
+    });
+    scoreView.startCountDown( gameDurationInMinutes , gameDidFinish );
+    
 }
 
 
@@ -123,7 +124,8 @@ function askQuestion(){
             biPolarSide = true;
         else
             biPolarSide = false;
-        
+       
+        scoreView.showScores( gameModel.getTeams(), gameModel.currentPlayer() );
         questionAlert.changeColor(biPolarSide);
         questionAlert.showAlert( function(that){
             stage.add( that.alertLayer );
@@ -161,7 +163,7 @@ function playPlayerTurn( currentTeam ){
     else
         bool = false;
     
-    if( currentTeam.answerCount > 4 ){
+    if( currentTeam.answerCount >= 4 ){
         currentTeam.resetCount();
         currentTeam = gameModel.nextPlayer();
     }
@@ -169,21 +171,26 @@ function playPlayerTurn( currentTeam ){
     if( beginningOfMatch ){
         this.beginningOfMatch = false;
         //Display the scores 
-        scoreView.showScores( gameModel.getTeams() );
+        scoreView.showScores( gameModel.getTeams(), currentTeam );
         //GoalKeeper long shot & Ask Question
         currentTeam.goalKeeperLongShot( gameModel.ball, askQuestion );
     }else{
-        if( currentTeam.answerCount < 4 )
-            currentTeam.getNextPlayer().passToPlayer( currentTeam.getNextPlayer(), gameModel.ball, 2, askQuestion );
-        else{
+        scoreView.showScores( gameModel.getTeams() , currentTeam );
+        if( currentTeam.answerCount === 3 ){
             //score a goal
             currentTeam.getNextPlayer().score( currentTeam.goalDirection, gameModel.ball, 2 );
             scoreView.playGoalScoredAnimation( askQuestion  );
             gameModel.teamDidScoreGoal( currentTeam );
             beginningOfMatch = true;
-            
+            currentTeam = gameModel.nextPlayer();
+        } 
+        else{
+            currentTeam.getNextPlayer().passToPlayer( currentTeam.getNextPlayer(), gameModel.ball, 2, askQuestion );
         }
-    }        
+    }  
+    
+    //Debugging
+    console.log( currentTeam.name + "'s count = " + currentTeam.answerCount );
 }
 
 function gameDidFinish()
@@ -199,7 +206,9 @@ function gameDidFinish()
         text += "Draw!!";
     gameOverView.showAlert( text , clickCallBack );
     
+    scoreView.gameOver();
     questionAlert = null;
+    scoreView = null;
     
     function clickCallBack( that ){
         if( that.shouldStartNewGame() ){ 

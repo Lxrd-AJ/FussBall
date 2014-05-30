@@ -54,7 +54,7 @@ ScoreView.prototype = {
             fontFamily: 'Nunito',
             fontSize: 45,
             fill: 'white',
-            opacity: this.opacityValue,
+            opacity: 1,
             align: 'center'
         });
                 
@@ -68,10 +68,10 @@ ScoreView.prototype = {
         
         this.exist = true;
     },
-    showScores: function(  scoreObj ){
+    showScores: function(  scoreObj, currentTeam ){
         
         this.scoreText.setText(" ");
-        var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name  ;  
+        var text = scoreObj.TeamA.name + " " + scoreObj.TeamA.score + " - " + scoreObj.TeamB.score + " " + scoreObj.TeamB.name + "\n " + currentTeam.name + " to play" ;  
         this.scoreText.setText( text );
         this.layer.draw();
         var tween = new Kinetic.Tween({
@@ -87,6 +87,9 @@ ScoreView.prototype = {
             y: -window.innerHeight
         });
         tween.play();
+    },
+    gameOver : function(){
+        this.scoreText.setText("Game Over");    
     },
     playGoalScoredAnimation: function( callBack  ){
         var that = this;

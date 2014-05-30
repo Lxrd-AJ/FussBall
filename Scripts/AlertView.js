@@ -136,7 +136,7 @@ AlertView.prototype = {
                     //start the timer
                     if( !that.timer ){
                         that.timer = new Timer( window.innerWidth * 0.46, window.innerHeight );
-                       that.timer.receiveReferences( timerCallback, that.removeAlert , that );
+                        that.timer.receiveReferences( that.removeAlert , that );
                         that.timer.activate( that.timer );
                     }
                     
@@ -212,6 +212,13 @@ AlertView.prototype = {
                 voume: 0.2
         });
         cSound.play();
+    },
+    setAnswer: function( bool )
+    {
+        if( bool )
+            this.answerCorrect = true;
+        else
+            this.answerCorrect = false;
     },
     getAnswer: function(){
         return this.answerCorrect

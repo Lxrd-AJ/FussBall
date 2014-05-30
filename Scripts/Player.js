@@ -92,6 +92,8 @@ Player.prototype = {
     },
     passToPlayer: function( playerRef, ballRef , duration, onFinishCallBack ){
         playerRef = this.team.getNextPlayer();
+        if( this === playerRef )
+            playerRef = this.team.getNextPlayer();
         
         ballRef.setPosition( this.circle.x(), this.circle.y(), true );
         var that = this;

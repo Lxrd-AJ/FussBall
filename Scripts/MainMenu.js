@@ -306,7 +306,7 @@ MainMenu.prototype = {
         
         //Add the top text
         var topText = this.ronin.createLNText( this.menuRect.x() * 1.2, this.menuRect.y() + 25 );
-        topText.setText("Choose your teams");
+        topText.setText("Choose your team");
         
         //Team choosing
         var offset = window.innerWidth * 0.4;
