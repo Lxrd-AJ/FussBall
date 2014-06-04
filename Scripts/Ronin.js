@@ -36,7 +36,7 @@ Ronin.prototype = {
         var rect = new Kinetic.Rect({
             x: xPos,
             y: yPos,
-            width: 180,
+            width: 320,
             height: 40,
             fill: '#FF4D00',
             stroke: 'black',
@@ -46,6 +46,7 @@ Ronin.prototype = {
         var text = this.createLNText( xPos, yPos );
         text.width( rect.width() );
         text.height( rect.height() );
+	text.align('center');
         text.padding( 10 );
         
         return {
@@ -156,6 +157,30 @@ Ronin.prototype = {
         }
     },
     
+    loadImages: function(sources, callback) {
+        var images = {};
+        var loadedImages = 0;
+        var numImages = 0;
+
+        for (var src in sources) {
+            if (sources.hasOwnProperty(src)) numImages++;
+        }
+
+        for (var src in sources) {
+            if (sources.hasOwnProperty(src)) {
+                images[src] = new Image();
+
+                images[src].onload = function () {
+                    if (++loadedImages >= numImages) {
+                        callback(images);
+                    }
+                };
+
+                images[src].src = sources[src];
+            }
+        }	
+    },
+
     createLNImage: function( xPos, yPos, src, layerRef, group ){
         var img = new Image();
         var kImage = new Kinetic.Image({

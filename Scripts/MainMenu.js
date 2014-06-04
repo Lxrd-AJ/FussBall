@@ -242,46 +242,59 @@ MainMenu.prototype = {
         this.menuGroup.destroyChildren();
         
         //create the menu
-        var instructionsMenu = this.ronin.createLNRect( window.innerWidth * 0.2, window.innerHeight * 0.05 );
-        instructionsMenu.width( window.innerWidth * 0.6 );
+        var x0 = (window.innerWidth - 800)/2;
+        var instructionsMenu = this.ronin.createLNRect( x0, window.innerHeight * 0.05);
+        instructionsMenu.width( 800 );
         instructionsMenu.height( window.innerHeight * 0.9 );
-        var Titletext = this.ronin.createLNImage( window.innerWidth * 0.35, window.innerHeight * 0.10, 'Resources/LNutWorldCup.png' , this.layer, this.menuGroup );
+        var Titletext = this.ronin.createLNImage( x0+(800-567)/2, window.innerHeight * 0.10, 'Resources/LNutWorldCup.png' , this.layer, this.menuGroup );
         
-        var smallText = this.ronin.createLNText( window.innerWidth * 0.37, window.innerHeight * 0.23 );
-        smallText.setText("Learn while you score with Languagenut’s exclusive World Cup game. \nThe World Cup 2014 starts on June 12th and the final game will be on \nJuly 13th 2014.");
-        smallText.fontSize(16);
+        var smallText = this.ronin.createLNText(x0 + 140, window.innerHeight * 0.19 );
+	smallText.setText( "Learn while you score with Languagenut's exclusive World Cup game!" );
+	smallText.fontSize(16);
         
-        var bodyText = this.ronin.createLNText( window.innerWidth * 0.23, window.innerHeight * 0.35 );
-        bodyText.setText("Play against your friends or in the classroom in teams. You need at least 2 players for this game. \nPerfect for laptops, tablets and the interactive whiteboard.");
-        bodyText.fontSize(15);
-        
-        var sectionHeaderText = this.ronin.createLNText(window.innerWidth * 0.42, window.innerHeight * 0.175 );
+        var sectionHeaderText = this.ronin.createLNText( x0 + 310, window.innerHeight * 0.27 );
+	sectionHeaderText.setAttr('fontStyle', 'bold');
+	sectionHeaderText.fontSize(30);
         sectionHeaderText.setText("Instructions");
         
-        var sectionText = this.ronin.createLNText( window.innerWidth * 0.22, window.innerHeight * 0.43 );
+	var subHead1 = this.ronin.createLNText( x0 + 20, window.innerHeight * 0.35 );
+	subHead1.setAttr('fontStyle', 'bold');
+	subHead1.fontSize(17);
+        subHead1.setText("Setting up the Game");
+
+        var sectionText = this.ronin.createLNText( x0 + 20, window.innerHeight * 0.39 );
+	sectionText.setWidth(670);
         sectionText.fontSize(17);
-        sectionText.fill("#7A6C01");
-        sectionText.setText("• Form your teams and choose which country each team wants to play for and click \‘Next\’.\n\n• Choose the Languagenut unit you would like your language questions to be taken from.\n\n\n• Next select the section you would like from your chosen unit.\n\n• Choose your required language and click \‘Start Game\’.\n\n• Each player gets 15 seconds to answer as many questions as they can in a row.\n Each correct answer passes the ball. After 4 correct passes your team will score a goal.\n\n• If you get a question wrong or you score a goal, play passes to the other team.\n\n• The game ends after 3 minutes."
-);
-        var luckText = this.ronin.createLNText(window.innerWidth * 0.25, window.innerHeight * 0.86);
-        luckText.setText("Good luck!!!");
-        luckText.fontSize( 17 );
-        
-        var playButton = this.ronin.createLNButton( window.innerWidth * 0.45, window.innerHeight * 0.87 );
-        playButton.text.setText("\t\t\t\t\t Got it!!");
+	sectionText.lineHeight(1.5);
+        sectionText.setText("• Play with a friend, or form teams to play at the whiteboard\n• Choose a country for each player or team\n• Choose the Languagenut unit and section which you would like the questions to be taken from.\n• Choose a language, then click 'Start Game'!");
+
+	var subHead2 = this.ronin.createLNText( x0 + 20, window.innerHeight * 0.6 );
+	subHead2.setAttr('fontStyle', 'bold');
+	subHead2.fontSize(17);
+        subHead2.setText("In play");
+
+        var section2Text = this.ronin.createLNText( x0 + 20, window.innerHeight * 0.64 );
+	section2Text.setWidth(670);
+        section2Text.fontSize(17);
+	section2Text.lineHeight(1.5);
+        section2Text.setText("• Keep possession of the ball by answering 4 questions correctly in a row. If you manage this you score a goal.\n• Be quick! If you get a question wrong or you don't answer within 15 seconds, you will be tackled, and play passes to the other team.\n• The game will end after 3 minutes.");
+
+        var playButton = this.ronin.createLNButton( x0 + 250, window.innerHeight * 0.86 );
+        playButton.text.setText("Got it \u2013 let's go!");
         playButton.text.on( 'click tap', function(){
             context.showMenu( context );
         });
         
+	var that = this;
         //Image on the top left
-        var nutImage = this.ronin.createLNImage(window.innerWidth * 0.21, window.innerHeight * 0.08,'http://www.languagenut.com/images/nuts/150/nut.png', this.layer, this.menuGroup );
-        var ballImage = this.ronin.createLNImage(window.innerWidth * 0.3, window.innerHeight * 0.26,'Resources/ballTransparent.png', this.layer, this.menuGroup );
-        ballImage.width( 50 );
-        ballImage.height( 50 );
+       	this.ronin.loadImages({nut: 'http://www.languagenut.com/images/nuts/150/nut.png', ball: 'Resources/ball.png'}, function(images) {
+		var nutImage = new Kinetic.Image({x: x0-45, y:window.innerHeight * 0.02, image: images.nut});
+	        var ballImage = new Kinetic.Image({x: x0 + 50, y:window.innerHeight * 0.02 + 120, image: images.ball});
         
-        //Add the objects 
-        this.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, sectionText, playButton.button, playButton.text, bodyText, luckText );
-        this.layer.draw();
+       		 //Add the objects 
+	        that.menuGroup.add( instructionsMenu, Titletext, smallText, sectionHeaderText, subHead1, subHead2, sectionText, section2Text, playButton.button, playButton.text, nutImage, ballImage );
+	        that.layer.draw();
+	});
         
     },
     showMenu: function( context ){
@@ -312,13 +325,13 @@ MainMenu.prototype = {
         this.menuGroup.add( this.menuRect );
         
         //Add the top text
-        var topText = this.ronin.createLNText( this.menuRect.x() * 1.15, this.menuRect.y() + 25 );
+        var topText = this.ronin.createLNText( this.menuRect.x() + this.menuRect.width()/2 - 230, this.menuRect.y() + 25 );
         topText.setText("Choose a country for each player/team");
         
         //Team choosing
         var offset = window.innerWidth * 0.4;
-        this.teamA = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + 80,this.menuRect.y() + 60 ,'' );
-        this.teamB = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + offset, this.menuRect.y() + 60 ,'' ) ;
+        this.teamA = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + 80,this.menuRect.y() + 100 ,'' );
+        this.teamB = this.createImageBoxWithTopTextAndStepper( this.menuRect.x() + offset, this.menuRect.y() + 100 ,'' ) ;
         this.teamB.image.setImage( this.teamImages[1] );
         this.teamB.incrementStep();
         this.teams.push( this.teamA );
@@ -333,13 +346,11 @@ MainMenu.prototype = {
 
         //Back and continue game buttons
         var playGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.4, "Next"  );
+	playGameButton.button.setX(playGameButton.button.getX() - playGameButton.button.width()/2);
+	playGameButton.text.setX(playGameButton.text.getX() - playGameButton.button.width()/2);
         this.menuGroup.add( playGameButton.button );
         this.menuGroup.add( playGameButton.text );
 
-        var cancelGameButton = this.createButtonWithText( this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.4, "Cancel Game"  );
-        this.menuGroup.add( cancelGameButton.button );
-        this.menuGroup.add( cancelGameButton.text );
-        
         this.menuGroup.add( topText );
         this.layer.draw();      
     },
@@ -500,11 +511,15 @@ MainMenu.prototype = {
         });
         
         //Add the buttons
-        var playGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/2, this.menuRect.y() + this.menuRect.height()/1.3,"Start Game");
-        var cancelGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()/5, this.menuRect.y() + this.menuRect.height()/1.3,"Back");
+        var playGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()*0.75, this.menuRect.y() + this.menuRect.height()/1.3, "Start Game");
+	playGameButton.button.setX(playGameButton.button.x() - playGameButton.button.width() / 2);
+	playGameButton.text.setX(playGameButton.text.x() - playGameButton.text.width() / 2);
+        var cancelGameButton = this.createButtonWithText(this.menuRect.x() + this.menuRect.width()*0.25, this.menuRect.y() + this.menuRect.height()/1.3, "Back");
+	cancelGameButton.button.setX(cancelGameButton.button.x() - cancelGameButton.button.width() / 2);
+	cancelGameButton.text.setX(cancelGameButton.text.x() - cancelGameButton.text.width() / 2);
         
         //Instruction text
-        var instruct = this.ronin.createLNText( this.menuRect.x() + 150,this.menuRect.y() + 50 );
+        var instruct = this.ronin.createLNText( this.menuRect.x() + this.menuRect.width()/2 - 240, this.menuRect.y() + 50 );
         instruct.setText("Choose your Unit, Language and Section");
         
         //Add the Label with steppers
