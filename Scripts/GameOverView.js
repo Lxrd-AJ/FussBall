@@ -1,7 +1,6 @@
 var GameOverView = function(){
     this.layer = new Kinetic.Layer();
-    this.newGameText = "New";
-    this.cancelGameText = "Exit";
+    this.newGameText = "Play Again";
     this.fontFamily = "Nunito";
     this.fillColor = "blue";
     this.gameOverText = "Game Over!!!"
@@ -40,38 +39,10 @@ GameOverView.prototype = {
         });
         this.gameOverImage = this.ronin.createLNImage( this.gameOverRect.x(), this.gameOverRect.y(), 'http://images.languagenut.com/illustrations/transparent_bg/trans.img_u03_s5_020001.png', this.layer, this.viewGroup );
         
-        this.cancelGameRect = new Kinetic.Rect({
-            x: window.innerWidth * 0.25,
-            y: (window.innerHeight * 0.15 ) + this.gameOverRect.height(),
-            width: 180,
-            height: 60,
-            fill: '#F9F996',
-            stroke: '#FF8919',
-            strokeWidth: 2.5
-        });
-        this.cancelGameRect.cornerRadius(10);
-        this.cancelGameRect.listening( true );
-        this.cancelGameKineticText = new Kinetic.Text({
-            x: this.cancelGameRect.x() + this.cancelGameRect.width() * 0.2,
-            y: this.cancelGameRect.y() + this.cancelGameRect.width() * 0.05,
-            text: this.cancelGameText,
-            fontFamily: this.fontFamily,
-            fontSize: 35,
-            fill: 'black',
-            align: 'center'
-        });
-        //this.cancelGameRect.width( this.cancelGameKineticText.getTextWidth() );
-        this.onClick( this.cancelGameRect, function(obj){
-            that.didClickButtonAtRect(obj);
-        });
-        this.onClick( this.cancelGameKineticText, function( obj ){
-            that.didClickButtonAtRect(obj);
-        });
-        
         this.newGameRect = new Kinetic.Rect({
-            x: (window.innerWidth * 0.3) + this.cancelGameRect.x(),
-            y: this.cancelGameRect.y(),
-            width: 180,
+            x: (window.innerWidth * 0.5) - 150,
+            y: (window.innerHeight * 0.15 ) + this.gameOverRect.height(),
+            width: 300,
             height: 60,
             fill: '#F9F996',
             stroke: '#FF8919',
@@ -96,8 +67,7 @@ GameOverView.prototype = {
             that.didClickButtonAtRect( obj );
         });
         
-        this.viewGroup.add( this.gameOverRect, this.gameOverKineticText,                                                        this.cancelGameRect, this.cancelGameKineticText,
-                            this.newGameRect, this.newGameKineticText );
+        this.viewGroup.add( this.gameOverRect, this.gameOverKineticText, this.newGameRect, this.newGameKineticText );
         this.layer.add( this.viewGroup );
         callBack( this );
     },
@@ -107,10 +77,7 @@ GameOverView.prototype = {
         });
     },
     didClickButtonAtRect: function( obj ){
-        if( obj == this.cancelGameRect || obj == this.cancelGameKineticText ){
-            this.newGame = false;
-        }
-        else if( obj == this.newGameRect || obj == this.newGameKineticText ){
+        if( obj == this.newGameRect || obj == this.newGameKineticText ){
             this.newGame = true;
             location.reload();
         }     
@@ -119,6 +86,7 @@ GameOverView.prototype = {
     },
     showAlert: function( textM , callB ){
         this.gameOverKineticText.text( textM ); 
+        this.gameOverKineticText.align( 'center' ); 
         var showAnimation = new Kinetic.Tween({
             node: this.viewGroup,
             duration: 1,

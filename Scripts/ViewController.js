@@ -198,13 +198,13 @@ function gameDidFinish()
 {   
     gameOverView.layer.moveToTop();
     
-    var text = "Game Over\n ";
+    var text = "Game Over!\n\n";
     if( gameModel.teamA.score > gameModel.teamB.score )
         text += gameModel.teamA.name + " Wins";
     else if( gameModel.teamA.score < gameModel.teamB.score )
         text += gameModel.teamB.name + " Wins";
     else
-        text += "Draw!!";
+        text += "Draw";
     gameOverView.showAlert( text , clickCallBack );
     
     scoreView.gameOver();
@@ -215,9 +215,7 @@ function gameDidFinish()
         if( that.shouldStartNewGame() ){ 
             //gameModel = new GameModel();
             //newGame();
-        }else{
-            alert("Bye Bye");    
-        } 
+        }
     }   
 }
 
