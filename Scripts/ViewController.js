@@ -133,12 +133,16 @@ function askQuestion(){
 
         function getCallback( that ){
             if( that.getAnswer() ){
+                var currentTeam = gameModel.currentPlayer();
+                currentTeam.incrementCount();
+                //Debugging
+                console.log( currentTeam.name + "'s count is " + currentTeam.answerCount );
                 determineNextPlayer(true);
-                gameModel.currentPlayer().incrementCount();
             }
-            else{
+            else{  
+                var currentTeam = gameModel.currentPlayer();
+                currentTeam.resetCount();
                 determineNextPlayer(false);
-                gameModel.currentPlayer().resetCount();
             }
         }      
     }else
@@ -157,17 +161,14 @@ function determineNextPlayer( bool ){
 
 function playPlayerTurn( currentTeam ){
     /*
-    var bool = null;
-    if( currentTeam === gameModel.teams[0] )
-        bool = true;
-    else
-        bool = false;
-        */
-    
-    if( currentTeam.answerCount >= 4 ){
+    if( currentTeam.answerCount > 4 ){
+        console.log("current team is " + currentTeam.name );
+        console.log(currentTeam.name + "'s count now 0");
         currentTeam.resetCount();
         currentTeam = gameModel.nextPlayer();
+        console.log("New team is " + currentTeam.name );
     }
+    */
     
     if( beginningOfMatch ){
         this.beginningOfMatch = false;
@@ -177,21 +178,20 @@ function playPlayerTurn( currentTeam ){
         currentTeam.goalKeeperLongShot( gameModel.ball, askQuestion );
     }else{
         scoreView.showScores( gameModel.getTeams() , currentTeam );
-        if( currentTeam.answerCount === 3 ){
+        if( currentTeam.answerCount === 4 ){
             //score a goal
             currentTeam.getNextPlayer().score( currentTeam.goalDirection, gameModel.ball, 2 );
-            scoreView.playGoalScoredAnimation( askQuestion  );
+            currentTeam.resetCount();
             gameModel.teamDidScoreGoal( currentTeam );
             beginningOfMatch = true;
             currentTeam = gameModel.nextPlayer();
+            scoreView.playGoalScoredAnimation( askQuestion  );
         } 
         else{
             currentTeam.getNextPlayer().passToPlayer( currentTeam.getNextPlayer(), gameModel.ball, 2, askQuestion );
         }
     }  
     
-    //Debugging
-    console.log( currentTeam.name + "'s count = " + currentTeam.answerCount );
 }
 
 function gameDidFinish()

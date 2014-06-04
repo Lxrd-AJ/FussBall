@@ -69,7 +69,7 @@ Team.prototype = {
         return this.players[ rand ];
     },
     incrementCount: function(){
-        if( this.answerCount > 4 )
+        if( this.answerCount >= 4 )
             this.resetCount();
         
         this.answerCount++;
